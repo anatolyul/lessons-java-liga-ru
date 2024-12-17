@@ -1,6 +1,5 @@
 package ru.hofftech.util;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.model.Box;
 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 public class ImportBoxes {
     public static List<Box> parseFromFile(String fileName) {
         List<Box> boxes = new ArrayList<>();

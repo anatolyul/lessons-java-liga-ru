@@ -1,10 +1,9 @@
-package ru.hofftech;
+package ru.hofftech.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.hofftech.model.Box;
 import ru.hofftech.model.Truck;
-import ru.hofftech.service.LoadingBoxesInTruckService;
 import ru.hofftech.util.ImportBoxes;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ApplicationTests {
+public class LoadingBoxesInTruckServiceTests {
     private List<Box> boxes;
 
     @BeforeEach

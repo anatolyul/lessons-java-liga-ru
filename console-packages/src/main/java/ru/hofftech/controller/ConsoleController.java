@@ -1,10 +1,10 @@
 package ru.hofftech.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.model.Box;
 import ru.hofftech.model.Truck;
 import ru.hofftech.service.LoadingBoxesInTruckService;
+import ru.hofftech.service.ReportService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import static ru.hofftech.util.ImportBoxes.parseFromFile;
 
 @Slf4j
-@RequiredArgsConstructor
 public class ConsoleController {
 
     private final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.txt)");
@@ -74,7 +73,7 @@ public class ConsoleController {
                             
                             Результаты распределения груза:
                             """);
-                    loadingBoxesInTruckService.report(trucks);
+                    ReportService.report(trucks);
 
                     log.info("""
                             

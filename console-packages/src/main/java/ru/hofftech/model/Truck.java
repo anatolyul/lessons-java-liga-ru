@@ -1,12 +1,8 @@
 package ru.hofftech.model;
 
-import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Setter
-@Getter
-@Slf4j
 public class Truck {
     private static final int TRUCK_WIDTH = 6;
     private static final int TRUCK_HEIGHT = 6;
@@ -19,8 +15,8 @@ public class Truck {
     }
 
     public boolean canLoadBox(Box box) {
-        for (int i = 0; i <= TRUCK_HEIGHT - box.height; i++) {
-            for (int j = 0; j <= TRUCK_WIDTH - box.width; j++) {
+        for (int i = 0; i <= TRUCK_HEIGHT - box.height(); i++) {
+            for (int j = 0; j <= TRUCK_WIDTH - box.width(); j++) {
                 if (canPlaceBox(box, i, j)) {
                     return true;
                 }
@@ -31,8 +27,8 @@ public class Truck {
     }
 
     public void loadBox(Box box) {
-        for (int i = 0; i <= TRUCK_HEIGHT - box.height; i++) {
-            for (int j = 0; j <= TRUCK_WIDTH - box.width; j++) {
+        for (int i = 0; i <= TRUCK_HEIGHT - box.height(); i++) {
+            for (int j = 0; j <= TRUCK_WIDTH - box.width(); j++) {
                 if (canPlaceBox(box, i, j)) {
                     placeBox(box, i, j);
                     return;
@@ -42,8 +38,8 @@ public class Truck {
     }
 
     private boolean canPlaceBox(Box box, int startRow, int startCol) {
-        for (int i = 0; i < box.height; i++) {
-            for (int j = 0; j < box.width; j++) {
+        for (int i = 0; i < box.height(); i++) {
+            for (int j = 0; j < box.width(); j++) {
                 if (cargoSpace[startRow + i][startCol + j]) {
                     return false;
                 }
@@ -54,10 +50,10 @@ public class Truck {
     }
 
     public void placeBox(Box box, int startRow, int startCol) {
-        for (int i = 0; i < box.height; i++) {
-            for (int j = 0; j < box.width; j++) {
+        for (int i = 0; i < box.height(); i++) {
+            for (int j = 0; j < box.width(); j++) {
                 cargoSpace[startRow + i][startCol + j] = true;
-                cargoContent[startRow + i][startCol + j] = box.content;
+                cargoContent[startRow + i][startCol + j] = box.content();
             }
         }
     }

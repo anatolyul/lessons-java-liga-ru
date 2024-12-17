@@ -1,6 +1,5 @@
 package ru.hofftech.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.model.Box;
 import ru.hofftech.model.Truck;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 public class LoadingBoxesInTruckService {
 
     public List<Truck> simpleAlg(List<Box> boxes) {
@@ -38,20 +36,5 @@ public class LoadingBoxesInTruckService {
 
         trucks.add(currentTruck);
         return trucks;
-    }
-
-    public void report(List<Truck> trucks) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-
-        for (int i = 0; i < trucks.size(); i++) {
-            sb.append("Truck ")
-                .append(i + 1)
-                .append(":\n")
-                .append(trucks.get(i).printCargo())
-                .append("\n");
-        }
-
-        log.info(sb.toString());
     }
 }
