@@ -1,13 +1,10 @@
-package ru.hofftech.service;
+package ru.hofftech.console.packages.service;
 
-import lombok.extern.slf4j.Slf4j;
-import ru.hofftech.model.Truck;
-
+import ru.hofftech.console.packages.model.Truck;
 import java.util.List;
 
-@Slf4j
-public class ReportService {
-    public static void report(List<Truck> trucks) {
+public class FormatterService {
+    public static String TrucksToString(List<Truck> trucks) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
 
@@ -19,6 +16,6 @@ public class ReportService {
                     .append("\n");
         }
 
-        log.info(sb.toString());
+        return sb.toString();
     }
 }

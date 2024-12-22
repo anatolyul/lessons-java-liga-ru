@@ -1,4 +1,4 @@
-package ru.hofftech.model;
+package ru.hofftech.console.packages.model;
 
 import lombok.Setter;
 

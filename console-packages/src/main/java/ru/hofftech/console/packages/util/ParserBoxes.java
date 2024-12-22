@@ -1,20 +1,34 @@
-package ru.hofftech.util;
+package ru.hofftech.console.packages.util;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.hofftech.model.Box;
+import ru.hofftech.console.packages.model.Box;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
-public class ImportBoxes {
-    public static List<Box> parseFromFile(String fileName) {
-        List<Box> boxes = new ArrayList<>();
+public class ParserBoxes {
+    private String getFilePath(String fileName) {
+        final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.txt)");
+        String result;
+        Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
+        fileName = matcher.matches() ? matcher.group(1) : fileName;
+        result = Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getPath();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        return result;
+    }
+
+    public List<Box> parseFromFile(String fileName) {
+        List<Box> boxes = new ArrayList<>();
+        String filePath = getFilePath(fileName);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             String content = "";
             int width = 0;
