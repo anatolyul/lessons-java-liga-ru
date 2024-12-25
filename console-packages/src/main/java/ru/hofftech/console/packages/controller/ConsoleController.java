@@ -34,16 +34,17 @@ public class ConsoleController {
                 Справочник команд:
                 import boxes.txt - загрузка файла с посылками
                 import trucks.json - загрузка файла с грузовиками
-                limit 5 - максимальное кол-во машин для погрузки
+                limit 5 - максимальное кол-во машин для погрузки (по умолчанию 1)
                 exit - завершение работы
                 
                 Выбор алгоритма погрузки:
                 1 - простой (одна посылка = одна машина)
                 2 - сложный (оптимальное размещение нескольких посылок по машинам)
+                3 - равномерная погрузка по машинам
                 """);
 
         List<Box> boxes = new ArrayList<>();
-        int limitTrucks = 0;
+        int limitTrucks = 1;
 
         while (scanner.hasNextLine()) {
             List<Truck> trucks = new ArrayList<>();
@@ -56,15 +57,6 @@ public class ConsoleController {
                      IMPORT_FILE_JSON -> {
                     ParserBoxes parserBoxes = ParserBoxesFactory.createParserBoxes(command);
                     boxes = parserBoxes.parse(formatterService.FileNameCommandToPath(commandString));
-                    if (!boxes.isEmpty()) {
-                        log.info("""
-                    
-                            Выбор алгоритма погрузки:
-                            1 - простой (одна посылка = одна машина)
-                            2 - сложный (оптимальное размещение нескольких посылок по машинам)
-                            3 - равномерная погрузка по машинам
-                            """);
-                    }
                 }
                 case LIMIT -> limitTrucks = formatterService.LimitCommandToInt(commandString);
                 case FIRST_ALGORITHM,
@@ -83,13 +75,8 @@ public class ConsoleController {
                             Результаты распределения груза:
                             """);
                 log.info("{}", formatterService.TrucksToString(trucks));
-                //log.info("{}", formatterService.TrucksToJson(trucks));
                 fileWriterService.writeToFile(formatterService.BoxesToString(boxes), "boxes_result.txt");
                 fileWriterService.writeToFile(formatterService.TrucksToJson(trucks), "trucks_result.json");
-                log.info("""
-                            
-                            Для повторного распределение определите выбор алгоритма погрузки:
-                            """);
             }
         }
     }

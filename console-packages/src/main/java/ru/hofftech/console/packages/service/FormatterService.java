@@ -42,12 +42,12 @@ public class FormatterService {
 
     public String BoxesToString(List<Box> boxes) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
+
         for (Box box : boxes) {
             for (int j = 0; j < box.getHeight(); j++) {
                 sb.append(box.getContent().repeat(box.getWidth())).append("\n");
             }
-            sb.append("\n".repeat(2));
+            sb.append("\n");
         }
 
         return sb.toString();

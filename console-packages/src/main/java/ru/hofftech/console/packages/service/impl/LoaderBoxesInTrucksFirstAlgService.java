@@ -1,5 +1,6 @@
 package ru.hofftech.console.packages.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
@@ -7,6 +8,7 @@ import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class LoaderBoxesInTrucksFirstAlgService implements LoaderBoxesInTrucksService {
     @Override
     public List<Truck> loadBoxesInTrucks(List<Box> boxes, int limitTrucks) {
@@ -21,7 +23,8 @@ public class LoaderBoxesInTrucksFirstAlgService implements LoaderBoxesInTrucksSe
         }
 
         if (trucks.size() > limitTrucks) {
-            throw new IllegalArgumentException("Груз превышает кол-во предоставленных машин");
+            log.error("Груз превышает кол-во предоставленных машин");
+            return new ArrayList<>();
         }
 
         return trucks;
