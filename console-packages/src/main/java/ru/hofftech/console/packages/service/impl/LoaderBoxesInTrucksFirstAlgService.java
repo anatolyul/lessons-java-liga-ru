@@ -21,7 +21,7 @@ public class LoaderBoxesInTrucksFirstAlgService implements LoaderBoxesInTrucksSe
         }
 
         if (trucks.size() > limitTrucks) {
-            throw new IllegalArgumentException("Груз превышает кол-во требуемых машин");
+            throw new IllegalArgumentException("Груз превышает кол-во предоставленных машин");
         }
 
         return trucks;
