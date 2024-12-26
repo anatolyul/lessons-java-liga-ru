@@ -1,11 +1,11 @@
-package ru.hofftech.console.packages.util.impl;
+package ru.hofftech.console.packages.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
-import ru.hofftech.console.packages.util.ParserBoxes;
+import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class ParserBoxesJson implements ParserBoxes {
+public class ParserBoxesServiceJson implements ParserBoxesService {
     private final ObjectMapper objectMapper;
 
     @Override

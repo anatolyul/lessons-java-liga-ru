@@ -1,17 +1,17 @@
-package ru.hofftech.console.packages.service;
+package ru.hofftech.console.packages.service.factory;
 
 import ru.hofftech.console.packages.model.enums.ConsoleCommand;
+import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
 import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksFirstAlgService;
 import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksSecondAlgService;
 import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksThirdAlgService;
 
 public class LoaderBoxesInTrucksServiceFactory {
-    public static LoaderBoxesInTrucksService createLoaderBoxesInTrucksService(ConsoleCommand command) {
+    public LoaderBoxesInTrucksService createLoaderBoxesInTrucksService(ConsoleCommand command) {
         return switch (command) {
-            case FIRST_ALGORITHM -> new LoaderBoxesInTrucksFirstAlgService();
             case SECOND_ALGORITHM -> new LoaderBoxesInTrucksSecondAlgService();
             case THIRD_ALGORITHM -> new LoaderBoxesInTrucksThirdAlgService();
-            default -> new LoaderBoxesInTrucksFirstAlgService();
+            default -> new LoaderBoxesInTrucksFirstAlgService(); // FIRST_ALGORITHM default
         };
     }
 }

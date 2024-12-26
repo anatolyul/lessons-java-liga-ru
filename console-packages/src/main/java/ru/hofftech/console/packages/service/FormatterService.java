@@ -64,7 +64,6 @@ public class FormatterService {
     }
 
     public int LimitCommandToInt(String command) {
-        String[] commands = command.split(" ");
-        return Integer.parseInt(commands[commands.length - 1]);
+        return Integer.parseInt(command.replace("limit", "").trim());
     }
 }

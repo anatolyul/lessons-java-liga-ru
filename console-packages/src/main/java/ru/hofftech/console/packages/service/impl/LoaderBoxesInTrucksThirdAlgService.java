@@ -15,8 +15,7 @@ public class LoaderBoxesInTrucksThirdAlgService implements LoaderBoxesInTrucksSe
         List<Truck> trucks = new ArrayList<>();
 
         for (int i = 1; i <= limitTrucks; i++) {
-            Truck truck = new Truck();
-            truck.setTruckName("Truck " + i);
+            Truck truck = new Truck("Truck " + i);
             trucks.add(truck);
         }
 

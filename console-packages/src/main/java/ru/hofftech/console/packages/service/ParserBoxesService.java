@@ -1,9 +1,9 @@
-package ru.hofftech.console.packages.util;
+package ru.hofftech.console.packages.service;
 
 import ru.hofftech.console.packages.model.Box;
 
 import java.util.List;
 
-public interface ParserBoxes {
+public interface ParserBoxesService {
     List<Box> parse(String filePath);
 }

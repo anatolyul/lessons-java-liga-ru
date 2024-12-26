@@ -13,15 +13,13 @@ public class LoaderBoxesInTrucksSecondAlgService implements LoaderBoxesInTrucksS
     @Override
     public List<Truck> loadBoxesInTrucks(List<Box> boxes, int limitTrucks) {
         List<Truck> trucks = new ArrayList<>();
-        Truck currentTruck = new Truck();
         int truckId = 1;
-        currentTruck.setTruckName("Truck " + truckId++);
+        Truck currentTruck = new Truck("Truck " + truckId);
 
         for (Box box : boxes) {
             if (!currentTruck.canLoadBox(box)) {
                 trucks.add(currentTruck);
-                currentTruck = new Truck();
-                currentTruck.setTruckName("Truck " + truckId++);
+                currentTruck = new Truck("Truck " + truckId++);
             }
             currentTruck.loadBox(box);
         }

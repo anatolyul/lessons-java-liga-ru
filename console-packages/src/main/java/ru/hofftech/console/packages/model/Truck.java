@@ -33,6 +33,12 @@ public class Truck {
         cargoContent = new String[TRUCK_HEIGHT][TRUCK_WIDTH];
     }
 
+    public Truck(String truckName) {
+        this.truckName = truckName;
+        cargoSpace = new boolean[TRUCK_HEIGHT][TRUCK_WIDTH];
+        cargoContent = new String[TRUCK_HEIGHT][TRUCK_WIDTH];
+    }
+
     public boolean canLoadBox(Box box) {
         for (int i = 0; i <= TRUCK_HEIGHT - box.getHeight(); i++) {
             for (int j = 0; j <= TRUCK_WIDTH - box.getWidth(); j++) {

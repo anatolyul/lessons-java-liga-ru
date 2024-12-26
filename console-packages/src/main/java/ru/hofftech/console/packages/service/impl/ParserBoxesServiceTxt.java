@@ -1,7 +1,7 @@
-package ru.hofftech.console.packages.util.impl;
+package ru.hofftech.console.packages.service.impl;
 
 import ru.hofftech.console.packages.model.Box;
-import ru.hofftech.console.packages.util.ParserBoxes;
+import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParserBoxesTxt implements ParserBoxes {
+public class ParserBoxesServiceTxt implements ParserBoxesService {
     @Override
     public List<Box> parse(String filePath) {
         List<Box> boxes = new ArrayList<>();

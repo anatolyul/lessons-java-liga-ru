@@ -16,8 +16,7 @@ public class LoaderBoxesInTrucksFirstAlgService implements LoaderBoxesInTrucksSe
         int truckId = 1;
 
         for (Box box : boxes) {
-            Truck truck = new Truck();
-            truck.setTruckName("Truck " + truckId++);
+            Truck truck = new Truck("Truck " + truckId++);
             truck.placeBox(box, 0, 0);
             trucks.add(truck);
         }

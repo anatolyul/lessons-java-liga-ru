@@ -4,20 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.service.FormatterService;
-import ru.hofftech.console.packages.util.ParserBoxes;
+import ru.hofftech.console.packages.service.impl.ParserBoxesServiceJson;
+import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ParserBoxesJsonTest {
+class ParserBoxesServiceJsonTest {
 
     @Test
-    void parse() {
+    void parse_givenFileTrucks_shouldReturnCorrectBoxes(){
         List<Box> boxes;
-        ParserBoxes parserBoxes = new ParserBoxesJson(new ObjectMapper());
+        ParserBoxesService parserBoxesService = new ParserBoxesServiceJson(new ObjectMapper());
         FormatterService formatterService = new FormatterService();
-        boxes = parserBoxes.parse(formatterService.FileNameCommandToPath("import trucks.json"));
+        boxes = parserBoxesService.parse(formatterService.FileNameCommandToPath("import trucks.json"));
 
         assertThat(boxes.size()).isEqualTo(6);
     }
