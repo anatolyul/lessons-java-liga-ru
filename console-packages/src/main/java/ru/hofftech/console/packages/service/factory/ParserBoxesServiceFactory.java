@@ -8,8 +8,10 @@ import ru.hofftech.console.packages.service.impl.ParserBoxesServiceTxt;
 
 public class ParserBoxesServiceFactory {
     public ParserBoxesService create(ConsoleCommand command) {
-        return command == ConsoleCommand.IMPORT_FILE_JSON
-                ? new ParserBoxesServiceJson(new ObjectMapper())
-                : new ParserBoxesServiceTxt();
+        return switch (command) {
+            case ConsoleCommand.IMPORT_FILE_JSON -> new ParserBoxesServiceJson(new ObjectMapper());
+            case ConsoleCommand.IMPORT_FILE_TXT -> new ParserBoxesServiceTxt();
+            default -> throw new IllegalStateException("Unexpected value: " + command);
+        };
     }
 }

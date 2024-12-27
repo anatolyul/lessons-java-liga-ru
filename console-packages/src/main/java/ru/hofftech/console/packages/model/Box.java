@@ -18,6 +18,14 @@ public class Box {
     @JsonProperty("box")
     private String content;
 
+    public Box() {}
+
+    public Box(int width, int height, String content) {
+        this.width = width;
+        this.height = height;
+        this.content = content;
+    }
+
     public void TruckPosition(int positionX, int positionY) {
         this.positionX = positionX;
         this.positionY = positionY;

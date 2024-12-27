@@ -1,5 +1,6 @@
 package ru.hofftech.console.packages.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class ParserBoxesServiceTxt implements ParserBoxesService {
     @Override
     public List<Box> parse(String filePath) {
@@ -23,10 +25,7 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
             while ((line = br.readLine()) != null) {
                 if (line.isEmpty()) {
                     if (!content.isEmpty()) {
-                        Box box = new Box();
-                        box.setWidth(width);
-                        box.setHeight(height);
-                        box.setContent(content);
+                        Box box = new Box(width, height, content);
 
                         if (box.isValid()) {
                             boxes.add(box);
@@ -43,10 +42,7 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
             }
 
             if (!content.isEmpty()) {
-                Box box = new Box();
-                box.setWidth(width);
-                box.setHeight(height);
-                box.setContent(content);
+                Box box = new Box(width, height, content);
 
                 if (box.isValid()) {
                     boxes.add(box);
@@ -55,6 +51,16 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        if (!boxes.isEmpty()) {
+            log.info("""
+                    
+                            Выбор алгоритма погрузки:
+                            1 - простой (одна посылка = одна машина)
+                            2 - сложный (оптимальное размещение нескольких посылок по машинам)
+                            3 - равномерная погрузка по машинам
+                            """);
         }
 
         return boxes;

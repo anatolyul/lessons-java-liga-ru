@@ -9,9 +9,10 @@ import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksThirdAlgServ
 public class LoaderBoxesInTrucksServiceFactory {
     public LoaderBoxesInTrucksService createLoaderBoxesInTrucksService(ConsoleCommand command) {
         return switch (command) {
+            case FIRST_ALGORITHM -> new LoaderBoxesInTrucksFirstAlgService();
             case SECOND_ALGORITHM -> new LoaderBoxesInTrucksSecondAlgService();
             case THIRD_ALGORITHM -> new LoaderBoxesInTrucksThirdAlgService();
-            default -> new LoaderBoxesInTrucksFirstAlgService(); // FIRST_ALGORITHM default
+            default -> throw new IllegalStateException("Unexpected value: " + command);
         };
     }
 }

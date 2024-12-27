@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -57,8 +58,16 @@ public class FormatterService {
         final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.(txt|json))");
         String result;
         Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
+
         fileName = matcher.matches() ? matcher.group(1) : fileName;
-        result = Objects.requireNonNull(FormatterService.class.getClassLoader().getResource(fileName)).getPath();
+
+        if (new File(fileName).isFile()) {
+            result = fileName;
+        } else {
+            result = Objects.requireNonNull(
+                    FormatterService.class.getClassLoader()
+                            .getResource(fileName)).getPath();
+        }
 
         return result;
     }
