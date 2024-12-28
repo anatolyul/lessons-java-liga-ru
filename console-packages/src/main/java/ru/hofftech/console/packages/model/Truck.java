@@ -1,22 +1,47 @@
 package ru.hofftech.console.packages.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
+@Getter
 public class Truck {
     private static final int TRUCK_WIDTH = 6;
     private static final int TRUCK_HEIGHT = 6;
+    private String truckName;
+    private List<Box> boxes;
+
+    @JsonIgnore
     private boolean[][] cargoSpace;
+
+    @JsonIgnore
     private String[][] cargoContent;
+
+    private void addBox(Box box) {
+        List<Box> boxes = this.getBoxes() != null ? this.getBoxes() : new ArrayList<>();
+        boxes.add(box);
+        this.setBoxes(boxes);
+    }
 
     public Truck() {
         cargoSpace = new boolean[TRUCK_HEIGHT][TRUCK_WIDTH];
         cargoContent = new String[TRUCK_HEIGHT][TRUCK_WIDTH];
     }
 
+    public Truck(String truckName) {
+        this.truckName = truckName;
+        cargoSpace = new boolean[TRUCK_HEIGHT][TRUCK_WIDTH];
+        cargoContent = new String[TRUCK_HEIGHT][TRUCK_WIDTH];
+    }
+
     public boolean canLoadBox(Box box) {
-        for (int i = 0; i <= TRUCK_HEIGHT - box.height(); i++) {
-            for (int j = 0; j <= TRUCK_WIDTH - box.width(); j++) {
+        for (int i = 0; i <= TRUCK_HEIGHT - box.getHeight(); i++) {
+            for (int j = 0; j <= TRUCK_WIDTH - box.getWidth(); j++) {
                 if (canPlaceBox(box, i, j)) {
                     return true;
                 }
@@ -27,8 +52,8 @@ public class Truck {
     }
 
     public void loadBox(Box box) {
-        for (int i = 0; i <= TRUCK_HEIGHT - box.height(); i++) {
-            for (int j = 0; j <= TRUCK_WIDTH - box.width(); j++) {
+        for (int i = 0; i <= TRUCK_HEIGHT - box.getHeight(); i++) {
+            for (int j = 0; j <= TRUCK_WIDTH - box.getWidth(); j++) {
                 if (canPlaceBox(box, i, j)) {
                     placeBox(box, i, j);
                     return;
@@ -38,8 +63,8 @@ public class Truck {
     }
 
     private boolean canPlaceBox(Box box, int startRow, int startCol) {
-        for (int i = 0; i < box.height(); i++) {
-            for (int j = 0; j < box.width(); j++) {
+        for (int i = 0; i < box.getHeight(); i++) {
+            for (int j = 0; j < box.getWidth(); j++) {
                 if (cargoSpace[startRow + i][startCol + j]) {
                     return false;
                 }
@@ -50,12 +75,14 @@ public class Truck {
     }
 
     public void placeBox(Box box, int startRow, int startCol) {
-        for (int i = 0; i < box.height(); i++) {
-            for (int j = 0; j < box.width(); j++) {
+        for (int i = 0; i < box.getHeight(); i++) {
+            for (int j = 0; j < box.getWidth(); j++) {
                 cargoSpace[startRow + i][startCol + j] = true;
-                cargoContent[startRow + i][startCol + j] = box.content();
+                cargoContent[startRow + i][startCol + j] = box.getContent();
             }
         }
+        box.TruckPosition(startRow, startCol);
+        addBox(box);
     }
 
     public String printCargo() {

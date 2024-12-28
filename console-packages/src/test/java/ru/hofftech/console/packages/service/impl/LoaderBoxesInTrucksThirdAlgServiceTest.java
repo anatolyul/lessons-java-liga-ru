@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoaderBoxesInTrucksFirstAlgServiceTest {
+class LoaderBoxesInTrucksThirdAlgServiceTest {
 
     @Test
     void loadBoxesInTrucks_givenFileBoxes_shouldReturnCorrectTrucks() {
@@ -19,11 +19,11 @@ class LoaderBoxesInTrucksFirstAlgServiceTest {
         FormatterService formatterService = new FormatterService();
         boxes = parserBoxesService.parse(formatterService.FileNameCommandToPath("import boxes.txt"));
 
-        LoaderBoxesInTrucksFirstAlgService loadingBoxesInTruckService = new LoaderBoxesInTrucksFirstAlgService();
-        java.util.List<Truck> trucks = loadingBoxesInTruckService.loadBoxesInTrucks(boxes, 6);
+        LoaderBoxesInTrucksThirdAlgService loadingBoxesInTruckService = new LoaderBoxesInTrucksThirdAlgService();
+        java.util.List<Truck> trucks = loadingBoxesInTruckService.loadBoxesInTrucks(boxes, 2);
         System.out.print(formatterService.TrucksToString(trucks));
         System.out.print(formatterService.TrucksToJson(trucks));
 
-        assertThat(trucks.size()).isEqualTo(6);
+        assertThat(trucks.size()).isEqualTo(2);
     }
 }

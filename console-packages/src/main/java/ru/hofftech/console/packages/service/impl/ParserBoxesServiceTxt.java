@@ -1,32 +1,20 @@
-package ru.hofftech.console.packages.util;
+package ru.hofftech.console.packages.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
+import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
-public class ParserBoxes {
-    private String getFilePath(String fileName) {
-        final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.txt)");
-        String result;
-        Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
-        fileName = matcher.matches() ? matcher.group(1) : fileName;
-        result = Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getPath();
-
-        return result;
-    }
-
-    public List<Box> parseFromFile(String fileName) {
+public class ParserBoxesServiceTxt implements ParserBoxesService {
+    @Override
+    public List<Box> parse(String filePath) {
         List<Box> boxes = new ArrayList<>();
-        String filePath = getFilePath(fileName);
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -38,6 +26,7 @@ public class ParserBoxes {
                 if (line.isEmpty()) {
                     if (!content.isEmpty()) {
                         Box box = new Box(width, height, content);
+
                         if (box.isValid()) {
                             boxes.add(box);
                         }
@@ -54,13 +43,24 @@ public class ParserBoxes {
 
             if (!content.isEmpty()) {
                 Box box = new Box(width, height, content);
+
                 if (box.isValid()) {
                     boxes.add(box);
                 }
             }
 
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+
+        if (!boxes.isEmpty()) {
+            log.info("""
+                    
+                            Выбор алгоритма погрузки:
+                            1 - простой (одна посылка = одна машина)
+                            2 - сложный (оптимальное размещение нескольких посылок по машинам)
+                            3 - равномерная погрузка по машинам
+                            """);
         }
 
         return boxes;

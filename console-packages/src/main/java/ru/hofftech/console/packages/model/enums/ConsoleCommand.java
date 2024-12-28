@@ -1,4 +1,4 @@
-package ru.hofftech.console.packages.model;
+package ru.hofftech.console.packages.model.enums;
 
 import lombok.Getter;
 
@@ -7,7 +7,10 @@ public enum ConsoleCommand {
     EXIT("exit"),
     FIRST_ALGORITHM("1"),
     SECOND_ALGORITHM("2"),
-    IMPORT_FILE("import"),
+    THIRD_ALGORITHM("3"),
+    IMPORT_FILE_TXT("import (.+\\.txt)"),
+    IMPORT_FILE_JSON("import (.+\\.json)"),
+    LIMIT("limit\\s+\\d+"),
     UNKNOWN("");
 
     private final String consoleCommand;

@@ -1,13 +1,14 @@
 package ru.hofftech.console.packages.model.converter;
 
-import ru.hofftech.console.packages.model.ConsoleCommand;
+import ru.hofftech.console.packages.model.enums.ConsoleCommand;
+
+import java.util.regex.Pattern;
 
 public class ConsoleCommandConverter {
     public ConsoleCommand convertStringToEnum(String consoleCommand) {
-        String[] commandResult = consoleCommand.split(" ");
-
         for (ConsoleCommand command : ConsoleCommand.values()) {
-            if (command.getConsoleCommand().equalsIgnoreCase(commandResult[0])) {
+            Pattern pattern = Pattern.compile(command.getConsoleCommand());
+            if (pattern.matcher(consoleCommand).matches()) {
                 return command;
             }
         }

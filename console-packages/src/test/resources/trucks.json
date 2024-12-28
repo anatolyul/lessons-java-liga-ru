@@ -1,0 +1,49 @@
+[
+  {
+    "truckName": "Truck 1",
+    "boxes": [
+      {
+        "width": 3,
+        "height": 3,
+        "box": "9",
+        "positionX": 0,
+        "positionY": 0
+      },
+      {
+        "width": 3,
+        "height": 2,
+        "box": "6",
+        "positionX": 0,
+        "positionY": 3
+      },
+      {
+        "width": 5,
+        "height": 1,
+        "box": "5",
+        "positionX": 3,
+        "positionY": 0
+      },
+      {
+        "width": 1,
+        "height": 1,
+        "box": "1",
+        "positionX": 2,
+        "positionY": 3
+      },
+      {
+        "width": 1,
+        "height": 1,
+        "box": "1",
+        "positionX": 2,
+        "positionY": 4
+      },
+      {
+        "width": 3,
+        "height": 1,
+        "box": "3",
+        "positionX": 4,
+        "positionY": 0
+      }
+    ]
+  }
+]

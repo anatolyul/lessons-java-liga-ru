@@ -12,8 +12,10 @@ repositories {
 dependencies {
 
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("ch.qos.logback:logback-core:1.4.12")
+    implementation("ch.qos.logback:logback-core:1.5.13")
     implementation("ch.qos.logback:logback-classic:1.4.12")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+
 
     implementation("org.projectlombok:lombok:1.18.34")
     compileOnly("org.projectlombok:lombok:1.18.34")
