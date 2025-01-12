@@ -33,12 +33,15 @@ public class ConsoleController {
                 1 - простой (одна посылка = одна машина)
                 2 - сложный (оптимальное размещение нескольких посылок по машинам)
                 3 - равномерная погрузка по машинам
+                
+                Аналогичные команды поддерживает Телеграм БОТ @AppBoxInTruckBot
                 """);
 
         var scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String commandString = scanner.nextLine();
-            commandHandler.handle(commandString);
+            String result = commandHandler.handle(commandString);
+            System.out.println(result);
         }
     }
 }

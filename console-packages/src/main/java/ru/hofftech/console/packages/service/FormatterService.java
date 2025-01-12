@@ -46,7 +46,7 @@ public class FormatterService {
 
         for (Box box : boxes) {
             for (int j = 0; j < box.getHeight(); j++) {
-                sb.append(box.getContent().repeat(box.getWidth())).append("\n");
+                sb.append(box.getSymbol().repeat(box.getWidth())).append("\n");
             }
             sb.append("\n");
         }
@@ -58,9 +58,13 @@ public class FormatterService {
         final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.(txt|json))");
         String result;
         Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
-
         fileName = matcher.matches() ? matcher.group(1) : fileName;
+        result = FileToPath(fileName);
+        return result;
+    }
 
+    public String FileToPath(String fileName) {
+        String result;
         if (new File(fileName).isFile()) {
             result = fileName;
         } else {
@@ -68,11 +72,6 @@ public class FormatterService {
                     FormatterService.class.getClassLoader()
                             .getResource(fileName)).getPath();
         }
-
         return result;
-    }
-
-    public int LimitCommandToInt(String command) {
-        return Integer.parseInt(command.replace("limit", "").trim());
     }
 }

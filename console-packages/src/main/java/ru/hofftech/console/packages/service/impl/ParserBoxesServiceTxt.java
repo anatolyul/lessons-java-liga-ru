@@ -1,7 +1,9 @@
 package ru.hofftech.console.packages.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
+import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.BufferedReader;
@@ -11,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ParserBoxesServiceTxt implements ParserBoxesService {
+    private final BoxRepository boxRepository;
+
     @Override
     public List<Box> parse(String filePath) {
         List<Box> boxes = new ArrayList<>();
@@ -54,6 +59,8 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
         }
 
         if (!boxes.isEmpty()) {
+            boxRepository.setBoxes(boxes);
+
             log.info("""
                     
                             Выбор алгоритма погрузки:

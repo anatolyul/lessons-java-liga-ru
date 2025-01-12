@@ -5,18 +5,17 @@ import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class LoaderBoxesInTrucksThirdAlgService implements LoaderBoxesInTrucksService {
+public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucksService {
     @Override
-    public List<Truck> loadBoxesInTrucks(List<Box> boxes, int limitTrucks) {
-        List<Truck> trucks = new ArrayList<>();
-
-        for (int i = 1; i <= limitTrucks; i++) {
-            Truck truck = new Truck("Truck " + i);
-            trucks.add(truck);
+    public List<Truck> loadBoxesInTrucks(List<Box> boxes, List<Truck> trucks, Integer limitTrucks) {
+        if (trucks.isEmpty()) {
+            for (int i = 1; i <= limitTrucks; i++) {
+                Truck truck = new Truck("Truck " + i);
+                trucks.add(truck);
+            }
         }
 
         List<Box> sorterBoxes = boxes.stream()
@@ -28,10 +27,7 @@ public class LoaderBoxesInTrucksThirdAlgService implements LoaderBoxesInTrucksSe
 
         for (Box box : sorterBoxes) {
             Truck currentTruck = getLessLoadedTruck(trucks);
-            if (!currentTruck.canLoadBox(box)) {
-                log.error("Груз превышает кол-во предоставленных машин");
-                return new ArrayList<>();
-            } else {
+            if (currentTruck != null && currentTruck.canLoadBox(box)) {
                 currentTruck.loadBox(box);
             }
         }
@@ -46,9 +42,9 @@ public class LoaderBoxesInTrucksThirdAlgService implements LoaderBoxesInTrucksSe
         for (Truck truck : trucks) {
             int count = 0;
 
-            for (boolean[] bb : truck.getCargoSpace()) {
-                for (boolean b : bb) {
-                    if (!b) {
+            for (String[] bb : truck.getCargoContent()) {
+                for (String b : bb) {
+                    if (b == null) {
                         count++;
                     }
                 }

@@ -12,22 +12,25 @@ import java.util.List;
 public class ResultOutSaveService {
     private final FileWriterService fileWriterService;
 
-    public void saveOutResult(FormatterService formatterService,
+    public String saveOutResult(FormatterService formatterService,
                               List<Truck> trucks, List<Box> boxes) {
+        StringBuilder result = new StringBuilder();
+
         if (boxes != null && !boxes.isEmpty()
                 && trucks != null && !trucks.isEmpty()) {
-            log.info("""
+            result.append("""
                             
                         Результаты распределения груза:
                         """);
-            var resultTruckJson = formatterService.TrucksToString(trucks);
-            log.info("{}", resultTruckJson);
+            result.append(formatterService.TrucksToString(trucks));
             fileWriterService.writeToFile(formatterService.BoxesToString(boxes), "boxes_result.txt");
-            fileWriterService.writeToFile(resultTruckJson, "trucks_result.json");
-            log.info("""
+            fileWriterService.writeToFile(formatterService.TrucksToJson(trucks), "trucks_result.json");
+            result.append("""
                            
                         Для повторного распределение определите выбор алгоритма погрузки:
                         """);
         }
+
+        return result.toString();
     }
 }

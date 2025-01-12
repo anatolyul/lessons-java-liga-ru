@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
+import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ParserBoxesServiceJson implements ParserBoxesService {
+    private final BoxRepository boxRepository;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -28,12 +30,17 @@ public class ParserBoxesServiceJson implements ParserBoxesService {
                     new TypeReference<>() {
                     });
 
-            boxes = trucks.stream().map(Truck::getBoxes).flatMap(List::stream).collect(Collectors.toList());
+            boxes = trucks.stream()
+                        .map(Truck::getBoxes)
+                        .flatMap(List::stream)
+                        .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         if (!boxes.isEmpty()) {
+            boxRepository.setBoxes(boxes);
+
             log.info("""
                     
                             Выбор алгоритма погрузки:

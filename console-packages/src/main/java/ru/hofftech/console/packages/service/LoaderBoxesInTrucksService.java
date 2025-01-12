@@ -6,5 +6,5 @@ import ru.hofftech.console.packages.model.Truck;
 import java.util.List;
 
 public interface LoaderBoxesInTrucksService {
-    List<Truck> loadBoxesInTrucks(List<Box> boxes, int limitTrucks);
+    List<Truck> loadBoxesInTrucks(List<Box> boxes, List<Truck> trucks, Integer limitTrucks);
 }

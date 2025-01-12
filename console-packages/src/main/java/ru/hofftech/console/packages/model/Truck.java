@@ -2,6 +2,8 @@ package ru.hofftech.console.packages.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,13 +13,17 @@ import java.util.List;
 @Setter
 @Getter
 public class Truck {
-    private static final int TRUCK_WIDTH = 6;
-    private static final int TRUCK_HEIGHT = 6;
-    private String truckName;
-    private List<Box> boxes;
+    @JsonIgnore
+    private int truckWidth = 6;
 
     @JsonIgnore
-    private boolean[][] cargoSpace;
+    private int truckHeight = 6;
+
+    @JsonProperty("truck_type")
+    private String truckName;
+
+    @JsonProperty("parcels")
+    private List<Box> boxes;
 
     @JsonIgnore
     private String[][] cargoContent;
@@ -29,19 +35,24 @@ public class Truck {
     }
 
     public Truck() {
-        cargoSpace = new boolean[TRUCK_HEIGHT][TRUCK_WIDTH];
-        cargoContent = new String[TRUCK_HEIGHT][TRUCK_WIDTH];
+        cargoContent = new String[truckHeight][truckWidth];
     }
 
     public Truck(String truckName) {
         this.truckName = truckName;
-        cargoSpace = new boolean[TRUCK_HEIGHT][TRUCK_WIDTH];
-        cargoContent = new String[TRUCK_HEIGHT][TRUCK_WIDTH];
+        cargoContent = new String[truckHeight][truckWidth];
+    }
+
+    public Truck(String truckName, int truckHeight, int truckWidth) {
+        this.truckName = truckName;
+        this.truckHeight = truckHeight;
+        this.truckWidth = truckWidth;
+        cargoContent = new String[truckHeight][truckWidth];
     }
 
     public boolean canLoadBox(Box box) {
-        for (int i = 0; i <= TRUCK_HEIGHT - box.getHeight(); i++) {
-            for (int j = 0; j <= TRUCK_WIDTH - box.getWidth(); j++) {
+        for (int i = 0; i <= truckHeight - box.getHeight(); i++) {
+            for (int j = 0; j <= truckWidth - box.getWidth(); j++) {
                 if (canPlaceBox(box, i, j)) {
                     return true;
                 }
@@ -52,8 +63,8 @@ public class Truck {
     }
 
     public void loadBox(Box box) {
-        for (int i = 0; i <= TRUCK_HEIGHT - box.getHeight(); i++) {
-            for (int j = 0; j <= TRUCK_WIDTH - box.getWidth(); j++) {
+        for (int i = 0; i <= truckHeight - box.getHeight(); i++) {
+            for (int j = 0; j <= truckWidth - box.getWidth(); j++) {
                 if (canPlaceBox(box, i, j)) {
                     placeBox(box, i, j);
                     return;
@@ -65,7 +76,7 @@ public class Truck {
     private boolean canPlaceBox(Box box, int startRow, int startCol) {
         for (int i = 0; i < box.getHeight(); i++) {
             for (int j = 0; j < box.getWidth(); j++) {
-                if (cargoSpace[startRow + i][startCol + j]) {
+                if (cargoContent[startRow + i][startCol + j] != null) {
                     return false;
                 }
             }
@@ -77,8 +88,7 @@ public class Truck {
     public void placeBox(Box box, int startRow, int startCol) {
         for (int i = 0; i < box.getHeight(); i++) {
             for (int j = 0; j < box.getWidth(); j++) {
-                cargoSpace[startRow + i][startCol + j] = true;
-                cargoContent[startRow + i][startCol + j] = box.getContent();
+                cargoContent[startRow + i][startCol + j] = box.getSymbol();
             }
         }
         box.TruckPosition(startRow, startCol);
@@ -88,16 +98,18 @@ public class Truck {
     public String printCargo() {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < TRUCK_HEIGHT; i++) {
+        for (int i = 0; i < truckHeight; i++) {
             sb.append("+");
-            for (int j = 0; j < TRUCK_WIDTH; j++) {
+            for (int j = 0; j < truckWidth; j++) {
                 // переворачиваем матрицу
-                sb.append(cargoContent[TRUCK_HEIGHT - 1 - i][j] != null ? cargoContent[TRUCK_HEIGHT - 1 - i][j] : " ");
+                sb.append(cargoContent[truckHeight - 1 - i][j] != null
+                        ? cargoContent[truckHeight - 1 - i][j]
+                        : " ");
             }
             sb.append("+\n");
         }
 
-        sb.append("+".repeat(TRUCK_WIDTH + 2));
+        sb.append("+".repeat(truckWidth + 2));
         sb.append("\n");
 
         return sb.toString();

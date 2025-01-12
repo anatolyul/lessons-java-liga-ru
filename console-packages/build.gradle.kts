@@ -16,6 +16,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.12")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
 
+    implementation("org.telegram:telegrambots:6.9.7.1")
+
+    implementation("com.opencsv:opencsv:5.9")
 
     implementation("org.projectlombok:lombok:1.18.34")
     compileOnly("org.projectlombok:lombok:1.18.34")
