@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public class UnloaderTrucksToBoxesService {
     public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withcount) {
@@ -53,7 +55,7 @@ public class UnloaderTrucksToBoxesService {
                 csvWriter.writeAll(boxes);
                 result.append("Результаты сохранены в файл: ").append(fileNameBoxes);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Ошибка сохранения результатов в файл", e);
             }
         } else {
             result.append(boxes.stream().map(arr -> arr[0]).collect(Collectors.joining("\n")));

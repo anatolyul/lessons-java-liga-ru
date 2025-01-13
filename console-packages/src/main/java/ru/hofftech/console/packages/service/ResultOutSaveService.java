@@ -19,7 +19,7 @@ public class ResultOutSaveService {
         if (boxes != null && !boxes.isEmpty()
                 && trucks != null && !trucks.isEmpty()) {
             result.append("""
-                            
+                        
                         Результаты распределения груза:
                         """);
             result.append(formatterService.TrucksToString(trucks));

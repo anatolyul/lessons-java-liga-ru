@@ -49,7 +49,7 @@ public class Box {
     public void setForm(String form) {
         this.form = form
                 .replace("x", symbol)
-                .replace("\\n", "\n");;
+                .replace("\\n", "\n");
     }
 
     public Box(String name, String form, String symbol) {
@@ -61,7 +61,8 @@ public class Box {
         this.width = Arrays.stream(lines).map(String::length).reduce(Integer::max).orElse(0);
         this.height = (int) Arrays.stream(lines).count();
         this.formCoordinates = new boolean[height][width];
-        int posHeight = 0, posWidth = 0;
+        int posHeight = 0;
+        int posWidth;
         for (String line : lines) {
             posWidth = 0;
             for (char c : line.toCharArray()) {
