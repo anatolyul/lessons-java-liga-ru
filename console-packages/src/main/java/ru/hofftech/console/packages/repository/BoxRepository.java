@@ -9,6 +9,9 @@ import ru.hofftech.console.packages.model.Box;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Репозиторий для управления коробками.
+ */
 @Setter
 @Getter
 @Slf4j
@@ -16,6 +19,11 @@ import java.util.List;
 public class BoxRepository {
     private List<Box> boxes = init();
 
+    /**
+     * Инициализирует список коробок.
+     *
+     * @return список коробок
+     */
     public List<Box> init() {
         List<Box> boxes = new ArrayList<>();
         boxes.add(new Box("Посылка Тип 1", "1", "1"));
@@ -31,6 +39,11 @@ public class BoxRepository {
         return boxes;
     }
 
+    /**
+     * Возвращает строку, содержащую информацию о всех коробках.
+     *
+     * @return строка, содержащая информацию о всех коробках
+     */
     public String findAll() {
         StringBuilder result = new StringBuilder();
 
@@ -49,6 +62,14 @@ public class BoxRepository {
         return result.toString();
     }
 
+    /**
+     * Создает новую коробку.
+     *
+     * @param name   имя коробки
+     * @param form   форма коробки
+     * @param symbol символ коробки
+     * @return строка, содержащая информацию о созданной коробке или сообщение об ошибке
+     */
     public String createBox(String name, String form, String symbol) {
         if (name == null || form == null || symbol == null) {
             return "Ошибочный запрос на создание посылки";
@@ -63,10 +84,23 @@ public class BoxRepository {
         }
     }
 
+    /**
+     * Находит коробку по имени.
+     *
+     * @param name имя коробки
+     * @return найденная коробка или null, если коробка не найдена
+     */
     public Box findBoxByName(String name) {
         return boxes.stream().filter(box -> box.getName().equals(name)).findFirst().orElse(null);
     }
 
+    /**
+     * Находит коробку по идентификатору или имени.
+     *
+     * @param id   идентификатор коробки
+     * @param name имя коробки
+     * @return строка, содержащая информацию о найденной коробке или сообщение об ошибке
+     */
     public String findBox(String id, String name) {
         Box boxResult = findBoxByName(id != null ? id : name);
 
@@ -77,8 +111,17 @@ public class BoxRepository {
         }
     }
 
+    /**
+     * Обновляет информацию о коробке.
+     *
+     * @param id     идентификатор коробки
+     * @param name   новое имя коробки
+     * @param form   новая форма коробки
+     * @param symbol новый символ коробки
+     * @return строка, содержащая информацию об обновленной коробке или сообщение об ошибке
+     */
     public String updateBox(String id, String name, String form, String symbol) {
-        if (id == null  || name == null  || form == null  || symbol == null) {
+        if (id == null || name == null || form == null || symbol == null) {
             return "Ошибочный запрос на редактирование посылки";
         }
 
@@ -96,6 +139,12 @@ public class BoxRepository {
         }
     }
 
+    /**
+     * Удаляет коробку по имени.
+     *
+     * @param name имя коробки
+     * @return строка, содержащая сообщение об удалении коробки или сообщение об ошибке
+     */
     public String deleteBox(String name) {
         Box box = findBoxByName(name);
 

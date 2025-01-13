@@ -15,8 +15,16 @@ import ru.hofftech.console.packages.service.factory.LoaderBoxesInTrucksServiceFa
 import ru.hofftech.console.packages.service.factory.ParserBoxesServiceFactory;
 import ru.hofftech.console.packages.service.handler.CommandHandler;
 
-
+/**
+ * Главный класс приложения для управления коробками и грузовиками.
+ */
 public class Application {
+
+    /**
+     * Точка входа в приложение.
+     *
+     * @param args аргументы командной строки
+     */
     public static void main(String[] args) {
         CommandHandler commandHandler = initializeCommandHandler();
 
@@ -31,6 +39,11 @@ public class Application {
         consoleController.listen();
     }
 
+    /**
+     * Инициализирует обработчик команд.
+     *
+     * @return инициализированный обработчик команд
+     */
     private static CommandHandler initializeCommandHandler() {
         return new CommandHandler(
                 new CommandArgConverter(),
@@ -42,5 +55,4 @@ public class Application {
                 new ResultOutSaveService(new FileWriterService())
         );
     }
-
 }

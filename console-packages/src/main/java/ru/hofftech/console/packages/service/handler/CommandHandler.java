@@ -18,6 +18,9 @@ import ru.hofftech.console.packages.service.factory.ParserBoxesServiceFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Обработчик команд для управления грузовиками и коробками.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class CommandHandler {
@@ -32,6 +35,12 @@ public class CommandHandler {
     private Command commandArgs;
     private List<CommandArgument> commandArgument;
 
+    /**
+     * Обрабатывает команду и выполняет соответствующие действия.
+     *
+     * @param commandString строка команды
+     * @return результат выполнения команды
+     */
     public String handle(String commandString) {
         commandArgs = commandArgConverter.parseCommandArgs(commandString);
         commandArgument = commandArgs.getArguments();
@@ -40,8 +49,7 @@ public class CommandHandler {
 
         switch (commandArgs.getCommand()) {
             case EXIT -> System.exit(0);
-            case IMPORT_FILE_TXT,
-                 IMPORT_FILE_JSON -> parserBoxesServiceFactory
+            case IMPORT_FILE_TXT, IMPORT_FILE_JSON -> parserBoxesServiceFactory
                     .create(boxRepository, commandArgs.getCommand())
                     .parse(formatterService.FileNameCommandToPath(commandString));
             case LOAD -> {
@@ -76,6 +84,11 @@ public class CommandHandler {
         return result;
     }
 
+    /**
+     * Получает список грузовиков на основе аргументов команды.
+     *
+     * @return список грузовиков
+     */
     private List<Truck> getTrucks() {
         List<Truck> trucks = new ArrayList<>();
         String trucksForms = getArgValue(Argument.TRUCKS);
@@ -92,6 +105,11 @@ public class CommandHandler {
         return trucks;
     }
 
+    /**
+     * Получает список коробок на основе аргументов команды.
+     *
+     * @return список коробок
+     */
     private List<Box> getBoxes() {
         List<Box> boxes = new ArrayList<>();
         String boxesNames = getArgValue(Argument.PARCELS_TEXT);
@@ -115,6 +133,12 @@ public class CommandHandler {
         return boxes;
     }
 
+    /**
+     * Получает значение аргумента команды.
+     *
+     * @param argument аргумент команды
+     * @return значение аргумента
+     */
     private String getArgValue(Argument argument) {
         return commandArgConverter.getArgumentValue(commandArgument, argument);
     }

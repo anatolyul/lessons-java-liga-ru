@@ -2,13 +2,15 @@ package ru.hofftech.console.packages.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Модель грузовика, который может содержать коробки.
+ */
 @Setter
 @Getter
 public class Truck {
@@ -27,21 +29,41 @@ public class Truck {
     @JsonIgnore
     private String[][] cargoContent;
 
+    /**
+     * Добавляет коробку в грузовик.
+     *
+     * @param box коробка для добавления
+     */
     private void addBox(Box box) {
         List<Box> boxes = this.getBoxes() != null ? this.getBoxes() : new ArrayList<>();
         boxes.add(box);
         this.setBoxes(boxes);
     }
 
+    /**
+     * Конструктор по умолчанию.
+     */
     public Truck() {
         cargoContent = new String[truckHeight][truckWidth];
     }
 
+    /**
+     * Конструктор с именем грузовика.
+     *
+     * @param truckName имя грузовика
+     */
     public Truck(String truckName) {
         this.truckName = truckName;
         cargoContent = new String[truckHeight][truckWidth];
     }
 
+    /**
+     * Конструктор с именем грузовика, высотой и шириной.
+     *
+     * @param truckName   имя грузовика
+     * @param truckHeight высота грузовика
+     * @param truckWidth  ширина грузовика
+     */
     public Truck(String truckName, int truckHeight, int truckWidth) {
         this.truckName = truckName;
         this.truckHeight = truckHeight;
@@ -49,6 +71,12 @@ public class Truck {
         cargoContent = new String[truckHeight][truckWidth];
     }
 
+    /**
+     * Проверяет, можно ли загрузить коробку в грузовик.
+     *
+     * @param box коробка для проверки
+     * @return true, если коробку можно загрузить, иначе false
+     */
     public boolean canLoadBox(Box box) {
         for (int i = 0; i <= truckHeight - box.getHeight(); i++) {
             for (int j = 0; j <= truckWidth - box.getWidth(); j++) {
@@ -61,6 +89,11 @@ public class Truck {
         return false;
     }
 
+    /**
+     * Загружает коробку в грузовик.
+     *
+     * @param box коробка для загрузки
+     */
     public void loadBox(Box box) {
         for (int i = 0; i <= truckHeight - box.getHeight(); i++) {
             for (int j = 0; j <= truckWidth - box.getWidth(); j++) {
@@ -72,6 +105,14 @@ public class Truck {
         }
     }
 
+    /**
+     * Проверяет, можно ли разместить коробку в указанной позиции.
+     *
+     * @param box         коробка для проверки
+     * @param startHeight начальная высота для размещения
+     * @param startWidth  начальная ширина для размещения
+     * @return true, если коробку можно разместить, иначе false
+     */
     private boolean canPlaceBox(Box box, int startHeight, int startWidth) {
         for (int i = 0; i < box.getHeight(); i++) {
             for (int j = 0; j < box.getWidth(); j++) {
@@ -84,6 +125,13 @@ public class Truck {
         return true;
     }
 
+    /**
+     * Размещает коробку в указанной позиции.
+     *
+     * @param box         коробка для размещения
+     * @param startHeight начальная высота для размещения
+     * @param startWidth  начальная ширина для размещения
+     */
     public void placeBox(Box box, int startHeight, int startWidth) {
         for (int i = 0; i < box.getHeight(); i++) {
             for (int j = 0; j < box.getWidth(); j++) {
@@ -94,6 +142,11 @@ public class Truck {
         addBox(box);
     }
 
+    /**
+     * Возвращает строку, представляющую содержимое грузовика.
+     *
+     * @return строка, представляющая содержимое грузовика
+     */
     public String printCargo() {
         StringBuilder sb = new StringBuilder();
 

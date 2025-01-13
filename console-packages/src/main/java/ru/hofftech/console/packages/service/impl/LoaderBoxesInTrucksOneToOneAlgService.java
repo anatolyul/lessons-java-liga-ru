@@ -8,8 +8,20 @@ import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Реализация сервиса для загрузки коробок в грузовики по алгоритму "одна посылка - один грузовик".
+ */
 @Slf4j
 public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTrucksService {
+
+    /**
+     * Загружает коробки в грузовики по алгоритму "одна посылка - один грузовик", с учетом ограничения на количество грузовиков.
+     *
+     * @param boxes       список коробок для загрузки
+     * @param trucks      список грузовиков
+     * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
+     * @return список грузовиков с загруженными коробками
+     */
     @Override
     public List<Truck> loadBoxesInTrucks(List<Box> boxes, List<Truck> trucks, Integer limitTrucks) {
         if (trucks.isEmpty()) {

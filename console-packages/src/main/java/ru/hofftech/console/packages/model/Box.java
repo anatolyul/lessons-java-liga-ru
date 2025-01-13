@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 
+/**
+ * Модель коробки, которая может быть загружена в грузовик.
+ */
 @Slf4j
 @Getter
 @Setter
@@ -38,20 +41,43 @@ public class Box {
     @JsonProperty("coordinates")
     private boolean[][] formCoordinates;
 
-    public Box() {}
+    /**
+     * Конструктор по умолчанию.
+     */
+    public Box() {
+    }
 
+    /**
+     * Конструктор с шириной, высотой и символом.
+     *
+     * @param width  ширина коробки
+     * @param height высота коробки
+     * @param symbol символ коробки
+     */
     public Box(int width, int height, String symbol) {
         this.width = width;
         this.height = height;
         this.symbol = symbol;
     }
 
+    /**
+     * Устанавливает форму коробки.
+     *
+     * @param form форма коробки
+     */
     public void setForm(String form) {
         this.form = form
                 .replace("x", symbol)
                 .replace("\\n", "\n");
     }
 
+    /**
+     * Конструктор с именем, формой и символом.
+     *
+     * @param name   имя коробки
+     * @param form   форма коробки
+     * @param symbol символ коробки
+     */
     public Box(String name, String form, String symbol) {
         setName(name);
         setSymbol(symbol);
@@ -75,11 +101,22 @@ public class Box {
         }
     }
 
+    /**
+     * Устанавливает позицию коробки в грузовике.
+     *
+     * @param startHeight начальная высота для размещения
+     * @param startWidth  начальная ширина для размещения
+     */
     public void TruckPosition(int startHeight, int startWidth) {
         this.startHeight = startHeight;
         this.startWidth = startWidth;
     }
 
+    /**
+     * Проверяет, является ли коробка валидной.
+     *
+     * @return true, если коробка валидна, иначе false
+     */
     @JsonIgnore
     public boolean isValid() {
         return this.width * this.height == Integer.parseInt(this.symbol);

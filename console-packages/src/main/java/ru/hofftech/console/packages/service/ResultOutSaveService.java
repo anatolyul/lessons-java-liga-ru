@@ -7,21 +7,33 @@ import ru.hofftech.console.packages.model.Truck;
 
 import java.util.List;
 
+/**
+ * Сервис для сохранения результатов распределения груза.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class ResultOutSaveService {
     private final FileWriterService fileWriterService;
 
+    /**
+     * Метод для сохранения результатов распределения груза.
+     *
+     * @param formatterService сервис для форматирования данных
+     * @param trucks           список грузовиков
+     * @param boxes            список коробок
+     * @param fileNameResult   имя файла для сохранения результата
+     * @return строка с результатом операции
+     */
     public String saveOutResult(FormatterService formatterService,
-                              List<Truck> trucks, List<Box> boxes, String fileNameResult) {
+                                List<Truck> trucks, List<Box> boxes, String fileNameResult) {
         StringBuilder result = new StringBuilder();
 
         if (boxes != null && !boxes.isEmpty()
                 && trucks != null && !trucks.isEmpty()) {
             result.append("""
-                        
-                        Результаты распределения груза:
-                        """);
+                    
+                    Результаты распределения груза:
+                    """);
             result.append(formatterService.TrucksToString(trucks));
             fileWriterService.writeToFile(formatterService.BoxesToString(boxes), "boxes_result.txt");
             if (fileNameResult != null) {
@@ -32,7 +44,7 @@ public class ResultOutSaveService {
                     .filter(box ->
                             trucks.stream().filter(truck -> truck.getBoxes() != null)
                                     .flatMap(truck -> truck.getBoxes().stream())
-                            .noneMatch(truckBox -> truckBox.equals(box))
+                                    .noneMatch(truckBox -> truckBox.equals(box))
                     )
                     .toList();
             for (Box box : boxesNotInTrucks) {

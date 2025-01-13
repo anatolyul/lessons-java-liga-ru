@@ -9,8 +9,20 @@ import ru.hofftech.console.packages.service.impl.ParserBoxesServiceCsv;
 import ru.hofftech.console.packages.service.impl.ParserBoxesServiceJson;
 import ru.hofftech.console.packages.service.impl.ParserBoxesServiceTxt;
 
+/**
+ * Фабрика для создания сервисов парсинга информации о коробках.
+ */
 @RequiredArgsConstructor
 public class ParserBoxesServiceFactory {
+
+    /**
+     * Создает экземпляр сервиса парсинга информации о коробках на основе команды.
+     *
+     * @param boxRepository репозиторий коробок
+     * @param command       команда, определяющая тип сервиса парсинга
+     * @return экземпляр сервиса парсинга информации о коробках
+     * @throws IllegalStateException если команда не поддерживается
+     */
     public ParserBoxesService create(BoxRepository boxRepository, ConsoleCommand command) {
         return switch (command) {
             case ConsoleCommand.IMPORT_FILE_JSON -> new ParserBoxesServiceJson(boxRepository, new ObjectMapper());

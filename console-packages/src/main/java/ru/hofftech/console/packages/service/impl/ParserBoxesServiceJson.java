@@ -14,12 +14,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация сервиса для парсинга информации о коробках из JSON файла.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class ParserBoxesServiceJson implements ParserBoxesService {
     private final BoxRepository boxRepository;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Парсит информацию о коробках из JSON файла.
+     *
+     * @param filePath путь к файлу, содержащему информацию о коробках в формате JSON
+     * @return список коробок, полученных из файла
+     * @throws RuntimeException если произошла ошибка ввода-вывода
+     */
     @Override
     public List<Box> parse(String filePath) {
         List<Box> boxes;
@@ -31,23 +41,15 @@ public class ParserBoxesServiceJson implements ParserBoxesService {
                     });
 
             boxes = trucks.stream()
-                        .map(Truck::getBoxes)
-                        .flatMap(List::stream)
-                        .collect(Collectors.toList());
+                    .map(Truck::getBoxes)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         if (!boxes.isEmpty()) {
             boxRepository.setBoxes(boxes);
-
-            log.info("""
-                    
-                            Выбор алгоритма погрузки:
-                            1 - простой (одна посылка = одна машина)
-                            2 - сложный (оптимальное размещение нескольких посылок по машинам)
-                            3 - равномерная погрузка по машинам
-                            """);
         }
 
         return boxes;

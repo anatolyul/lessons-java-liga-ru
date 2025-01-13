@@ -15,9 +15,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для разгрузки грузовиков и сохранения информации о коробках.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class UnloaderTrucksToBoxesService {
+
+    /**
+     * Метод для разгрузки грузовиков и сохранения информации о коробках.
+     *
+     * @param fileNameTrucks имя файла, содержащего информацию о грузовиках
+     * @param fileNameBoxes  имя файла, в который будет сохранена информация о коробках
+     * @param withcount      флаг, указывающий, нужно ли включать количество коробок
+     * @return строка с результатом операции
+     */
     public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withcount) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String[]> boxes;
