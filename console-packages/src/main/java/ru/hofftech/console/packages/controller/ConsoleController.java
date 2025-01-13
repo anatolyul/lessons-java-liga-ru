@@ -15,26 +15,40 @@ public class ConsoleController {
     public void listen() {
         log.info("""
                 
-                Старт приложения Консольные посылки...
-
                 Справочник команд:
-                limit 5 - максимальное кол-во машин для погрузки (по умолчанию 1)
                 exit - завершение работы
                 
-                import boxes.txt - загрузка файла с посылками
-                import trucks.json - загрузка файла с грузовиками
+                Примеры команд для работы с посылкой:
+                Создание
+                create -name "Квадратное колесо" -form "xxx\\nx x\\nxxx" -symbol "o"
+                Поиск и получение информации
+                find -name "Квадратное колесо"
+                Редактирование
+                edit -id "Квадратное колесо" -name "КУБ" -form "xxx\\nxxx\\nxxx" -symbol "%"
+                Удаление
+                delete -name "Посылка Тип 4"
                 
-                Если файл не лежит в ресурсах приложения,
-                то указываем абсолютный путь к файлу
-                Example: import C:\\boxes.txt
+                Примеры команд для погрузки в машины:
+                Загрузка посылок по имени из параметра -parcels-text в машины с размерами параметра -trucks
+                load -parcels-text "Посылка Тип 1\\nПосылка Тип 4\\nКУБ" -trucks "3x3\\n3x3\\n6x2" -type "one2one"
+                Аналогично с сохранением результатов в файл
+                load -parcels-text "Посылка Тип 1\\nПосылка Тип 4\\nКУБ" -trucks "3x3\\n3x3\\n6x2" -type "one2one" -out-filename "trucks.json"
+                Аналогично, только имена посылок берем из файла указанного в параметре -parcels-file
+                load -parcels-file "parcels.csv" -trucks "3x3\\n3x3\\n6x2" -type "one2one"
+                load -parcels-file "parcels.csv" -trucks "3x3\\n3x3\\n6x2" -type "one2one" -out-filename "trucks.json"
                 
+                Примеры команд для разгрузки машин:
+                Загрузка данных по машинам из файла переданным в параметре -in-filename и выгрузка результатов
+                unload -in-filename "trucks.json"
+                Аналогично результат выгружаем в файл указанный в параметре -out-filename
+                unload -in-filename "trucks.json" -out-filename "parcels.csv"
+                Аналогично, но ещё добавляем колонку с кол-вом
+                unload -in-filename "trucks.json" -out-filename "parcels-with-count.csv" -withcount "true"
                 
-                Выбор алгоритма погрузки:
-                1 - простой (одна посылка = одна машина)
-                2 - сложный (оптимальное размещение нескольких посылок по машинам)
-                3 - равномерная погрузка по машинам
-                
-                Аналогичные команды поддерживает Телеграм БОТ @AppBoxInTruckBot
+                Алгоритмы погрузки определяется параметром -type:
+                one2one - простой (одна посылка = одна машина)
+                max - сложный (максимальное размещение нескольких посылок по машинам)
+                uniform - равномерная погрузка по машинам
                 """);
 
         var scanner = new Scanner(System.in);

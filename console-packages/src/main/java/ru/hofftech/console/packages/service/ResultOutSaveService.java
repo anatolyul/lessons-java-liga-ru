@@ -13,7 +13,7 @@ public class ResultOutSaveService {
     private final FileWriterService fileWriterService;
 
     public String saveOutResult(FormatterService formatterService,
-                              List<Truck> trucks, List<Box> boxes) {
+                              List<Truck> trucks, List<Box> boxes, String fileNameResult) {
         StringBuilder result = new StringBuilder();
 
         if (boxes != null && !boxes.isEmpty()
@@ -24,11 +24,22 @@ public class ResultOutSaveService {
                         """);
             result.append(formatterService.TrucksToString(trucks));
             fileWriterService.writeToFile(formatterService.BoxesToString(boxes), "boxes_result.txt");
-            fileWriterService.writeToFile(formatterService.TrucksToJson(trucks), "trucks_result.json");
-            result.append("""
-                           
-                        Для повторного распределение определите выбор алгоритма погрузки:
-                        """);
+            if (fileNameResult != null) {
+                fileWriterService.writeToFile(formatterService.TrucksToJson(trucks), fileNameResult);
+                result.append("Результат сохранен в файл: ").append(fileNameResult);
+            }
+            List<Box> boxesNotInTrucks = boxes.stream()
+                    .filter(box ->
+                            trucks.stream().filter(truck -> truck.getBoxes() != null)
+                                    .flatMap(truck -> truck.getBoxes().stream())
+                            .noneMatch(truckBox -> truckBox.equals(box))
+                    )
+                    .toList();
+            for (Box box : boxesNotInTrucks) {
+                result.append("Пропущена посылка: ")
+                        .append(box.getName())
+                        .append("\n");
+            }
         }
 
         return result.toString();

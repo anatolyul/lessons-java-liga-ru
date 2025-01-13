@@ -21,10 +21,10 @@ public class Box {
     private int height;
 
     @JsonIgnore
-    private int positionX;
+    private int startHeight;
 
     @JsonIgnore
-    private int positionY;
+    private int startWidth;
 
     @JsonProperty("type")
     private String symbol;
@@ -74,9 +74,9 @@ public class Box {
         }
     }
 
-    public void TruckPosition(int positionX, int positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public void TruckPosition(int startHeight, int startWidth) {
+        this.startHeight = startHeight;
+        this.startWidth = startWidth;
     }
 
     @JsonIgnore

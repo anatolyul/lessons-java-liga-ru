@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class UnloaderTrucksToBoxesService {
-    public boolean unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withcount) {
+    public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withcount) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String[]> boxes;
 
@@ -46,12 +46,19 @@ public class UnloaderTrucksToBoxesService {
             throw new RuntimeException(e);
         }
 
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(fileNameBoxes))) {
-            csvWriter.writeAll(boxes);
-        } catch (IOException e) {
-            e.printStackTrace();
+        StringBuilder result = new StringBuilder();
+
+        if (fileNameBoxes != null && !fileNameBoxes.isEmpty()) {
+            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(fileNameBoxes))) {
+                csvWriter.writeAll(boxes);
+                result.append("Результаты сохранены в файл: ").append(fileNameBoxes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            result.append(boxes.stream().map(arr -> arr[0]).collect(Collectors.joining("\n")));
         }
 
-        return true;
+        return result.toString();
     }
 }

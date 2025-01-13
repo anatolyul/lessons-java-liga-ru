@@ -8,7 +8,6 @@ import ru.hofftech.console.packages.model.CommandArgument;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.model.converter.CommandArgConverter;
 import ru.hofftech.console.packages.model.enums.Argument;
-import ru.hofftech.console.packages.model.enums.TypeAlgorithm;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.FormatterService;
 import ru.hofftech.console.packages.service.ResultOutSaveService;
@@ -30,24 +29,12 @@ public class CommandHandler {
     private final BoxRepository boxRepository;
     private final ResultOutSaveService resultOutSaveService;
 
-    public String handle(String commandString) {
-        final String DELIMETR_LINES = "\n";
+    private Command commandArgs;
+    private List<CommandArgument> commandArgument;
 
-        Command commandArgs = commandArgConverter.parseCommandArgs(commandString);
-        List<CommandArgument> commandArgument = commandArgs.getArguments();
-        String algorithm = commandArgConverter.getArgumentValue(commandArgument, Argument.TYPE);
-        String limit = commandArgConverter.getArgumentValue(commandArgument, Argument.LIMIT);
-        String trucksForms = commandArgConverter.getArgumentValue(commandArgument, Argument.TRUCKS);
-        String boxesNames = commandArgConverter.getArgumentValue(commandArgument, Argument.PARCELS_TEXT);
-        String boxesFile = commandArgConverter.getArgumentValue(commandArgument, Argument.PARCELS_FILE);
-        String id = commandArgConverter.getArgumentValue(commandArgument, Argument.ID);
-        String name = commandArgConverter.getArgumentValue(commandArgument, Argument.NAME);
-        String form = commandArgConverter.getArgumentValue(commandArgument, Argument.FORM);
-        String symbol = commandArgConverter.getArgumentValue(commandArgument, Argument.SYMBOL);
-        String inFile = commandArgConverter.getArgumentValue(commandArgument, Argument.IN_FILENAME);
-        String outFile = commandArgConverter.getArgumentValue(commandArgument, Argument.OUT_FILENAME);
-        String withcount = commandArgConverter.getArgumentValue(commandArgument, Argument.WITHCOUNT);
-        String output = commandArgConverter.getArgumentValue(commandArgument, Argument.OUT);
+    public String handle(String commandString) {
+        commandArgs = commandArgConverter.parseCommandArgs(commandString);
+        commandArgument = commandArgs.getArguments();
 
         String result = "";
 
@@ -58,57 +45,40 @@ public class CommandHandler {
                     .create(boxRepository, commandArgs.getCommand())
                     .parse(formatterService.FileNameCommandToPath(commandString));
             case LOAD -> {
-                Integer limitTrucks = limit != null ? Integer.parseInt(limit) : 0;
-                TypeAlgorithm algorithmType = commandArgConverter.convertTypeAlgorithmStringToEnum(algorithm);
-                List<Truck> trucks = getTrucks(trucksForms);
-                List<Box> boxes = new ArrayList<>();
-                if (boxesNames != null && !boxesNames.isEmpty()) {
-                    for (String boxName : boxesNames.split(DELIMETR_LINES)) {
-                        boxes.add(boxRepository.findBoxByName(boxName));
-                    }
-                } else if (boxesFile != null && !boxesFile.isEmpty()) {
-                    boxes = parserBoxesServiceFactory
-                            .create(boxRepository, commandArgs.getCommand())
-                            .parse(formatterService.FileToPath(boxesFile));
-                } else {
-                    boxes = boxRepository.getBoxes();
-                }
-
+                List<Truck> trucks = getTrucks();
+                List<Box> boxes = getBoxes();
                 trucks = loaderBoxesInTrucksServiceFactory
-                        .createLoaderBoxesInTrucksService(algorithmType)
-                        .loadBoxesInTrucks(boxes, trucks, limitTrucks);
-                result = resultOutSaveService.saveOutResult(formatterService, trucks, boxes);
+                        .createLoaderBoxesInTrucksService(commandArgConverter
+                                .convertTypeAlgorithmStringToEnum(getArgValue(Argument.TYPE)))
+                        .loadBoxesInTrucks(boxes, trucks,
+                                getArgValue(Argument.LIMIT) != null ? Integer.parseInt(getArgValue(Argument.LIMIT)) : 0);
+                result = resultOutSaveService.saveOutResult(formatterService,
+                        trucks, boxes, getArgValue(Argument.OUT_FILENAME));
             }
-            case UNLOAD -> {
-                boolean wcount = withcount != null && !withcount.isEmpty();
-                unloaderTrucksToBoxesService.unloadTrucksToBoxes(
-                        formatterService.FileToPath(inFile),
-                        outFile,
-                        wcount);
-            }
-            case BOX_CREATE -> {
-                result = boxRepository.createBox(name, form, symbol);
-            }
-            case BOX_FIND -> {
-                result = boxRepository.findBox(id, name);
-            }
-            case BOX_DELETE -> {
-                result = boxRepository.deleteBox(name);
-            }
-            case BOX_EDIT -> {
-                result = boxRepository.updateBox(id, name, form, symbol);
-            }
-            case BOX_LIST -> {
-                result = boxRepository.findAll();
-            }
+            case UNLOAD -> result = unloaderTrucksToBoxesService.unloadTrucksToBoxes(
+                    formatterService.FileToPath(getArgValue(Argument.IN_FILENAME)),
+                    getArgValue(Argument.OUT_FILENAME),
+                    getArgValue(Argument.WITHCOUNT) != null);
+            case BOX_CREATE -> result = boxRepository.createBox(getArgValue(Argument.NAME),
+                    getArgValue(Argument.FORM),
+                    getArgValue(Argument.SYMBOL));
+            case BOX_FIND -> result = boxRepository.findBox(getArgValue(Argument.ID),
+                    getArgValue(Argument.NAME));
+            case BOX_DELETE -> result = boxRepository.deleteBox(getArgValue(Argument.NAME));
+            case BOX_EDIT -> result = boxRepository.updateBox(getArgValue(Argument.ID),
+                    getArgValue(Argument.NAME),
+                    getArgValue(Argument.FORM),
+                    getArgValue(Argument.SYMBOL));
+            case BOX_LIST -> result = boxRepository.findAll();
             case UNKNOWN -> result = "Приложение не поддерживает данную команду.";
         }
 
         return result;
     }
 
-    private List<Truck> getTrucks(String trucksForms) {
+    private List<Truck> getTrucks() {
         List<Truck> trucks = new ArrayList<>();
+        String trucksForms = getArgValue(Argument.TRUCKS);
         if (trucksForms != null && !trucksForms.isEmpty()) {
             String[] truckDimensions = trucksForms.split("\n");
             for (String dimension : truckDimensions) {
@@ -120,5 +90,32 @@ public class CommandHandler {
             }
         }
         return trucks;
+    }
+
+    private List<Box> getBoxes() {
+        List<Box> boxes = new ArrayList<>();
+        String boxesNames = getArgValue(Argument.PARCELS_TEXT);
+        String boxesFile = getArgValue(Argument.PARCELS_FILE);
+        if (boxesNames != null && !boxesNames.isEmpty()) {
+            for (String boxName : boxesNames.split("\n")) {
+                Box box = boxRepository.findBoxByName(boxName);
+                if (box != null) {
+                    boxes.add(box);
+                } else {
+                    log.warn("Посылка {} пропущена, т.к. не найдена в системе", boxName);
+                }
+            }
+        } else if (boxesFile != null && !boxesFile.isEmpty()) {
+            boxes = parserBoxesServiceFactory
+                    .create(boxRepository, commandArgs.getCommand())
+                    .parse(formatterService.FileToPath(boxesFile));
+        } else {
+            boxes = boxRepository.getBoxes();
+        }
+        return boxes;
+    }
+
+    private String getArgValue(Argument argument) {
+        return commandArgConverter.getArgumentValue(commandArgument, argument);
     }
 }

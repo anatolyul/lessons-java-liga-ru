@@ -14,7 +14,6 @@ public enum Argument {
     LIMIT("-limit"),
     TYPE("-type"),
     IN_FILENAME("-in-filename"),
-    OUT("-out"),
     OUT_FILENAME("-out-filename"),
     WITHCOUNT("-withcount"),
     UNKNOWN("");

@@ -14,10 +14,10 @@ import java.util.List;
 @Getter
 public class Truck {
     @JsonIgnore
-    private int truckWidth = 6;
+    private int truckHeight = 6;
 
     @JsonIgnore
-    private int truckHeight = 6;
+    private int truckWidth = 6;
 
     @JsonProperty("truck_type")
     private String truckName;
@@ -73,10 +73,10 @@ public class Truck {
         }
     }
 
-    private boolean canPlaceBox(Box box, int startRow, int startCol) {
+    private boolean canPlaceBox(Box box, int startHeight, int startWidth) {
         for (int i = 0; i < box.getHeight(); i++) {
             for (int j = 0; j < box.getWidth(); j++) {
-                if (cargoContent[startRow + i][startCol + j] != null) {
+                if (cargoContent[startHeight + i][startWidth + j] != null) {
                     return false;
                 }
             }
@@ -85,13 +85,13 @@ public class Truck {
         return true;
     }
 
-    public void placeBox(Box box, int startRow, int startCol) {
+    public void placeBox(Box box, int startHeight, int startWidth) {
         for (int i = 0; i < box.getHeight(); i++) {
             for (int j = 0; j < box.getWidth(); j++) {
-                cargoContent[startRow + i][startCol + j] = box.getSymbol();
+                cargoContent[startHeight + i][startWidth + j] = box.getSymbol();
             }
         }
-        box.TruckPosition(startRow, startCol);
+        box.TruckPosition(startHeight, startWidth);
         addBox(box);
     }
 
