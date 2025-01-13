@@ -35,6 +35,8 @@ public class TelegramBotController extends TelegramLongPollingBot {
                 exit - завершение работы
                 
                 Примеры команд для работы с посылкой:
+                Список всех посылок
+                list
                 Создание
                 create -name "Квадратное колесо" -form "xxx\\nx x\\nxxx" -symbol "o"
                 Поиск и получение информации

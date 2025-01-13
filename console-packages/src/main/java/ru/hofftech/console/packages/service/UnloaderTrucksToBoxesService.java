@@ -29,6 +29,7 @@ public class UnloaderTrucksToBoxesService {
                     });
 
             boxes = trucks.stream()
+                    .filter(truck -> truck.getBoxes() != null && !truck.getBoxes().isEmpty())
                     .map(Truck::getBoxes)
                     .flatMap(List::stream)
                     .map(Box::getName)
