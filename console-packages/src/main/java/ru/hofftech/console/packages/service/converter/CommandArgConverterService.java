@@ -1,4 +1,4 @@
-package ru.hofftech.console.packages.model.converter;
+package ru.hofftech.console.packages.service.converter;
 
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.model.CommandArgument;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Конвертер для преобразования строковых представлений команд и аргументов в соответствующие перечисления.
  */
-public class CommandArgConverter {
+public class CommandArgConverterService {
 
     /**
      * Преобразует строковое представление консольной команды в перечисление ConsoleCommand.

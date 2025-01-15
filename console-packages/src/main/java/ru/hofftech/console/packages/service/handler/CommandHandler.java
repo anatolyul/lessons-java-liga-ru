@@ -6,12 +6,12 @@ import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.model.CommandArgument;
 import ru.hofftech.console.packages.model.Truck;
-import ru.hofftech.console.packages.model.converter.CommandArgConverter;
 import ru.hofftech.console.packages.model.enums.Argument;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.FormatterService;
 import ru.hofftech.console.packages.service.ResultOutSaveService;
 import ru.hofftech.console.packages.service.UnloaderTrucksToBoxesService;
+import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
 import ru.hofftech.console.packages.service.factory.LoaderBoxesInTrucksServiceFactory;
 import ru.hofftech.console.packages.service.factory.ParserBoxesServiceFactory;
 
@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class CommandHandler {
-    private final CommandArgConverter commandArgConverter;
+    private final CommandArgConverterService commandArgConverterService;
     private final FormatterService formatterService;
     private final ParserBoxesServiceFactory parserBoxesServiceFactory;
     private final LoaderBoxesInTrucksServiceFactory loaderBoxesInTrucksServiceFactory;
@@ -42,7 +42,7 @@ public class CommandHandler {
      * @return результат выполнения команды
      */
     public String handle(String commandString) {
-        commandArgs = commandArgConverter.parseCommandArgs(commandString);
+        commandArgs = commandArgConverterService.parseCommandArgs(commandString);
         commandArgument = commandArgs.getArguments();
 
         String result = "";
@@ -50,13 +50,12 @@ public class CommandHandler {
         switch (commandArgs.getCommand()) {
             case EXIT -> System.exit(0);
             case IMPORT_FILE_TXT, IMPORT_FILE_JSON -> parserBoxesServiceFactory
-                    .create(boxRepository, commandArgs.getCommand())
-                    .parse(formatterService.FileNameCommandToPath(commandString));
+                    .create(boxRepository, commandArgs.getCommand(), commandString);
             case LOAD -> {
                 List<Truck> trucks = getTrucks();
                 List<Box> boxes = getBoxes();
                 trucks = loaderBoxesInTrucksServiceFactory
-                        .createLoaderBoxesInTrucksService(commandArgConverter
+                        .createLoaderBoxesInTrucksService(commandArgConverterService
                                 .convertTypeAlgorithmStringToEnum(getArgValue(Argument.TYPE)))
                         .loadBoxesInTrucks(boxes, trucks,
                                 getArgValue(Argument.LIMIT) != null ? Integer.parseInt(getArgValue(Argument.LIMIT)) : 0);
@@ -125,8 +124,9 @@ public class CommandHandler {
             }
         } else if (boxesFile != null && !boxesFile.isEmpty()) {
             boxes = parserBoxesServiceFactory
-                    .create(boxRepository, commandArgs.getCommand())
-                    .parse(formatterService.FileToPath(boxesFile));
+                    .create(boxRepository,
+                            commandArgs.getCommand(),
+                            formatterService.FileToPath(boxesFile));
         } else {
             boxes = boxRepository.getBoxes();
         }
@@ -140,6 +140,6 @@ public class CommandHandler {
      * @return значение аргумента
      */
     private String getArgValue(Argument argument) {
-        return commandArgConverter.getArgumentValue(commandArgument, argument);
+        return commandArgConverterService.getArgumentValue(commandArgument, argument);
     }
 }
