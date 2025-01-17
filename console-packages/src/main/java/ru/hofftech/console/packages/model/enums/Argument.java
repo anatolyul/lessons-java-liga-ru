@@ -67,6 +67,8 @@ public enum Argument {
      */
     WITHCOUNT("-withcount"),
 
+    IMPORT_FILENAME("-import-filename"),
+
     /**
      * Неизвестный аргумент.
      */

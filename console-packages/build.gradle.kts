@@ -9,10 +9,10 @@ object Version {
     const val SLF4J_API = "2.0.7"
     const val JACKSON_DATABIND = "2.13.4.2"
     const val OPENCSV = "5.9"
-    const val TELEGRAMBOTS = "6.9.7.1"
+    const val TELEGRAM_BOTS = "6.9.7.1"
     const val LOMBOK_CORE = "1.18.34"
     const val ASSERTJ_CORE = "3.26.3"
-    const val SNAKEYAML = "2.3"
+    const val SNAKEYAML = "1.33"
 
     object Junit {
         const val BOM = "5.10.0"
@@ -35,7 +35,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:${Version.Logback.CLASSIC}")
     implementation("com.fasterxml.jackson.core:jackson-databind:${Version.JACKSON_DATABIND}")
     implementation("com.opencsv:opencsv:${Version.OPENCSV}")
-    implementation("org.telegram:telegrambots:${Version.TELEGRAMBOTS}")
+    implementation("org.telegram:telegrambots:${Version.TELEGRAM_BOTS}")
     implementation("org.yaml:snakeyaml:${Version.SNAKEYAML}")
 
     implementation("org.projectlombok:lombok:${Version.LOMBOK_CORE}")

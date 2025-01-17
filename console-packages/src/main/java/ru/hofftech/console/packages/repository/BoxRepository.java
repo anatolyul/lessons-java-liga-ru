@@ -3,7 +3,6 @@ package ru.hofftech.console.packages.repository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.List;
  */
 @Setter
 @Getter
-@Slf4j
 @RequiredArgsConstructor
 public class BoxRepository {
     private List<Box> boxes = init();

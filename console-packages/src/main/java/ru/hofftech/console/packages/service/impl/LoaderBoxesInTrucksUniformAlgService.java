@@ -1,6 +1,5 @@
 package ru.hofftech.console.packages.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
@@ -10,7 +9,6 @@ import java.util.List;
 /**
  * Реализация сервиса для равномерной загрузки коробок в грузовики.
  */
-@Slf4j
 public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucksService {
 
     /**

@@ -1,7 +1,6 @@
 package ru.hofftech.console.packages.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
@@ -10,7 +9,6 @@ import java.util.List;
 /**
  * Сервис для сохранения результатов распределения груза.
  */
-@Slf4j
 @RequiredArgsConstructor
 public class ResultOutSaveService {
     private final FileWriterService fileWriterService;

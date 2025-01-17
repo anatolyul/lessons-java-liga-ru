@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.repository.BoxRepository;
-import ru.hofftech.console.packages.service.FormatterService;
-import ru.hofftech.console.packages.service.impl.ParserBoxesServiceJson;
 import ru.hofftech.console.packages.service.ParserBoxesService;
+import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
+import ru.hofftech.console.packages.service.impl.ParserBoxesServiceJson;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ class ParserBoxesServiceJsonTest {
         List<Box> boxes;
         BoxRepository repository = new BoxRepository();
         ParserBoxesService parserBoxesService = new ParserBoxesServiceJson(repository, new ObjectMapper());
-        FormatterService formatterService = new FormatterService();
-        boxes = parserBoxesService.parse(formatterService.FileNameCommandToPath("import trucks.json"));
+        CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
+        boxes = parserBoxesService.parse(commandArgConverterService.FileNameCommandToPath("import trucks.json"));
 
         assertThat(boxes.size()).isEqualTo(9);
     }

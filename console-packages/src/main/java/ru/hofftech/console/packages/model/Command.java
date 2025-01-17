@@ -3,9 +3,10 @@ package ru.hofftech.console.packages.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import ru.hofftech.console.packages.model.enums.Argument;
 import ru.hofftech.console.packages.model.enums.ConsoleCommand;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Модель команды, содержащей консольную команду и список аргументов.
@@ -22,5 +23,5 @@ public class Command {
     /**
      * Список аргументов команды.
      */
-    private List<CommandArgument> arguments;
+    private Map<Argument, String> arguments;
 }

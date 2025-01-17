@@ -6,11 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
-import java.io.File;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Сервис для форматирования данных о грузовиках и коробках.
@@ -76,36 +72,4 @@ public class FormatterService {
         return sb.toString();
     }
 
-    /**
-     * Преобразует команду импорта файла в путь к файлу.
-     *
-     * @param fileName команда импорта файла
-     * @return путь к файлу
-     */
-    public String FileNameCommandToPath(String fileName) {
-        final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.(txt|json))");
-        String result;
-        Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
-        fileName = matcher.matches() ? matcher.group(1) : fileName;
-        result = FileToPath(fileName);
-        return result;
-    }
-
-    /**
-     * Преобразует имя файла в путь к файлу.
-     *
-     * @param fileName имя файла
-     * @return путь к файлу
-     */
-    public String FileToPath(String fileName) {
-        String result;
-        if (new File(fileName).isFile()) {
-            result = fileName;
-        } else {
-            result = Objects.requireNonNull(
-                    FormatterService.class.getClassLoader()
-                            .getResource(fileName)).getPath();
-        }
-        return result;
-    }
 }

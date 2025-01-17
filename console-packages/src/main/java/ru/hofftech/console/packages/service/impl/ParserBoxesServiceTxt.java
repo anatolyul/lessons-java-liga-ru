@@ -1,7 +1,6 @@
 package ru.hofftech.console.packages.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
@@ -15,7 +14,6 @@ import java.util.List;
 /**
  * Реализация сервиса для парсинга информации о коробках из текстового файла.
  */
-@Slf4j
 @RequiredArgsConstructor
 public class ParserBoxesServiceTxt implements ParserBoxesService {
     private final BoxRepository boxRepository;

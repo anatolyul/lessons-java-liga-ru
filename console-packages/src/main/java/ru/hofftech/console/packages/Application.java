@@ -12,6 +12,7 @@ import ru.hofftech.console.packages.service.FormatterService;
 import ru.hofftech.console.packages.service.ResultOutSaveService;
 import ru.hofftech.console.packages.service.UnloaderTrucksToBoxesService;
 import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
+import ru.hofftech.console.packages.service.factory.CommandExecutorFactory;
 import ru.hofftech.console.packages.service.factory.LoaderBoxesInTrucksServiceFactory;
 import ru.hofftech.console.packages.service.factory.ParserBoxesServiceFactory;
 import ru.hofftech.console.packages.service.handler.CommandHandler;
@@ -90,14 +91,18 @@ public class Application {
      * @return инициализированный обработчик команд
      */
     private static CommandHandler initializeCommandHandler() {
+        CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
+
         return new CommandHandler(
-                new CommandArgConverterService(),
-                new FormatterService(),
-                new ParserBoxesServiceFactory(),
-                new LoaderBoxesInTrucksServiceFactory(),
-                new UnloaderTrucksToBoxesService(),
-                new BoxRepository(),
-                new ResultOutSaveService(new FileWriterService())
+                commandArgConverterService,
+                new CommandExecutorFactory(
+                        commandArgConverterService,
+                        new FormatterService(),
+                        new ParserBoxesServiceFactory(),
+                        new LoaderBoxesInTrucksServiceFactory(),
+                        new UnloaderTrucksToBoxesService(),
+                        new BoxRepository(),
+                        new ResultOutSaveService(new FileWriterService()))
         );
     }
 }

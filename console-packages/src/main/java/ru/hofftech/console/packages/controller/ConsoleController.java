@@ -1,7 +1,6 @@
 package ru.hofftech.console.packages.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.service.handler.CommandHandler;
 
 import java.util.Scanner;
@@ -9,7 +8,6 @@ import java.util.Scanner;
 /**
  * Контроллер для обработки команд, вводимых через консоль.
  */
-@Slf4j
 @RequiredArgsConstructor
 public class ConsoleController {
     private final CommandHandler commandHandler;
@@ -19,7 +17,7 @@ public class ConsoleController {
      * Запускает консольный интерфейс для ввода команд и обрабатывает их.
      */
     public void listen() {
-        log.info(helpText);
+        System.out.println(helpText);
 
         var scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {

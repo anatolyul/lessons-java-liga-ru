@@ -1,13 +1,15 @@
 package ru.hofftech.console.packages.service.converter;
 
 import ru.hofftech.console.packages.model.Command;
-import ru.hofftech.console.packages.model.CommandArgument;
 import ru.hofftech.console.packages.model.enums.Argument;
 import ru.hofftech.console.packages.model.enums.ConsoleCommand;
 import ru.hofftech.console.packages.model.enums.TypeAlgorithm;
+import ru.hofftech.console.packages.service.FormatterService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,34 +67,22 @@ public class CommandArgConverterService {
     }
 
     /**
-     * Получает значение аргумента команды.
-     *
-     * @param arguments список аргументов команды
-     * @param argument  аргумент команды
-     * @return значение аргумента команды или null, если аргумент не найден
-     */
-    public String getArgumentValue(List<CommandArgument> arguments, Argument argument) {
-        String result = arguments.stream()
-                .filter(x -> x.getName() == argument)
-                .map(CommandArgument::getValue)
-                .findFirst().orElse(null);
-
-        if (result != null) {
-            result = result.trim();
-            result = result.replace("\\n", "\n");
-        }
-
-        return result;
-    }
-
-    /**
      * Парсит строку команды и аргументов в объект Command.
      *
      * @param consoleCommand строка команды и аргументов
      * @return объект Command, содержащий команду и список аргументов
      */
     public Command parseCommandArgs(String consoleCommand) {
-        Command command = new Command(ConsoleCommand.UNKNOWN, null);
+        Command command = new Command(convertCommandStringToEnum(consoleCommand), null);
+
+        if (command.getCommand() == ConsoleCommand.IMPORT_FILE_JSON
+                || command.getCommand() == ConsoleCommand.IMPORT_FILE_TXT) {
+            Map<Argument, String> args = new HashMap<>();
+            args.put(Argument.IMPORT_FILENAME, FileNameCommandToPath(consoleCommand));
+            command.setArguments(args);
+
+            return command;
+        }
 
         // Регулярное выражение для извлечения команды и аргументов
         String commandRegex = "(\\w+)(.*)";
@@ -102,21 +92,56 @@ public class CommandArgConverterService {
         if (commandMatcher.find()) {
             command.setCommand(convertCommandStringToEnum(commandMatcher.group(1)));
 
-            String argsString = commandMatcher.group(2).trim();
+            String argsString = commandMatcher.group(2).trim().replace("\\n", "\n");
 
             // Регулярное выражение для извлечения пар "ключ-значение"
             String argRegex = "(-[\\w-]+|--[\\w-]+)\\s+\"([^\"]+)\"";
             Pattern argPattern = Pattern.compile(argRegex);
             Matcher argMatcher = argPattern.matcher(argsString);
 
-            List<CommandArgument> args = new ArrayList<>();
+            Map<Argument, String> args = new HashMap<>();
             while (argMatcher.find()) {
                 Argument arg = convertArgumentStringToEnum(argMatcher.group(1));
-                args.add(new CommandArgument(arg, argMatcher.group(2)));
+                args.put(arg, argMatcher.group(2));
             }
+
+
             command.setArguments(args);
         }
 
         return command;
+    }
+
+    /**
+     * Преобразует команду импорта файла в путь к файлу.
+     *
+     * @param fileName команда импорта файла
+     * @return путь к файлу
+     */
+    public String FileNameCommandToPath(String fileName) {
+        final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.(txt|json))");
+        String result;
+        Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
+        fileName = matcher.matches() ? matcher.group(1) : fileName;
+        result = FileToPath(fileName);
+        return result;
+    }
+
+    /**
+     * Преобразует имя файла в путь к файлу.
+     *
+     * @param fileName имя файла
+     * @return путь к файлу
+     */
+    public String FileToPath(String fileName) {
+        String result;
+        if (new File(fileName).isFile()) {
+            result = fileName;
+        } else {
+            result = Objects.requireNonNull(
+                    FormatterService.class.getClassLoader()
+                            .getResource(fileName)).getPath();
+        }
+        return result;
     }
 }

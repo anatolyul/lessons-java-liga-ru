@@ -6,6 +6,7 @@ import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.FormatterService;
 import ru.hofftech.console.packages.service.ParserBoxesService;
+import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,8 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
         BoxRepository repository = new BoxRepository();
         ParserBoxesService parserBoxesService = new ParserBoxesServiceTxt(repository);
         FormatterService formatterService = new FormatterService();
-        boxes = parserBoxesService.parse(formatterService.FileNameCommandToPath("import boxes.txt"));
+        CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
+        boxes = parserBoxesService.parse(commandArgConverterService.FileNameCommandToPath("import boxes.txt"));
 
         LoaderBoxesInTrucksOneToOneAlgService loadingBoxesInTruckService = new LoaderBoxesInTrucksOneToOneAlgService();
         List<Truck> trucks = loadingBoxesInTruckService.loadBoxesInTrucks(boxes, new ArrayList<>(), 6);

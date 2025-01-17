@@ -26,7 +26,12 @@ public class TelegramBotController extends TelegramLongPollingBot {
      */
     @Override
     public String getBotUsername() {
-        return telegramBotConfig.getBot().getUsername();
+        String username = telegramBotConfig.getBot().getUsername();
+        if ((username == null || username.isBlank())
+                && System.getenv("TELEGRAM_BOT_USERNAME") != null) {
+            username = System.getenv("TELEGRAM_BOT_USERNAME");
+        }
+        return username;
     }
 
     /**
@@ -36,7 +41,12 @@ public class TelegramBotController extends TelegramLongPollingBot {
      */
     @Override
     public String getBotToken() {
-        return telegramBotConfig.getBot().getToken();
+        String token = telegramBotConfig.getBot().getToken();
+        if ((token == null || token.isBlank())
+                && System.getenv("TELEGRAM_TOKEN") != null) {
+            token = System.getenv("TELEGRAM_TOKEN");
+        }
+        return token;
     }
 
     /**

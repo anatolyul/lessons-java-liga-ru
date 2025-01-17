@@ -1,6 +1,5 @@
 package ru.hofftech.console.packages.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
@@ -11,7 +10,6 @@ import java.util.List;
 /**
  * Реализация сервиса для загрузки коробок в грузовики по алгоритму "одна посылка - один грузовик".
  */
-@Slf4j
 public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTrucksService {
 
     /**
