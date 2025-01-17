@@ -3,21 +3,32 @@ package ru.hofftech.console.packages.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
+import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Slf4j
+/**
+ * Реализация сервиса для парсинга информации о коробках из JSON файла.
+ */
 @RequiredArgsConstructor
 public class ParserBoxesServiceJson implements ParserBoxesService {
+    private final BoxRepository boxRepository;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Парсит информацию о коробках из JSON файла.
+     *
+     * @param filePath путь к файлу, содержащему информацию о коробках в формате JSON
+     * @return список коробок, полученных из файла
+     * @throws RuntimeException если произошла ошибка ввода-вывода
+     */
     @Override
     public List<Box> parse(String filePath) {
         List<Box> boxes;
@@ -28,19 +39,17 @@ public class ParserBoxesServiceJson implements ParserBoxesService {
                     new TypeReference<>() {
                     });
 
-            boxes = trucks.stream().map(Truck::getBoxes).flatMap(List::stream).collect(Collectors.toList());
+            boxes = trucks.stream()
+                    .map(Truck::getBoxes)
+                    .filter(Objects::nonNull)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         if (!boxes.isEmpty()) {
-            log.info("""
-                    
-                            Выбор алгоритма погрузки:
-                            1 - простой (одна посылка = одна машина)
-                            2 - сложный (оптимальное размещение нескольких посылок по машинам)
-                            3 - равномерная погрузка по машинам
-                            """);
+            boxRepository.setBoxes(boxes);
         }
 
         return boxes;

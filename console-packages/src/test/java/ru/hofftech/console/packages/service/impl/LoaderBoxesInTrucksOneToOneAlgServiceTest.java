@@ -1,0 +1,34 @@
+package ru.hofftech.console.packages.service.impl;
+
+import org.junit.jupiter.api.Test;
+import ru.hofftech.console.packages.model.Box;
+import ru.hofftech.console.packages.model.Truck;
+import ru.hofftech.console.packages.repository.BoxRepository;
+import ru.hofftech.console.packages.service.FormatterService;
+import ru.hofftech.console.packages.service.ParserBoxesService;
+import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class LoaderBoxesInTrucksOneToOneAlgServiceTest {
+
+    @Test
+    void loadBoxesInTrucks_givenFileBoxes_shouldReturnCorrectTrucks() {
+        List<Box> boxes;
+        BoxRepository repository = new BoxRepository();
+        ParserBoxesService parserBoxesService = new ParserBoxesServiceTxt(repository);
+        FormatterService formatterService = new FormatterService();
+        CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
+        boxes = parserBoxesService.parse(commandArgConverterService.FileNameCommandToPath("import boxes.txt"));
+
+        LoaderBoxesInTrucksOneToOneAlgService loadingBoxesInTruckService = new LoaderBoxesInTrucksOneToOneAlgService();
+        List<Truck> trucks = loadingBoxesInTruckService.loadBoxesInTrucks(boxes, new ArrayList<>(), 6);
+        System.out.print(formatterService.TrucksToString(trucks));
+        System.out.print(formatterService.TrucksToJson(trucks));
+
+        assertThat(trucks.size()).isEqualTo(6);
+    }
+}

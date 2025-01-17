@@ -1,7 +1,8 @@
 package ru.hofftech.console.packages.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import ru.hofftech.console.packages.model.Box;
+import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 
 import java.io.BufferedReader;
@@ -10,8 +11,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+/**
+ * Реализация сервиса для парсинга информации о коробках из текстового файла.
+ */
+@RequiredArgsConstructor
 public class ParserBoxesServiceTxt implements ParserBoxesService {
+    private final BoxRepository boxRepository;
+
+    /**
+     * Парсит информацию о коробках из текстового файла.
+     *
+     * @param filePath путь к файлу, содержащему информацию о коробках
+     * @return список коробок, полученных из файла
+     * @throws RuntimeException если произошла ошибка ввода-вывода
+     */
     @Override
     public List<Box> parse(String filePath) {
         List<Box> boxes = new ArrayList<>();
@@ -35,7 +48,7 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
                         height = 0;
                     }
                 } else {
-                    content = line.substring(0,1);
+                    content = line.substring(0, 1);
                     width = line.length();
                     height++;
                 }
@@ -54,13 +67,7 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
         }
 
         if (!boxes.isEmpty()) {
-            log.info("""
-                    
-                            Выбор алгоритма погрузки:
-                            1 - простой (одна посылка = одна машина)
-                            2 - сложный (оптимальное размещение нескольких посылок по машинам)
-                            3 - равномерная погрузка по машинам
-                            """);
+            boxRepository.setBoxes(boxes);
         }
 
         return boxes;
