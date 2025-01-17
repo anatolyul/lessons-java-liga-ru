@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.hofftech.console.packages.model.Box;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,18 +22,17 @@ public class BoxRepository {
      * @return список коробок
      */
     public List<Box> init() {
-        List<Box> boxes = new ArrayList<>();
-        boxes.add(new Box("Посылка Тип 1", "1", "1"));
-        boxes.add(new Box("Посылка Тип 2", "22", "2"));
-        boxes.add(new Box("Посылка Тип 3", "333", "3"));
-        boxes.add(new Box("Посылка Тип 4", "4444", "4"));
-        boxes.add(new Box("Посылка Тип 5", "55555", "5"));
-        boxes.add(new Box("Посылка Тип 6", "666\n666", "6"));
-        boxes.add(new Box("Посылка Тип 7", "777\n7777", "7"));
-        boxes.add(new Box("Посылка Тип 8", "8888\n8888", "8"));
-        boxes.add(new Box("Посылка Тип 9", "999\n999\n999", "9"));
 
-        return boxes;
+        return List.of(new Box("Посылка Тип 1", "1", "1"),
+                new Box("Посылка Тип 1", "1", "1"),
+                new Box("Посылка Тип 2", "22", "2"),
+                new Box("Посылка Тип 3", "333", "3"),
+                new Box("Посылка Тип 4", "4444", "4"),
+                new Box("Посылка Тип 5", "55555", "5"),
+                new Box("Посылка Тип 6", "666\n666", "6"),
+                new Box("Посылка Тип 7", "777\n7777", "7"),
+                new Box("Посылка Тип 8", "8888\n8888", "8"),
+                new Box("Посылка Тип 9", "999\n999\n999", "9"));
     }
 
     /**
