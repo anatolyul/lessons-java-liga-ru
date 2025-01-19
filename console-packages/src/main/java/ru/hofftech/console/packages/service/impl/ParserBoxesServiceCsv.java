@@ -3,6 +3,7 @@ package ru.hofftech.console.packages.service.impl;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Реализация сервиса для парсинга информации о коробках из CSV файла.
  */
+@Service
 @RequiredArgsConstructor
 public class ParserBoxesServiceCsv implements ParserBoxesService {
     private final BoxRepository boxRepository;

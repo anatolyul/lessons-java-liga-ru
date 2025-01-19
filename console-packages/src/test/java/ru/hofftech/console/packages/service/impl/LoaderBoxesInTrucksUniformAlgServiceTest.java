@@ -22,13 +22,13 @@ class LoaderBoxesInTrucksUniformAlgServiceTest {
         ParserBoxesService parserBoxesService = new ParserBoxesServiceTxt(repository);
         FormatterService formatterService = new FormatterService();
         CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
-        boxes = parserBoxesService.parse(commandArgConverterService.FileNameCommandToPath("import boxes.txt"));
+        boxes = parserBoxesService.parse(commandArgConverterService.fileToPath("boxes.txt"));
 
         LoaderBoxesInTrucksUniformAlgService loadingBoxesInTruckService = new LoaderBoxesInTrucksUniformAlgService();
         List<Truck> trucks = loadingBoxesInTruckService.loadBoxesInTrucks(boxes, new ArrayList<>(), 2);
-        System.out.print(formatterService.TrucksToString(trucks));
-        System.out.print(formatterService.TrucksToJson(trucks));
+        System.out.print(formatterService.trucksToString(trucks));
+        System.out.print(formatterService.trucksToJson(trucks));
 
-        assertThat(trucks.size()).isEqualTo(2);
+        assertThat(trucks).hasSize(2);
     }
 }

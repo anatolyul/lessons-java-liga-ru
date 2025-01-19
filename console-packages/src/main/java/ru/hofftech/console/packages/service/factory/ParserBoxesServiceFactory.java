@@ -1,7 +1,7 @@
 package ru.hofftech.console.packages.service.factory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.enums.ConsoleCommand;
 import ru.hofftech.console.packages.repository.BoxRepository;
@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Фабрика для создания сервисов парсинга информации о коробках.
  */
+@Service
 @RequiredArgsConstructor
 public class ParserBoxesServiceFactory {
 
@@ -27,11 +28,11 @@ public class ParserBoxesServiceFactory {
      */
     public List<Box> create(BoxRepository boxRepository,
                             ConsoleCommand command,
-                            String commandString) {
+                            String filePath) {
         return switch (command) {
-            case IMPORT_FILE_JSON -> new ParserBoxesServiceJson(boxRepository, new ObjectMapper()).parse(commandString);
-            case IMPORT_FILE_TXT -> new ParserBoxesServiceTxt(boxRepository).parse(commandString);
-            case LOAD -> new ParserBoxesServiceCsv(boxRepository).parse(commandString);
+            case IMPORT_FILE_JSON -> new ParserBoxesServiceJson(boxRepository).parse(filePath);
+            case IMPORT_FILE_TXT -> new ParserBoxesServiceTxt(boxRepository).parse(filePath);
+            case LOAD -> new ParserBoxesServiceCsv(boxRepository).parse(filePath);
             default -> throw new IllegalStateException("Unexpected value: " + command);
         };
     }

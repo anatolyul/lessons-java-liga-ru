@@ -1,5 +1,6 @@
 package ru.hofftech.console.packages.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Реализация сервиса для загрузки коробок в грузовики по алгоритму "одна посылка - один грузовик".
  */
+@Service
 public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTrucksService {
 
     /**
@@ -35,7 +37,7 @@ public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTruck
                 trucks.add(truck);
             }
         } else {
-            for (int i = 0; i < boxes.size(); i++) {
+            for (int i = 0; i < boxes.size() && i < trucks.size(); i++) {
                 if (trucks.get(i) != null
                         && trucks.get(i).canLoadBox(boxes.get(i))) {
                     trucks.get(i).placeBox(boxes.get(i), 0, 0);

@@ -1,6 +1,7 @@
 package ru.hofftech.console.packages.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * Сервис для сохранения результатов распределения груза.
  */
+@Service
 @RequiredArgsConstructor
 public class ResultOutSaveService {
     private final FileWriterService fileWriterService;
@@ -32,10 +34,10 @@ public class ResultOutSaveService {
                     
                     Результаты распределения груза:
                     """);
-            result.append(formatterService.TrucksToString(trucks));
-            fileWriterService.writeToFile(formatterService.BoxesToString(boxes), "boxes_result.txt");
-            if (fileNameResult != null) {
-                fileWriterService.writeToFile(formatterService.TrucksToJson(trucks), fileNameResult);
+            result.append(formatterService.trucksToString(trucks));
+            fileWriterService.writeToFile(formatterService.boxesToString(boxes), "boxes_result.txt");
+            if (fileNameResult != null && !fileNameResult.isBlank()) {
+                fileWriterService.writeToFile(formatterService.trucksToJson(trucks), fileNameResult);
                 result.append("Результат сохранен в файл: ").append(fileNameResult);
             }
             List<Box> boxesNotInTrucks = boxes.stream()

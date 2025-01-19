@@ -2,6 +2,7 @@ package ru.hofftech.console.packages.service.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.model.Truck;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class LoadCommandService implements CommandExecutor {
     private final LoaderBoxesInTrucksServiceFactory loaderBoxesInTrucksServiceFactory;
@@ -43,7 +45,8 @@ public class LoadCommandService implements CommandExecutor {
                 .createLoaderBoxesInTrucksService(commandArgConverterService
                         .convertTypeAlgorithmStringToEnum(arguments.get(Argument.TYPE)))
                 .loadBoxesInTrucks(boxes, trucks,
-                        arguments.get(Argument.LIMIT) != null ? Integer.parseInt(arguments.get(Argument.LIMIT)) : 0);
+                        arguments.get(Argument.LIMIT) != null && !arguments.get(Argument.LIMIT).isBlank()
+                                ? Integer.parseInt(arguments.get(Argument.LIMIT)) : 0);
         return resultOutSaveService.saveOutResult(formatterService,
                 trucks, boxes, arguments.get(Argument.OUT_FILENAME));
     }
@@ -57,7 +60,8 @@ public class LoadCommandService implements CommandExecutor {
         List<Truck> trucks = new ArrayList<>();
         String trucksForms = arguments.get(Argument.TRUCKS);
         if (trucksForms != null && !trucksForms.isEmpty()) {
-            String[] truckDimensions = trucksForms.split("\n");
+            String[] truckDimensions = trucksForms.replace("n", "\n")
+                    .replace("\\n", "\n").split("\n");
             for (String dimension : truckDimensions) {
                 String[] sizes = dimension.split("x");
                 Truck truck = new Truck("Truck " + dimension,
@@ -79,7 +83,8 @@ public class LoadCommandService implements CommandExecutor {
         String boxesNames = arguments.get(Argument.PARCELS_TEXT);
         String boxesFile = arguments.get(Argument.PARCELS_FILE);
         if (boxesNames != null && !boxesNames.isEmpty()) {
-            for (String boxName : boxesNames.split("\n")) {
+            for (String boxName : boxesNames.replace("n", "\n")
+                    .replace("\\n", "\n").split("\n")) {
                 Box box = boxRepository.findBoxByName(boxName);
                 if (box != null) {
                     boxes.add(box);
@@ -90,8 +95,8 @@ public class LoadCommandService implements CommandExecutor {
         } else if (boxesFile != null && !boxesFile.isEmpty()) {
             boxes = parserBoxesServiceFactory
                     .create(boxRepository,
-                            command.getCommand(),
-                            commandArgConverterService.FileToPath(boxesFile));
+                            command.getConsoleCommand(),
+                            commandArgConverterService.fileToPath(boxesFile));
         } else {
             boxes = boxRepository.getBoxes();
         }

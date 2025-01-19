@@ -1,20 +1,21 @@
 package ru.hofftech.console.packages.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 
 /**
  * Модель коробки, которая может быть загружена в грузовик.
  */
-@Getter
-@Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Box {
+
     @JsonIgnore
     private int width;
 
@@ -33,17 +34,11 @@ public class Box {
     @JsonProperty("name")
     private String name;
 
-    @JsonIgnore
+    @JsonProperty("form")
     private String form;
 
     @JsonProperty("coordinates")
     private boolean[][] formCoordinates;
-
-    /**
-     * Конструктор по умолчанию.
-     */
-    public Box() {
-    }
 
     /**
      * Конструктор с шириной, высотой и символом.
@@ -66,6 +61,7 @@ public class Box {
     public void setForm(String form) {
         this.form = form
                 .replace("x", symbol)
+                .replace("n", "\n")
                 .replace("\\n", "\n");
     }
 
@@ -105,9 +101,19 @@ public class Box {
      * @param startHeight начальная высота для размещения
      * @param startWidth  начальная ширина для размещения
      */
-    public void TruckPosition(int startHeight, int startWidth) {
+    public void setStartPosition(int startHeight, int startWidth) {
         this.startHeight = startHeight;
         this.startWidth = startWidth;
+    }
+
+    public int calcSize() {
+        int size = 0;
+        for (char c : form.toCharArray()) {
+            if (c == symbol.charAt(0)) {
+                size++;
+            }
+        }
+        return size;
     }
 
     /**

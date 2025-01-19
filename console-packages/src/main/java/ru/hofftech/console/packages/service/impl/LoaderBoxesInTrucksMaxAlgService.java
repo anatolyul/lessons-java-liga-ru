@@ -1,5 +1,6 @@
 package ru.hofftech.console.packages.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * Реализация сервиса для загрузки коробок в грузовики по алгоритму максимальной загрузки.
  */
+@Service
 public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksService {
 
     /**

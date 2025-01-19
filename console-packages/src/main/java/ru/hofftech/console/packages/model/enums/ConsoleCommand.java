@@ -15,12 +15,12 @@ public enum ConsoleCommand {
     /**
      * Команда для импорта файла TXT.
      */
-    IMPORT_FILE_TXT("import (.+\\.txt)"),
+    IMPORT_FILE_TXT("import (.+\\.txt)\""),
 
     /**
      * Команда для импорта файла JSON.
      */
-    IMPORT_FILE_JSON("import (.+\\.json)"),
+    IMPORT_FILE_JSON("import (.+\\.json)\""),
 
     /**
      * Команда для создания коробки.
@@ -57,19 +57,23 @@ public enum ConsoleCommand {
      */
     UNLOAD("unload"),
 
+    HELP("help"),
+
+    BILLING("billing"),
+
     /**
      * Неизвестная команда.
      */
     UNKNOWN("");
 
-    private final String consoleCommand;
+    private final String code;
 
     /**
      * Конструктор для консольной команды.
      *
-     * @param consoleCommand строковое представление консольной команды
+     * @param code строковое представление консольной команды
      */
-    ConsoleCommand(String consoleCommand) {
-        this.consoleCommand = consoleCommand;
+    ConsoleCommand(String code) {
+        this.code = code;
     }
 }

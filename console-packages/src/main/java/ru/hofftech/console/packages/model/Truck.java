@@ -1,9 +1,10 @@
 package ru.hofftech.console.packages.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,12 @@ import java.util.List;
 /**
  * Модель грузовика, который может содержать коробки.
  */
-@Setter
-@Getter
+@Data
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Truck {
-    @JsonIgnore
-    private int truckHeight = 6;
 
-    @JsonIgnore
+    private int truckHeight = 6;
     private int truckWidth = 6;
 
     @JsonProperty("truck_type")
@@ -29,22 +29,9 @@ public class Truck {
     @JsonIgnore
     private String[][] cargoContent;
 
-    /**
-     * Добавляет коробку в грузовик.
-     *
-     * @param box коробка для добавления
-     */
-    private void addBox(Box box) {
-        List<Box> boxes = this.getBoxes() != null ? this.getBoxes() : new ArrayList<>();
-        boxes.add(box);
-        this.setBoxes(boxes);
-    }
-
-    /**
-     * Конструктор по умолчанию.
-     */
-    public Truck() {
-        cargoContent = new String[truckHeight][truckWidth];
+    public Truck(String truckName, List<Box> boxes) {
+        this.truckName = truckName;
+        this.boxes = boxes;
     }
 
     /**
@@ -69,6 +56,17 @@ public class Truck {
         this.truckHeight = truckHeight;
         this.truckWidth = truckWidth;
         cargoContent = new String[truckHeight][truckWidth];
+    }
+
+    /**
+     * Добавляет коробку в грузовик.
+     *
+     * @param box коробка для добавления
+     */
+    private void addBox(Box box) {
+        List<Box> boxList = this.getBoxes() != null ? this.getBoxes() : new ArrayList<>();
+        boxList.add(box);
+        this.setBoxes(boxList);
     }
 
     /**
@@ -138,7 +136,7 @@ public class Truck {
                 cargoContent[startHeight + i][startWidth + j] = box.getSymbol();
             }
         }
-        box.TruckPosition(startHeight, startWidth);
+        box.setStartPosition(startHeight, startWidth);
         addBox(box);
     }
 

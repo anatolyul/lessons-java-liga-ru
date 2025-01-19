@@ -1,5 +1,6 @@
 package ru.hofftech.console.packages.service.converter;
 
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.model.enums.Argument;
 import ru.hofftech.console.packages.model.enums.ConsoleCommand;
@@ -7,15 +8,15 @@ import ru.hofftech.console.packages.model.enums.TypeAlgorithm;
 import ru.hofftech.console.packages.service.FormatterService;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Конвертер для преобразования строковых представлений команд и аргументов в соответствующие перечисления.
  */
+@Service
 public class CommandArgConverterService {
 
     /**
@@ -26,7 +27,7 @@ public class CommandArgConverterService {
      */
     public ConsoleCommand convertCommandStringToEnum(String consoleCommand) {
         for (ConsoleCommand command : ConsoleCommand.values()) {
-            Pattern pattern = Pattern.compile(command.getConsoleCommand());
+            Pattern pattern = Pattern.compile(command.getCode());
             if (pattern.matcher(consoleCommand).matches()) {
                 return command;
             }
@@ -42,7 +43,7 @@ public class CommandArgConverterService {
      */
     public Argument convertArgumentStringToEnum(String argumentCode) {
         for (Argument argument : Argument.values()) {
-            Pattern pattern = Pattern.compile(argument.getArgument());
+            Pattern pattern = Pattern.compile(argument.getCode());
             if (pattern.matcher(argumentCode).matches()) {
                 return argument;
             }
@@ -73,16 +74,8 @@ public class CommandArgConverterService {
      * @return объект Command, содержащий команду и список аргументов
      */
     public Command parseCommandArgs(String consoleCommand) {
-        Command command = new Command(convertCommandStringToEnum(consoleCommand), null);
-
-        if (command.getCommand() == ConsoleCommand.IMPORT_FILE_JSON
-                || command.getCommand() == ConsoleCommand.IMPORT_FILE_TXT) {
-            Map<Argument, String> args = new HashMap<>();
-            args.put(Argument.IMPORT_FILENAME, FileNameCommandToPath(consoleCommand));
-            command.setArguments(args);
-
-            return command;
-        }
+        Command command = new Command();
+        command.setConsoleCommand(convertCommandStringToEnum(consoleCommand));
 
         // Регулярное выражение для извлечения команды и аргументов
         String commandRegex = "(\\w+)(.*)";
@@ -90,7 +83,9 @@ public class CommandArgConverterService {
         Matcher commandMatcher = commandPattern.matcher(consoleCommand);
 
         if (commandMatcher.find()) {
-            command.setCommand(convertCommandStringToEnum(commandMatcher.group(1)));
+            if (command.getConsoleCommand() == ConsoleCommand.UNKNOWN) {
+                command.setConsoleCommand(convertCommandStringToEnum(commandMatcher.group(1)));
+            }
 
             String argsString = commandMatcher.group(2).trim().replace("\\n", "\n");
 
@@ -99,7 +94,7 @@ public class CommandArgConverterService {
             Pattern argPattern = Pattern.compile(argRegex);
             Matcher argMatcher = argPattern.matcher(argsString);
 
-            Map<Argument, String> args = new HashMap<>();
+            Map<Argument, String> args = new EnumMap<>(Argument.class);
             while (argMatcher.find()) {
                 Argument arg = convertArgumentStringToEnum(argMatcher.group(1));
                 args.put(arg, argMatcher.group(2));
@@ -113,34 +108,18 @@ public class CommandArgConverterService {
     }
 
     /**
-     * Преобразует команду импорта файла в путь к файлу.
-     *
-     * @param fileName команда импорта файла
-     * @return путь к файлу
-     */
-    public String FileNameCommandToPath(String fileName) {
-        final Pattern IMPORT_COMMAND_PATTERN = Pattern.compile("import (.+\\.(txt|json))");
-        String result;
-        Matcher matcher = IMPORT_COMMAND_PATTERN.matcher(fileName);
-        fileName = matcher.matches() ? matcher.group(1) : fileName;
-        result = FileToPath(fileName);
-        return result;
-    }
-
-    /**
      * Преобразует имя файла в путь к файлу.
      *
      * @param fileName имя файла
      * @return путь к файлу
      */
-    public String FileToPath(String fileName) {
+    public String fileToPath(String fileName) {
         String result;
         if (new File(fileName).isFile()) {
             result = fileName;
         } else {
-            result = Objects.requireNonNull(
-                    FormatterService.class.getClassLoader()
-                            .getResource(fileName)).getPath();
+            result = FormatterService.class.getClassLoader()
+                    .getResource(fileName).getPath();
         }
         return result;
     }

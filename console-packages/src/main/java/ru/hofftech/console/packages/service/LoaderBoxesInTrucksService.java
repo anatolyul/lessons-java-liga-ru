@@ -1,5 +1,6 @@
 package ru.hofftech.console.packages.service;
 
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Интерфейс для загрузки коробок в грузовики.
  */
+@Service
 public interface LoaderBoxesInTrucksService {
 
     /**

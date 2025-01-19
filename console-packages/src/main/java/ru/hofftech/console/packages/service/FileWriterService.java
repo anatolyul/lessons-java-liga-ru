@@ -1,11 +1,14 @@
 package ru.hofftech.console.packages.service;
 
+import org.springframework.stereotype.Service;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
  * Сервис для записи данных в файл.
  */
+@Service
 public class FileWriterService {
 
     /**

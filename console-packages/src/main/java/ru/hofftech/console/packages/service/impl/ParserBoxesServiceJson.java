@@ -3,6 +3,7 @@ package ru.hofftech.console.packages.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.repository.BoxRepository;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 /**
  * Реализация сервиса для парсинга информации о коробках из JSON файла.
  */
+@Service
 @RequiredArgsConstructor
 public class ParserBoxesServiceJson implements ParserBoxesService {
     private final BoxRepository boxRepository;
-    private final ObjectMapper objectMapper;
 
     /**
      * Парсит информацию о коробках из JSON файла.
@@ -34,7 +35,7 @@ public class ParserBoxesServiceJson implements ParserBoxesService {
         List<Box> boxes;
 
         try {
-            List<Truck> trucks = objectMapper.readValue(
+            List<Truck> trucks = new ObjectMapper().readValue(
                     new File(filePath),
                     new TypeReference<>() {
                     });

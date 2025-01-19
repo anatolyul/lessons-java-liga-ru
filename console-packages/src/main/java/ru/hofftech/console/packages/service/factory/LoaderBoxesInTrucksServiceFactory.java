@@ -1,14 +1,16 @@
 package ru.hofftech.console.packages.service.factory;
 
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.enums.TypeAlgorithm;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
-import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksOneToOneAlgService;
 import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksMaxAlgService;
+import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksOneToOneAlgService;
 import ru.hofftech.console.packages.service.impl.LoaderBoxesInTrucksUniformAlgService;
 
 /**
  * Фабрика для создания сервисов загрузки коробок в грузовики.
  */
+@Service
 public class LoaderBoxesInTrucksServiceFactory {
 
     /**

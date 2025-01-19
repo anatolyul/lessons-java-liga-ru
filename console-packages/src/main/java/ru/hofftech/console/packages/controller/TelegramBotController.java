@@ -1,7 +1,8 @@
 package ru.hofftech.console.packages.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -13,11 +14,18 @@ import ru.hofftech.console.packages.service.handler.CommandHandler;
  * Контроллер для обработки команд, полученных через Telegram.
  */
 @Slf4j
-@RequiredArgsConstructor
+@Component
 public class TelegramBotController extends TelegramLongPollingBot {
+
     private final CommandHandler commandHandler;
     private final TelegramBotConfig telegramBotConfig;
-    private final String helpText;
+
+    @Autowired
+    public TelegramBotController(CommandHandler commandHandler, TelegramBotConfig telegramBotConfig) {
+        super(telegramBotConfig.getToken());
+        this.commandHandler = commandHandler;
+        this.telegramBotConfig = telegramBotConfig;
+    }
 
     /**
      * Возвращает имя пользователя бота.
@@ -26,27 +34,7 @@ public class TelegramBotController extends TelegramLongPollingBot {
      */
     @Override
     public String getBotUsername() {
-        String username = telegramBotConfig.getBot().getUsername();
-        if ((username == null || username.isBlank())
-                && System.getenv("TELEGRAM_BOT_USERNAME") != null) {
-            username = System.getenv("TELEGRAM_BOT_USERNAME");
-        }
-        return username;
-    }
-
-    /**
-     * Возвращает токен бота.
-     *
-     * @return токен бота
-     */
-    @Override
-    public String getBotToken() {
-        String token = telegramBotConfig.getBot().getToken();
-        if ((token == null || token.isBlank())
-                && System.getenv("TELEGRAM_TOKEN") != null) {
-            token = System.getenv("TELEGRAM_TOKEN");
-        }
-        return token;
+        return telegramBotConfig.getUsername();
     }
 
     /**
@@ -61,10 +49,9 @@ public class TelegramBotController extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
 
             if (messageText.equals("/start") || messageText.equals("/help")) {
-                sendMessage(chatId, helpText);
+                sendMessage(chatId, commandHandler.handle("help"));
             } else {
-                String result = commandHandler.handle(messageText);
-                sendMessage(chatId, result);
+                sendMessage(chatId, commandHandler.handle(messageText));
             }
         }
     }

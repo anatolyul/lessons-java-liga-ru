@@ -3,14 +3,18 @@ package ru.hofftech.console.packages.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Сервис для форматирования данных о грузовиках и коробках.
  */
+@Service
 public class FormatterService {
 
     /**
@@ -19,7 +23,7 @@ public class FormatterService {
      * @param trucks список грузовиков
      * @return строка, представляющая список грузовиков
      */
-    public String TrucksToString(List<Truck> trucks) {
+    public String trucksToString(List<Truck> trucks) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
 
@@ -39,7 +43,7 @@ public class FormatterService {
      * @param trucks список грузовиков
      * @return JSON строка, представляющая список грузовиков
      */
-    public String TrucksToJson(List<Truck> trucks) {
+    public String trucksToJson(List<Truck> trucks) {
         String result;
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -59,7 +63,7 @@ public class FormatterService {
      * @param boxes список коробок
      * @return строка, представляющая список коробок
      */
-    public String BoxesToString(List<Box> boxes) {
+    public String boxesToString(List<Box> boxes) {
         StringBuilder sb = new StringBuilder();
 
         for (Box box : boxes) {
@@ -72,4 +76,22 @@ public class FormatterService {
         return sb.toString();
     }
 
+    public LocalDate stringToLocalDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return LocalDate.parse(date, formatter);
+    }
+
+    public String orderOperationToBillingString(LocalDate date,
+                                                int truckCount,
+                                                int sizeBox,
+                                                double cost,
+                                                String operation,
+                                                LocalDate periodFrom,
+                                                LocalDate periodTo) {
+        if (date.isAfter(periodFrom) && date.isBefore(periodTo)) {
+            return String.format("%s; %s; %d машин; %d посылок; %.2f рублей",
+                    date, operation, truckCount, sizeBox, sizeBox * cost);
+        }
+        return "";
+    }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * Сервис для разгрузки грузовиков и сохранения информации о коробках.
  */
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class UnloaderTrucksToBoxesService {
 
@@ -66,7 +68,7 @@ public class UnloaderTrucksToBoxesService {
         if (fileNameBoxes != null && !fileNameBoxes.isEmpty()) {
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(fileNameBoxes))) {
                 csvWriter.writeAll(boxes);
-                result.append("Результаты сохранены в файл: ").append(fileNameBoxes);
+                result.append("Результаты сохранены в файл: ").append(fileNameBoxes).append("\n");
             } catch (IOException e) {
                 log.error("Ошибка сохранения результатов в файл", e);
             }

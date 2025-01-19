@@ -1,29 +1,29 @@
 package ru.hofftech.console.packages.repository;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Repository;
 import ru.hofftech.console.packages.model.Box;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Репозиторий для управления коробками.
  */
 @Setter
 @Getter
-@RequiredArgsConstructor
+@Repository
 public class BoxRepository {
-    private List<Box> boxes = init();
+    private List<Box> boxes = new ArrayList<>();
 
     /**
      * Инициализирует список коробок.
-     *
-     * @return список коробок
      */
-    public List<Box> init() {
-
-        return List.of(new Box("Посылка Тип 1", "1", "1"),
+    public BoxRepository() {
+        boxes.addAll(List.of(
                 new Box("Посылка Тип 1", "1", "1"),
                 new Box("Посылка Тип 2", "22", "2"),
                 new Box("Посылка Тип 3", "333", "3"),
@@ -32,7 +32,7 @@ public class BoxRepository {
                 new Box("Посылка Тип 6", "666\n666", "6"),
                 new Box("Посылка Тип 7", "777\n7777", "7"),
                 new Box("Посылка Тип 8", "8888\n8888", "8"),
-                new Box("Посылка Тип 9", "999\n999\n999", "9"));
+                new Box("Посылка Тип 9", "999\n999\n999", "9")));
     }
 
     /**
@@ -150,5 +150,15 @@ public class BoxRepository {
         } else {
             return "Посылка не найдена, удаление запрещено!";
         }
+    }
+
+    public List<Box> getBoxesRandom(int count) {
+        return getBoxes().stream()
+                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                    Random random = new Random();
+                    return random.ints(count, 0, collected.size())
+                            .mapToObj(collected::get)
+                            .collect(Collectors.toList());
+                }));
     }
 }
