@@ -38,7 +38,7 @@ public class ResultOutSaveService {
             fileWriterService.writeToFile(formatterService.boxesToString(boxes), "boxes_result.txt");
             if (fileNameResult != null && !fileNameResult.isBlank()) {
                 fileWriterService.writeToFile(formatterService.trucksToJson(trucks), fileNameResult);
-                result.append("Результат сохранен в файл: ").append(fileNameResult);
+                result.append("Результат сохранен в файл: ").append(fileNameResult).append("\n");
             }
             List<Box> boxesNotInTrucks = boxes.stream()
                     .filter(box ->
