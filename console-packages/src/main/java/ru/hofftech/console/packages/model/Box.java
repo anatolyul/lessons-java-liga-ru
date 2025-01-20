@@ -106,6 +106,11 @@ public class Box {
         this.startWidth = startWidth;
     }
 
+    /**
+     * Вычисляет размер коробки на основе символа.
+     *
+     * @return размер коробки
+     */
     public int calcSize() {
         int size = 0;
         for (char c : form.toCharArray()) {

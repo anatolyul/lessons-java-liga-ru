@@ -20,11 +20,22 @@ import java.util.Map;
 public class ConsoleController {
     private final CommandHandler commandHandler;
 
+    /**
+     * Отображает справочник команд.
+     *
+     * @return строка с описанием команд
+     */
     @ShellMethod("Справочник команд")
     public String helpCommand() {
         return commandHandler.handle(new Command(ConsoleCommand.HELP, null));
     }
 
+    /**
+     * Импортирует посылки из файла TXT или JSON.
+     *
+     * @param importFilename имя файла для импорта
+     * @return результат выполнения команды
+     */
     @ShellMethod(value = "Импорт посылок из файла txt/json", key = "import")
     public String importFile(@ShellOption(value = {"--import-filename", "--file"}, help = "Файл импорта данных")
                              String importFilename) {
@@ -37,6 +48,14 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.IMPORT_FILE_TXT, arguments));
     }
 
+    /**
+     * Создает новую посылку.
+     *
+     * @param name   имя посылки
+     * @param form   форма посылки
+     * @param symbol символ посылки
+     * @return результат выполнения команды
+     */
     @ShellMethod(value = "Создание посылок")
     public String create(
             @ShellOption(value = {"--name"}, help = "Имя посылки") String name,
@@ -51,6 +70,15 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.BOX_CREATE, arguments));
     }
 
+    /**
+     * Редактирует существующую посылку.
+     *
+     * @param id     идентификатор посылки
+     * @param name   новое имя посылки
+     * @param form   новая форма посылки
+     * @param symbol новый символ посылки
+     * @return результат выполнения команды
+     */
     @ShellMethod("Редактирование посылок")
     public String edit(
             @ShellOption(value = {"--id"}, help = "Идентификатор посылки") String id,
@@ -67,6 +95,12 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.BOX_EDIT, arguments));
     }
 
+    /**
+     * Находит и отображает информацию о посылке.
+     *
+     * @param name имя посылки
+     * @return результат выполнения команды
+     */
     @ShellMethod("Поиск и получение информации о посылке")
     public String find(@ShellOption(value = {"--name"}, help = "Имя посылки") String name) {
 
@@ -76,6 +110,12 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.BOX_FIND, arguments));
     }
 
+    /**
+     * Удаляет посылку.
+     *
+     * @param name имя посылки
+     * @return результат выполнения команды
+     */
     @ShellMethod("Удаление посылок")
     public String delete(@ShellOption(value = {"--name"}, help = "Имя посылки") String name) {
 
@@ -85,11 +125,26 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.BOX_DELETE, arguments));
     }
 
+    /**
+     * Отображает список всех посылок.
+     *
+     * @return результат выполнения команды
+     */
     @ShellMethod("Список посылок")
     public String list() {
         return commandHandler.handle(new Command(ConsoleCommand.BOX_LIST, null));
     }
 
+    /**
+     * Загружает посылки в грузовики.
+     *
+     * @param parcelsText текст с именами посылок
+     * @param parcelsFile файл с именами посылок
+     * @param trucks      размеры грузовиков
+     * @param type        тип алгоритма погрузки
+     * @param outFilename имя выходного файла
+     * @return результат выполнения команды
+     */
     @ShellMethod("Загрузка посылок по именам в машины")
     public String load(
             @ShellOption(value = {"--parcels-text"},
@@ -111,6 +166,14 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.LOAD, arguments));
     }
 
+    /**
+     * Разгружает грузовики и сохраняет результаты в файл.
+     *
+     * @param inFilename  имя входного файла
+     * @param outFilename имя выходного файла
+     * @param withCount   добавить колонку с количеством
+     * @return результат выполнения команды
+     */
     @ShellMethod("Загрузка данных по машинам из файла переданным в параметре -in-filename и выгрузка результатов")
     public String unload(
             @ShellOption(value = {"--in-filename"}, help = "Имя входного файла") String inFilename,
@@ -127,6 +190,14 @@ public class ConsoleController {
         return commandHandler.handle(new Command(ConsoleCommand.UNLOAD, arguments));
     }
 
+    /**
+     * Отображает список операций пользователя за период.
+     *
+     * @param user       пользователь системы
+     * @param periodFrom начало периода
+     * @param periodTo   конец периода
+     * @return результат выполнения команды
+     */
     @ShellMethod("Список операций пользователя за период")
     public String billing(
             @ShellOption(value = {"--user"}, help = "Пользователь системы") String user,

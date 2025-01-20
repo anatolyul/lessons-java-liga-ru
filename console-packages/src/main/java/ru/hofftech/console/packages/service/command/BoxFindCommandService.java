@@ -9,14 +9,19 @@ import ru.hofftech.console.packages.service.CommandExecutor;
 
 import java.util.Map;
 
+/**
+ * Сервис для выполнения команды поиска коробки.
+ */
 @Service
 @RequiredArgsConstructor
 public class BoxFindCommandService implements CommandExecutor {
     private final BoxRepository boxRepository;
 
     /**
-     * @param command
-     * @return
+     * Выполняет команду поиска коробки.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
      */
     @Override
     public String execute(Command command) {

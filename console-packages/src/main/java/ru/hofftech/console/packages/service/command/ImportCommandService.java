@@ -12,6 +12,9 @@ import ru.hofftech.console.packages.service.factory.ParserBoxesServiceFactory;
 
 import java.util.List;
 
+/**
+ * Сервис для выполнения команды импорта коробок.
+ */
 @Service
 @RequiredArgsConstructor
 public class ImportCommandService implements CommandExecutor {
@@ -20,8 +23,10 @@ public class ImportCommandService implements CommandExecutor {
     private final CommandArgConverterService commandArgConverterService;
 
     /**
-     * @param command
-     * @return
+     * Выполняет команду импорта коробок.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
      */
     @Override
     public String execute(Command command) {

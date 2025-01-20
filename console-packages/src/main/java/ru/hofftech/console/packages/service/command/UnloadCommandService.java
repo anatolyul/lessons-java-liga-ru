@@ -10,6 +10,9 @@ import ru.hofftech.console.packages.service.converter.CommandArgConverterService
 
 import java.util.Map;
 
+/**
+ * Сервис для выполнения команды разгрузки грузовиков.
+ */
 @Service
 @RequiredArgsConstructor
 public class UnloadCommandService implements CommandExecutor {
@@ -17,8 +20,10 @@ public class UnloadCommandService implements CommandExecutor {
     private final CommandArgConverterService commandArgConverterService;
 
     /**
-     * @param command
-     * @return
+     * Выполняет команду разгрузки грузовиков.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
      */
     @Override
     public String execute(Command command) {

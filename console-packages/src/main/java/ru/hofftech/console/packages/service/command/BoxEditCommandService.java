@@ -9,14 +9,19 @@ import ru.hofftech.console.packages.service.CommandExecutor;
 
 import java.util.Map;
 
+/**
+ * Сервис для выполнения команды редактирования коробки.
+ */
 @Service
 @RequiredArgsConstructor
 public class BoxEditCommandService implements CommandExecutor {
     private final BoxRepository boxRepository;
 
     /**
-     * @param command
-     * @return
+     * Выполняет команду редактирования коробки.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
      */
     @Override
     public String execute(Command command) {

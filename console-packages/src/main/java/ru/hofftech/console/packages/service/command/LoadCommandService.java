@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Сервис для выполнения команды загрузки коробок в грузовики.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -33,8 +36,10 @@ public class LoadCommandService implements CommandExecutor {
     private Map<Argument, String> arguments;
 
     /**
-     * @param command
-     * @return
+     * Выполняет команду загрузки коробок в грузовики.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
      */
     @Override
     public String execute(Command command) {
@@ -76,6 +81,7 @@ public class LoadCommandService implements CommandExecutor {
     /**
      * Получает список коробок на основе аргументов команды.
      *
+     * @param command команда для выполнения
      * @return список коробок
      */
     private List<Box> getBoxes(Command command) {

@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Репозиторий для управления заказами.
+ */
 @Setter
 @Getter
 @Repository
@@ -17,6 +20,11 @@ public class OrderRepository {
     private final BoxRepository boxRepository;
     private List<Order> orders = new ArrayList<>();
 
+    /**
+     * Конструктор для инициализации репозитория заказов.
+     *
+     * @param boxRepository репозиторий коробок
+     */
     public OrderRepository(BoxRepository boxRepository) {
         this.boxRepository = boxRepository;
 

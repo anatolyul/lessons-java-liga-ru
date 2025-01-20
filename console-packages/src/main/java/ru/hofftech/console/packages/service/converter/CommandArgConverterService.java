@@ -100,7 +100,6 @@ public class CommandArgConverterService {
                 args.put(arg, argMatcher.group(2));
             }
 
-
             command.setArguments(args);
         }
 

@@ -42,7 +42,6 @@ public class BoxRepository {
      */
     public String findAll() {
         StringBuilder result = new StringBuilder();
-
         result.append("Список посылок:\n");
 
         for (Box box : boxes) {
@@ -152,6 +151,12 @@ public class BoxRepository {
         }
     }
 
+    /**
+     * Возвращает случайный список коробок.
+     *
+     * @param count количество коробок для выбора
+     * @return список случайных коробок
+     */
     public List<Box> getBoxesRandom(int count) {
         return getBoxes().stream()
                 .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {

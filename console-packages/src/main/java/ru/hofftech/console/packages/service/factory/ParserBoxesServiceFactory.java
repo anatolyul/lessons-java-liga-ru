@@ -23,12 +23,11 @@ public class ParserBoxesServiceFactory {
      *
      * @param boxRepository репозиторий коробок
      * @param command       команда, определяющая тип сервиса парсинга
+     * @param filePath      путь к файлу для парсинга
      * @return экземпляр сервиса парсинга информации о коробках
      * @throws IllegalStateException если команда не поддерживается
      */
-    public List<Box> create(BoxRepository boxRepository,
-                            ConsoleCommand command,
-                            String filePath) {
+    public List<Box> create(BoxRepository boxRepository, ConsoleCommand command, String filePath) {
         return switch (command) {
             case IMPORT_FILE_JSON -> new ParserBoxesServiceJson(boxRepository).parse(filePath);
             case IMPORT_FILE_TXT -> new ParserBoxesServiceTxt(boxRepository).parse(filePath);

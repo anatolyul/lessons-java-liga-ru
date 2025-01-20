@@ -29,6 +29,12 @@ public class CommandHandler {
         return commandExecutor.execute(commandArgs);
     }
 
+    /**
+     * Обрабатывает команду и выполняет соответствующие действия.
+     *
+     * @param commandArgs объект команды
+     * @return результат выполнения команды
+     */
     public String handle(Command commandArgs) {
         CommandExecutor commandExecutor = commandExecutorFactory.create(commandArgs.getConsoleCommand());
 

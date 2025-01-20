@@ -29,6 +29,12 @@ public class Truck {
     @JsonIgnore
     private String[][] cargoContent;
 
+    /**
+     * Конструктор с именем грузовика и списком коробок.
+     *
+     * @param truckName имя грузовика
+     * @param boxes     список коробок
+     */
     public Truck(String truckName, List<Box> boxes) {
         this.truckName = truckName;
         this.boxes = boxes;
@@ -83,7 +89,6 @@ public class Truck {
                 }
             }
         }
-
         return false;
     }
 
@@ -119,7 +124,6 @@ public class Truck {
                 }
             }
         }
-
         return true;
     }
 

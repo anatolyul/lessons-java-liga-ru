@@ -4,15 +4,20 @@ import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.service.CommandExecutor;
 
+/**
+ * Сервис для выполнения команды отображения справочной информации.
+ */
 @Service
 public class HelpCommandService implements CommandExecutor {
+
     /**
-     * @param command
-     * @return
+     * Выполняет команду отображения справочной информации.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая справочную информацию
      */
     @Override
     public String execute(Command command) {
-
         return """
                 
                 Справочник команд:
@@ -45,14 +50,13 @@ public class HelpCommandService implements CommandExecutor {
                 Аналогично, но ещё добавляем колонку с кол-вом
                 unload --in-filename "trucks.json" --out-filename "parcels-with-count.csv" --withcount "true"
                 
-                Алгоритмы погрузки определяется параметром -type:
+                Алгоритмы погрузки определяются параметром -type:
                 one2one - простой (одна посылка = одна машина)
                 max - сложный (максимальное размещение нескольких посылок по машинам)
                 uniform - равномерная погрузка по машинам
                 
                 import --import-filename "boxes.txt"
                 import --import-filename "trucks.json"
-                
                 
                 billing --user "Petrov" --period-from "11.01.2025" --period-to "12.01.2025"
                 """;

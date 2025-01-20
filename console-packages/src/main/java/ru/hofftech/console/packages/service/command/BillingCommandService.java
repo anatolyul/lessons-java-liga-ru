@@ -16,7 +16,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+/**
+ * Сервис для выполнения команд биллинга.
+ */
 @Service
 @RequiredArgsConstructor
 public class BillingCommandService implements CommandExecutor {
@@ -24,6 +26,12 @@ public class BillingCommandService implements CommandExecutor {
     private final BillingConfig billingConfig;
     private final FormatterService formatterService;
 
+    /**
+     * Выполняет команду биллинга.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
+     */
     @Override
     public String execute(Command command) {
         Map<Argument, String> arguments = command.getArguments();
@@ -41,22 +49,22 @@ public class BillingCommandService implements CommandExecutor {
                     List<Box> boxes = order.getBoxes();
                     int sizeBox = boxes.stream().mapToInt(Box::calcSize).sum();
                     return Stream.of(
-                            formatterService.
-                                    orderOperationToBillingString(order.getDateLoad(),
-                                            order.getTrucks().size(),
-                                            sizeBox,
-                                            billingConfig.getCostLoad(),
-                                            "Погрузка",
-                                            periodFrom,
-                                            periodTo),
-                            formatterService.
-                                    orderOperationToBillingString(order.getDateUnload(),
-                                            order.getTrucks().size(),
-                                            sizeBox,
-                                            billingConfig.getCostUnload(),
-                                            "Разгрузка",
-                                            periodFrom,
-                                            periodTo)
+                            formatterService.orderOperationToBillingString(
+                                    order.getDateLoad(),
+                                    order.getTrucks().size(),
+                                    sizeBox,
+                                    billingConfig.getCostLoad(),
+                                    "Погрузка",
+                                    periodFrom,
+                                    periodTo),
+                            formatterService.orderOperationToBillingString(
+                                    order.getDateUnload(),
+                                    order.getTrucks().size(),
+                                    sizeBox,
+                                    billingConfig.getCostUnload(),
+                                    "Разгрузка",
+                                    periodFrom,
+                                    periodTo)
                     );
                 })
                 .collect(Collectors.joining("\n"));

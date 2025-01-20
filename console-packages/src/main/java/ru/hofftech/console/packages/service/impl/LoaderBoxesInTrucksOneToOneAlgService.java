@@ -38,8 +38,7 @@ public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTruck
             }
         } else {
             for (int i = 0; i < boxes.size() && i < trucks.size(); i++) {
-                if (trucks.get(i) != null
-                        && trucks.get(i).canLoadBox(boxes.get(i))) {
+                if (trucks.get(i) != null && trucks.get(i).canLoadBox(boxes.get(i))) {
                     trucks.get(i).placeBox(boxes.get(i), 0, 0);
                 }
             }

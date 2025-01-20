@@ -24,6 +24,9 @@ import ru.hofftech.console.packages.service.command.UnknownCommandService;
 import ru.hofftech.console.packages.service.command.UnloadCommandService;
 import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
 
+/**
+ * Фабрика для создания экземпляров CommandExecutor на основе переданной консольной команды.
+ */
 @Service
 @RequiredArgsConstructor
 public class CommandExecutorFactory {
@@ -37,27 +40,32 @@ public class CommandExecutorFactory {
     private final OrderRepository orderRepository;
     private final BillingConfig billingConfig;
 
+    /**
+     * Создает экземпляр CommandExecutor на основе переданной консольной команды.
+     *
+     * @param command консольная команда
+     * @return экземпляр CommandExecutor, соответствующий переданной команде
+     */
     public CommandExecutor create(ConsoleCommand command) {
-        return
-                switch (command) {
-                    case EXIT -> new ExitCommandService();
-                    case HELP -> new HelpCommandService();
-                    case IMPORT_FILE_TXT, IMPORT_FILE_JSON -> new ImportCommandService(parserBoxesServiceFactory,
-                            boxRepository, commandArgConverterService);
-                    case LOAD -> new LoadCommandService(loaderBoxesInTrucksServiceFactory,
-                            commandArgConverterService,
-                            formatterService,
-                            resultOutSaveService,
-                            parserBoxesServiceFactory,
-                            boxRepository);
-                    case UNLOAD -> new UnloadCommandService(unloaderTrucksToBoxesService, commandArgConverterService);
-                    case BOX_CREATE -> new BoxCreateCommandService(boxRepository);
-                    case BOX_FIND -> new BoxFindCommandService(boxRepository);
-                    case BOX_DELETE -> new BoxDeleteCommandService(boxRepository);
-                    case BOX_EDIT -> new BoxEditCommandService(boxRepository);
-                    case BOX_LIST -> new BoxListCommandService(boxRepository);
-                    case BILLING -> new BillingCommandService(orderRepository, billingConfig, formatterService);
-                    case UNKNOWN -> new UnknownCommandService();
-                };
+        return switch (command) {
+            case EXIT -> new ExitCommandService();
+            case HELP -> new HelpCommandService();
+            case IMPORT_FILE_TXT, IMPORT_FILE_JSON -> new ImportCommandService(parserBoxesServiceFactory,
+                    boxRepository, commandArgConverterService);
+            case LOAD -> new LoadCommandService(loaderBoxesInTrucksServiceFactory,
+                    commandArgConverterService,
+                    formatterService,
+                    resultOutSaveService,
+                    parserBoxesServiceFactory,
+                    boxRepository);
+            case UNLOAD -> new UnloadCommandService(unloaderTrucksToBoxesService, commandArgConverterService);
+            case BOX_CREATE -> new BoxCreateCommandService(boxRepository);
+            case BOX_FIND -> new BoxFindCommandService(boxRepository);
+            case BOX_DELETE -> new BoxDeleteCommandService(boxRepository);
+            case BOX_EDIT -> new BoxEditCommandService(boxRepository);
+            case BOX_LIST -> new BoxListCommandService(boxRepository);
+            case BILLING -> new BillingCommandService(orderRepository, billingConfig, formatterService);
+            case UNKNOWN -> new UnknownCommandService();
+        };
     }
 }

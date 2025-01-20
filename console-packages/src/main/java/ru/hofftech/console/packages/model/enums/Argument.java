@@ -67,12 +67,24 @@ public enum Argument {
      */
     WITHCOUNT("--withcount"),
 
+    /**
+     * Аргумент для имени файла импорта.
+     */
     IMPORT_FILENAME("--import-filename"),
 
+    /**
+     * Аргумент для пользователя.
+     */
     USER("--user"),
 
+    /**
+     * Аргумент для начала периода.
+     */
     PERIOD_FROM("--period-from"),
 
+    /**
+     * Аргумент для конца периода.
+     */
     PERIOD_TO("--period-to"),
 
     /**

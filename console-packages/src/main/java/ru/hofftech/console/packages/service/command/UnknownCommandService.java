@@ -4,11 +4,17 @@ import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.service.CommandExecutor;
 
+/**
+ * Сервис для выполнения неизвестных команд.
+ */
 @Service
 public class UnknownCommandService implements CommandExecutor {
+
     /**
-     * @param command
-     * @return
+     * Выполняет неизвестную команду.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая сообщение о неподдерживаемой команде
      */
     @Override
     public String execute(Command command) {

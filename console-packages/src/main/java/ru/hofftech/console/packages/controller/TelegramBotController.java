@@ -20,6 +20,12 @@ public class TelegramBotController extends TelegramLongPollingBot {
     private final CommandHandler commandHandler;
     private final TelegramBotConfig telegramBotConfig;
 
+    /**
+     * Конструктор для инициализации Telegram бота.
+     *
+     * @param commandHandler    обработчик команд
+     * @param telegramBotConfig конфигурация Telegram бота
+     */
     @Autowired
     public TelegramBotController(CommandHandler commandHandler, TelegramBotConfig telegramBotConfig) {
         super(telegramBotConfig.getToken());

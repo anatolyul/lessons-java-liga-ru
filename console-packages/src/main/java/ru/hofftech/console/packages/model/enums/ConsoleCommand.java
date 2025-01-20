@@ -57,8 +57,14 @@ public enum ConsoleCommand {
      */
     UNLOAD("unload"),
 
+    /**
+     * Команда для отображения справочной информации.
+     */
     HELP("help"),
 
+    /**
+     * Команда для биллинга.
+     */
     BILLING("billing"),
 
     /**
