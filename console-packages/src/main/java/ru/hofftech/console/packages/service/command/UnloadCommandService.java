@@ -27,7 +27,7 @@ public class UnloadCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
-        Map<Argument, String> arguments = command.getArguments();
+        Map<Argument, String> arguments = command.arguments();
         return unloaderTrucksToBoxesService.unloadTrucksToBoxes(
                 commandArgConverterService.fileToPath(arguments.get(Argument.IN_FILENAME)),
                 arguments.get(Argument.OUT_FILENAME),

@@ -82,4 +82,13 @@ public enum ConsoleCommand {
     ConsoleCommand(String code) {
         this.code = code;
     }
+
+    public static ConsoleCommand fromExtension(String filename) {
+        if (filename.endsWith(".json")) {
+            return IMPORT_FILE_JSON;
+        } else if (filename.endsWith(".txt")) {
+            return IMPORT_FILE_TXT;
+        }
+        throw new IllegalArgumentException("Unsupported file extension: " + filename);
+    }
 }

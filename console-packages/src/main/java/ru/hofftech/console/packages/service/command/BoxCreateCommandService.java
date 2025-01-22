@@ -25,7 +25,7 @@ public class BoxCreateCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
-        Map<Argument, String> arguments = command.getArguments();
+        Map<Argument, String> arguments = command.arguments();
         return boxRepository.createBox(arguments.get(Argument.NAME),
                 arguments.get(Argument.FORM),
                 arguments.get(Argument.SYMBOL));

@@ -17,14 +17,14 @@ class CommandArgConverterServiceTest {
 
     @Test
     void convertStringToEnum_givenImportFileTxtCommand_shouldReturnConsoleCommand() {
-        String importFileCommand = "import boxes.txt";
+        String importFileCommand = "import --import-filename \"boxes.txt\"";
         ConsoleCommand consoleCommand = commandArgConverterService.convertCommandStringToEnum(importFileCommand);
         assertThat(consoleCommand).isEqualTo(ConsoleCommand.IMPORT_FILE_TXT);
     }
 
     @Test
     void convertStringToEnum_givenImportFileJsonCommand_shouldReturnConsoleCommand() {
-        String importFileCommand = "import trucks.json";
+        String importFileCommand = "import --import-filename \"trucks.json\"";
         ConsoleCommand consoleCommand = commandArgConverterService.convertCommandStringToEnum(importFileCommand);
         assertThat(consoleCommand).isEqualTo(ConsoleCommand.IMPORT_FILE_JSON);
     }

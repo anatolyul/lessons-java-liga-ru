@@ -25,7 +25,7 @@ public class BoxDeleteCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
-        Map<Argument, String> arguments = command.getArguments();
+        Map<Argument, String> arguments = command.arguments();
         return boxRepository.deleteBox(arguments.get(Argument.NAME));
     }
 }

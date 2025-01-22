@@ -25,7 +25,7 @@ public class BoxEditCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
-        Map<Argument, String> arguments = command.getArguments();
+        Map<Argument, String> arguments = command.arguments();
         return boxRepository.updateBox(arguments.get(Argument.ID),
                 arguments.get(Argument.NAME),
                 arguments.get(Argument.FORM),

@@ -24,7 +24,7 @@ public class CommandHandler {
      */
     public String handle(String commandString) {
         Command commandArgs = commandArgConverterService.parseCommandArgs(commandString);
-        CommandExecutor commandExecutor = commandExecutorFactory.create(commandArgs.getConsoleCommand());
+        CommandExecutor commandExecutor = commandExecutorFactory.create(commandArgs.consoleCommand());
 
         return commandExecutor.execute(commandArgs);
     }
@@ -36,7 +36,7 @@ public class CommandHandler {
      * @return результат выполнения команды
      */
     public String handle(Command commandArgs) {
-        CommandExecutor commandExecutor = commandExecutorFactory.create(commandArgs.getConsoleCommand());
+        CommandExecutor commandExecutor = commandExecutorFactory.create(commandArgs.consoleCommand());
 
         return commandExecutor.execute(commandArgs);
     }

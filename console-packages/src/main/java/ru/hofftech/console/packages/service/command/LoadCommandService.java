@@ -43,13 +43,17 @@ public class LoadCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
-        arguments = command.getArguments();
-        List<Truck> trucks = getTrucks();
+        arguments = command.arguments();
         List<Box> boxes = getBoxes(command);
-        trucks = loaderBoxesInTrucksServiceFactory
-                .createLoaderBoxesInTrucksService(commandArgConverterService
-                        .convertTypeAlgorithmStringToEnum(arguments.get(Argument.TYPE)))
-                .loadBoxesInTrucks(boxes, trucks,
+        var typeAlgorithm = commandArgConverterService.convertTypeAlgorithmStringToEnum(arguments.get(Argument.TYPE));
+        if (typeAlgorithm == null) {
+            log.error("Не удалось преобразовать строку алгоритма в enum. Аргумент: {}", arguments.get(Argument.TYPE));
+            throw new IllegalArgumentException("Неверный тип алгоритма: " + arguments.get(Argument.TYPE));
+        }
+
+        List<Truck> trucks = loaderBoxesInTrucksServiceFactory
+                .createLoaderBoxesInTrucksService(typeAlgorithm)
+                .loadBoxesInTrucks(boxes, getTrucks(),
                         arguments.get(Argument.LIMIT) != null && !arguments.get(Argument.LIMIT).isBlank()
                                 ? Integer.parseInt(arguments.get(Argument.LIMIT)) : 0);
         return resultOutSaveService.saveOutResult(formatterService,
@@ -101,7 +105,7 @@ public class LoadCommandService implements CommandExecutor {
         } else if (boxesFile != null && !boxesFile.isEmpty()) {
             boxes = parserBoxesServiceFactory
                     .create(boxRepository,
-                            command.getConsoleCommand(),
+                            command.consoleCommand(),
                             commandArgConverterService.fileToPath(boxesFile));
         } else {
             boxes = boxRepository.getBoxes();

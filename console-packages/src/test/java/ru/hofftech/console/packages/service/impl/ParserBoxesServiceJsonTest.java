@@ -1,11 +1,10 @@
-package ru.hofftech.console.packages.util.impl;
+package ru.hofftech.console.packages.service.impl;
 
 import org.junit.jupiter.api.Test;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
-import ru.hofftech.console.packages.service.impl.ParserBoxesServiceJson;
 
 import java.util.List;
 

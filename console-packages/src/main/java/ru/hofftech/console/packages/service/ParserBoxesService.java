@@ -1,6 +1,5 @@
 package ru.hofftech.console.packages.service;
 
-import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.List;
 /**
  * Интерфейс для парсинга информации о коробках из файла.
  */
-@Service
 public interface ParserBoxesService {
 
     /**

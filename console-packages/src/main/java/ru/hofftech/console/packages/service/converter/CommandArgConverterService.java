@@ -74,17 +74,17 @@ public class CommandArgConverterService {
      * @return объект Command, содержащий команду и список аргументов
      */
     public Command parseCommandArgs(String consoleCommand) {
-        Command command = new Command();
-        command.setConsoleCommand(convertCommandStringToEnum(consoleCommand));
+        ConsoleCommand consoleCommandResult = convertCommandStringToEnum(consoleCommand);
 
         // Регулярное выражение для извлечения команды и аргументов
         String commandRegex = "(\\w+)(.*)";
         Pattern commandPattern = Pattern.compile(commandRegex);
         Matcher commandMatcher = commandPattern.matcher(consoleCommand);
 
+        Map<Argument, String> args = new EnumMap<>(Argument.class);
         if (commandMatcher.find()) {
-            if (command.getConsoleCommand() == ConsoleCommand.UNKNOWN) {
-                command.setConsoleCommand(convertCommandStringToEnum(commandMatcher.group(1)));
+            if (consoleCommandResult == ConsoleCommand.UNKNOWN) {
+                consoleCommandResult = convertCommandStringToEnum(commandMatcher.group(1));
             }
 
             String argsString = commandMatcher.group(2).trim().replace("\\n", "\n");
@@ -94,16 +94,13 @@ public class CommandArgConverterService {
             Pattern argPattern = Pattern.compile(argRegex);
             Matcher argMatcher = argPattern.matcher(argsString);
 
-            Map<Argument, String> args = new EnumMap<>(Argument.class);
             while (argMatcher.find()) {
                 Argument arg = convertArgumentStringToEnum(argMatcher.group(1));
                 args.put(arg, argMatcher.group(2));
             }
-
-            command.setArguments(args);
         }
 
-        return command;
+        return new Command(consoleCommandResult, args);
     }
 
     /**

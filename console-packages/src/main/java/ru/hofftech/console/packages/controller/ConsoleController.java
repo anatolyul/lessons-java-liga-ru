@@ -1,6 +1,7 @@
 package ru.hofftech.console.packages.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.shell.context.ShellContext;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ConsoleController {
     private final CommandHandler commandHandler;
+    private final ShellContext shellContext;
 
     /**
      * Отображает справочник команд.
@@ -42,10 +44,8 @@ public class ConsoleController {
         Map<Argument, String> arguments = new EnumMap<>(Argument.class);
         arguments.put(Argument.IMPORT_FILENAME, importFilename);
 
-        if (importFilename.contains(".json")) {
-            return commandHandler.handle(new Command(ConsoleCommand.IMPORT_FILE_JSON, arguments));
-        }
-        return commandHandler.handle(new Command(ConsoleCommand.IMPORT_FILE_TXT, arguments));
+        ConsoleCommand command = ConsoleCommand.fromExtension(importFilename);
+        return commandHandler.handle(new Command(command, arguments));
     }
 
     /**
