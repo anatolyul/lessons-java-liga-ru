@@ -2,6 +2,7 @@ package ru.hofftech.consolepackages.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.hofftech.consolepackages.exception.FileReadException;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.repository.BoxRepository;
 import ru.hofftech.consolepackages.service.ParserBoxesService;
@@ -65,7 +66,7 @@ public class ParserBoxesServiceTxt implements ParserBoxesService {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileReadException("Ошибка чтения файла: " + filePath, e);
         }
 
         if (!boxes.isEmpty()) {

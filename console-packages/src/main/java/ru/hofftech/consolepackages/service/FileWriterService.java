@@ -1,6 +1,7 @@
 package ru.hofftech.consolepackages.service;
 
 import org.springframework.stereotype.Service;
+import ru.hofftech.consolepackages.exception.FileWriteException;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class FileWriterService {
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(content);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileWriteException("Ошибка сохранения результатов в файл: " + fileName, e);
         }
     }
 }

@@ -29,9 +29,11 @@ public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucks
     public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
         List<Truck> trucks = new ArrayList<>();
         if (trucksForms == null || trucksForms.isBlank()) {
-            for (int i = 1; i <= limitTrucks; i++) {
-                Truck truck = new Truck("Truck " + i);
-                trucks.add(truck);
+            if (limitTrucks != null && limitTrucks > 0) {
+                for (int i = 1; i <= limitTrucks; i++) {
+                    Truck truck = new Truck("Truck " + i);
+                    trucks.add(truck);
+                }
             }
         } else {
             trucks = truckRepository.createTrucksByForm(trucksForms);

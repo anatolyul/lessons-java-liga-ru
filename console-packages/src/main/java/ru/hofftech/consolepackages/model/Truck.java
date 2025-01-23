@@ -38,6 +38,7 @@ public class Truck {
     public Truck(String truckName, List<Box> boxes) {
         this.truckName = truckName;
         this.boxes = boxes;
+        cargoContent = new String[truckHeight][truckWidth];
     }
 
     /**
