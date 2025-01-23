@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Command;
-import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.model.enums.Argument;
 import ru.hofftech.console.packages.repository.BoxRepository;
 import ru.hofftech.console.packages.service.CommandExecutor;
@@ -51,36 +50,17 @@ public class LoadCommandService implements CommandExecutor {
             throw new IllegalArgumentException("Неверный тип алгоритма: " + arguments.get(Argument.TYPE));
         }
 
-        List<Truck> trucks = loaderBoxesInTrucksServiceFactory
+        loaderBoxesInTrucksServiceFactory
                 .createLoaderBoxesInTrucksService(typeAlgorithm)
-                .loadBoxesInTrucks(boxes, getTrucks(),
-                        arguments.get(Argument.LIMIT) != null && !arguments.get(Argument.LIMIT).isBlank()
+                .loadBoxesInTrucks(boxes,
+                        arguments.get(Argument.TRUCKS),
+                        arguments.get(Argument.LIMIT) != null
+                                && !arguments.get(Argument.LIMIT).isBlank()
                                 ? Integer.parseInt(arguments.get(Argument.LIMIT)) : 0);
         return resultOutSaveService.saveOutResult(formatterService,
-                trucks, boxes, arguments.get(Argument.OUT_FILENAME));
+                boxes, arguments.get(Argument.OUT_FILENAME));
     }
 
-    /**
-     * Получает список грузовиков на основе аргументов команды.
-     *
-     * @return список грузовиков
-     */
-    private List<Truck> getTrucks() {
-        List<Truck> trucks = new ArrayList<>();
-        String trucksForms = arguments.get(Argument.TRUCKS);
-        if (trucksForms != null && !trucksForms.isEmpty()) {
-            String[] truckDimensions = trucksForms.replace("n", "\n")
-                    .replace("\\n", "\n").split("\n");
-            for (String dimension : truckDimensions) {
-                String[] sizes = dimension.split("x");
-                Truck truck = new Truck("Truck " + dimension,
-                        Integer.parseInt(sizes[0]),
-                        Integer.parseInt(sizes[1]));
-                trucks.add(truck);
-            }
-        }
-        return trucks;
-    }
 
     /**
      * Получает список коробок на основе аргументов команды.

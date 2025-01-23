@@ -1,33 +1,41 @@
 package ru.hofftech.console.packages.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
+import ru.hofftech.console.packages.repository.TruckRepository;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Реализация сервиса для равномерной загрузки коробок в грузовики.
  */
 @Service
+@RequiredArgsConstructor
 public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucksService {
+    private final TruckRepository truckRepository;
 
     /**
      * Загружает коробки в грузовики с учетом ограничения на количество грузовиков, используя равномерный алгоритм.
      *
      * @param boxes       список коробок для загрузки
-     * @param trucks      список грузовиков
+     * @param trucksForms формы грузовиков
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
      * @return список грузовиков с загруженными коробками
      */
     @Override
-    public List<Truck> loadBoxesInTrucks(List<Box> boxes, List<Truck> trucks, Integer limitTrucks) {
-        if (trucks.isEmpty()) {
+    public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
+        List<Truck> trucks = new ArrayList<>();
+        if (trucksForms == null || trucksForms.isBlank()) {
             for (int i = 1; i <= limitTrucks; i++) {
                 Truck truck = new Truck("Truck " + i);
                 trucks.add(truck);
             }
+        } else {
+            trucks = truckRepository.createTrucksByForm(trucksForms);
         }
 
         List<Box> sortedBoxes = boxes.stream()
@@ -40,8 +48,7 @@ public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucks
                 currentTruck.loadBox(box);
             }
         }
-
-        return trucks;
+        truckRepository.setTrucks(trucks);
     }
 
     /**

@@ -2,13 +2,12 @@ package ru.hofftech.console.packages.service.impl;
 
 import org.junit.jupiter.api.Test;
 import ru.hofftech.console.packages.model.Box;
-import ru.hofftech.console.packages.model.Truck;
 import ru.hofftech.console.packages.repository.BoxRepository;
+import ru.hofftech.console.packages.repository.TruckRepository;
 import ru.hofftech.console.packages.service.FormatterService;
 import ru.hofftech.console.packages.service.ParserBoxesService;
 import ru.hofftech.console.packages.service.converter.CommandArgConverterService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,13 +21,15 @@ class LoaderBoxesInTrucksMaxAlgServiceTest {
         ParserBoxesService parserBoxesService = new ParserBoxesServiceTxt(repository);
         FormatterService formatterService = new FormatterService();
         CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
+        TruckRepository truckRepository = new TruckRepository();
         boxes = parserBoxesService.parse(commandArgConverterService.fileToPath("boxes.txt"));
 
-        LoaderBoxesInTrucksMaxAlgService loadingBoxesInTruckService = new LoaderBoxesInTrucksMaxAlgService();
-        List<Truck> trucks = loadingBoxesInTruckService.loadBoxesInTrucks(boxes, new ArrayList<>(), 2);
-        System.out.print(formatterService.trucksToString(trucks));
-        System.out.print(formatterService.trucksToJson(trucks));
+        LoaderBoxesInTrucksMaxAlgService loadingBoxesInTruckService =
+                new LoaderBoxesInTrucksMaxAlgService(truckRepository);
+        loadingBoxesInTruckService.loadBoxesInTrucks(boxes, null, 2);
+        System.out.print(formatterService.trucksToString(truckRepository.getTrucks()));
+        System.out.print(formatterService.trucksToJson(truckRepository.getTrucks()));
 
-        assertThat(trucks).hasSize(1);
+        assertThat(truckRepository.getTrucks()).hasSize(1);
     }
 }

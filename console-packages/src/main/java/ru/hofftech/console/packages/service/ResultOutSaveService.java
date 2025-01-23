@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
+import ru.hofftech.console.packages.repository.TruckRepository;
 
 import java.util.List;
 
@@ -14,19 +15,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResultOutSaveService {
     private final FileWriterService fileWriterService;
+    private final TruckRepository truckRepository;
 
     /**
      * Метод для сохранения результатов распределения груза.
      *
      * @param formatterService сервис для форматирования данных
-     * @param trucks           список грузовиков
      * @param boxes            список коробок
      * @param fileNameResult   имя файла для сохранения результата
      * @return строка с результатом операции
      */
-    public String saveOutResult(FormatterService formatterService,
-                                List<Truck> trucks, List<Box> boxes, String fileNameResult) {
+    public String saveOutResult(FormatterService formatterService, List<Box> boxes, String fileNameResult) {
         StringBuilder result = new StringBuilder();
+        List<Truck> trucks = truckRepository.getTrucks();
 
         if (boxes != null && !boxes.isEmpty()
                 && trucks != null && !trucks.isEmpty()) {

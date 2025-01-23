@@ -1,29 +1,35 @@
 package ru.hofftech.console.packages.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
+import ru.hofftech.console.packages.repository.TruckRepository;
 import ru.hofftech.console.packages.service.LoaderBoxesInTrucksService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Реализация сервиса для загрузки коробок в грузовики по алгоритму максимальной загрузки.
  */
 @Service
+@RequiredArgsConstructor
 public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksService {
+    private final TruckRepository truckRepository;
 
     /**
      * Загружает коробки в грузовики по алгоритму максимальной загрузки, с учетом ограничения на количество грузовиков.
      *
      * @param boxes       список коробок для загрузки
-     * @param trucks      список грузовиков
+     * @param trucksForms формы грузовиков
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
      * @return список грузовиков с загруженными коробками
      */
     @Override
-    public List<Truck> loadBoxesInTrucks(List<Box> boxes, List<Truck> trucks, Integer limitTrucks) {
-        if (trucks.isEmpty()) {
+    public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
+        List<Truck> trucks = new ArrayList<>();
+        if (trucksForms == null || trucksForms.isBlank()) {
             int truckId = 1;
             Truck truck = new Truck("Truck " + truckId);
 
@@ -39,6 +45,7 @@ public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksServ
             }
             trucks.add(truck);
         } else {
+            trucks = truckRepository.createTrucksByForm(trucksForms);
             for (Box box : boxes) {
                 for (Truck truck : trucks) {
                     if (truck.canLoadBox(box)) {
@@ -48,7 +55,6 @@ public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksServ
                 }
             }
         }
-
-        return trucks;
+        truckRepository.setTrucks(trucks);
     }
 }
