@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.hofftech.console.packages.exception.FileReadException;
+import ru.hofftech.console.packages.exception.FileWriteException;
 import ru.hofftech.console.packages.model.Box;
 import ru.hofftech.console.packages.model.Truck;
 
@@ -32,6 +35,7 @@ public class UnloaderTrucksToBoxesService {
      * @param withcount      флаг, указывающий, нужно ли включать количество коробок
      * @return строка с результатом операции
      */
+    @SneakyThrows
     public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withcount) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String[]> boxes;
@@ -60,7 +64,7 @@ public class UnloaderTrucksToBoxesService {
                         .collect(Collectors.toList());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileReadException("Ошибка чтения файла грузовиков: " + fileNameTrucks, e);
         }
 
         StringBuilder result = new StringBuilder();
@@ -70,7 +74,7 @@ public class UnloaderTrucksToBoxesService {
                 csvWriter.writeAll(boxes);
                 result.append("Результаты сохранены в файл: ").append(fileNameBoxes).append("\n");
             } catch (IOException e) {
-                log.error("Ошибка сохранения результатов в файл", e);
+                throw new FileWriteException("Ошибка сохранения результатов в файл: " + fileNameBoxes, e);
             }
         } else {
             result.append(boxes.stream().map(arr -> arr[0]).collect(Collectors.joining("\n")));

@@ -62,7 +62,7 @@ public class BillingCommandService implements CommandExecutor {
         List<Box> boxes = order.getBoxes();
         int sizeBox = boxes.stream().mapToInt(Box::calcSize).sum();
         return Stream.of(
-                formatterService.orderOperationToBillingString(
+                formatterService.formatOrderOperationToBillingString(
                         order.getDateLoad(),
                         order.getTrucks().size(),
                         sizeBox,
@@ -70,7 +70,7 @@ public class BillingCommandService implements CommandExecutor {
                         TypeOrderProcess.LOAD.getCode(),
                         periodFrom,
                         periodTo),
-                formatterService.orderOperationToBillingString(
+                formatterService.formatOrderOperationToBillingString(
                         order.getDateUnload(),
                         order.getTrucks().size(),
                         sizeBox,

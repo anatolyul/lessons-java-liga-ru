@@ -81,13 +81,13 @@ public class FormatterService {
         return LocalDate.parse(date, formatter);
     }
 
-    public String orderOperationToBillingString(LocalDate date,
-                                                int truckCount,
-                                                int sizeBox,
-                                                double cost,
-                                                String operation,
-                                                LocalDate periodFrom,
-                                                LocalDate periodTo) {
+    public String formatOrderOperationToBillingString(LocalDate date,
+                                                      int truckCount,
+                                                      int sizeBox,
+                                                      double cost,
+                                                      String operation,
+                                                      LocalDate periodFrom,
+                                                      LocalDate periodTo) {
         if (date.isAfter(periodFrom) && date.isBefore(periodTo)) {
             return String.format("%s; %s; %d машин; %d посылок; %.2f рублей",
                     date, operation, truckCount, sizeBox, sizeBox * cost);

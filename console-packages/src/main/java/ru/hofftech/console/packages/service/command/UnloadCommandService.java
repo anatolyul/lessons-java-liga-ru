@@ -2,6 +2,8 @@ package ru.hofftech.console.packages.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.hofftech.console.packages.exception.FileReadException;
+import ru.hofftech.console.packages.exception.FileWriteException;
 import ru.hofftech.console.packages.model.Command;
 import ru.hofftech.console.packages.model.enums.Argument;
 import ru.hofftech.console.packages.service.CommandExecutor;
@@ -28,10 +30,14 @@ public class UnloadCommandService implements CommandExecutor {
     @Override
     public String execute(Command command) {
         Map<Argument, String> arguments = command.arguments();
-        return unloaderTrucksToBoxesService.unloadTrucksToBoxes(
-                commandArgConverterService.fileToPath(arguments.get(Argument.IN_FILENAME)),
-                arguments.get(Argument.OUT_FILENAME),
-                arguments.get(Argument.WITHCOUNT) != null
-                        && arguments.get(Argument.WITHCOUNT).equals("true"));
+        try {
+            return unloaderTrucksToBoxesService.unloadTrucksToBoxes(
+                    commandArgConverterService.fileToPath(arguments.get(Argument.IN_FILENAME)),
+                    arguments.get(Argument.OUT_FILENAME),
+                    arguments.get(Argument.WITHCOUNT) != null
+                            && arguments.get(Argument.WITHCOUNT).equals("true"));
+        } catch (FileReadException | FileWriteException e) {
+            return "Ошибка выполнения команды: " + e.getMessage();
+        }
     }
 }
