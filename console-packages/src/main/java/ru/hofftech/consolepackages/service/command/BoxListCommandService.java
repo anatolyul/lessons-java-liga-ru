@@ -1,0 +1,27 @@
+package ru.hofftech.consolepackages.service.command;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ru.hofftech.consolepackages.model.Command;
+import ru.hofftech.consolepackages.repository.BoxRepository;
+import ru.hofftech.consolepackages.service.CommandExecutor;
+
+/**
+ * Сервис для выполнения команды отображения списка всех коробок.
+ */
+@Service
+@RequiredArgsConstructor
+public class BoxListCommandService implements CommandExecutor {
+    private final BoxRepository boxRepository;
+
+    /**
+     * Выполняет команду отображения списка всех коробок.
+     *
+     * @param command команда для выполнения
+     * @return строка, содержащая результат выполнения команды
+     */
+    @Override
+    public String execute(Command command) {
+        return boxRepository.findAll();
+    }
+}
