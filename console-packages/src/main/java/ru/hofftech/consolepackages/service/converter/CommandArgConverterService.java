@@ -10,6 +10,7 @@ import ru.hofftech.consolepackages.service.FormatterService;
 import java.io.File;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -114,8 +115,8 @@ public class CommandArgConverterService {
         if (new File(fileName).isFile()) {
             result = fileName;
         } else {
-            result = FormatterService.class.getClassLoader()
-                    .getResource(fileName).getPath();
+            result = Objects.requireNonNull(FormatterService.class.getClassLoader()
+                    .getResource(fileName)).getPath();
         }
         return result;
     }

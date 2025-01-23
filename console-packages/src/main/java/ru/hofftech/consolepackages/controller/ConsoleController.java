@@ -1,7 +1,6 @@
 package ru.hofftech.consolepackages.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.shell.context.ShellContext;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -20,7 +19,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ConsoleController {
     private final CommandHandler commandHandler;
-    private final ShellContext shellContext;
 
     /**
      * Отображает справочник команд.
