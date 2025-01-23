@@ -24,7 +24,6 @@ public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksServ
      * @param boxes       список коробок для загрузки
      * @param trucksForms формы грузовиков
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
-     * @return список грузовиков с загруженными коробками
      */
     @Override
     public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
