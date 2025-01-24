@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Command;
+import ru.hofftech.consolepackages.model.Truck;
+import ru.hofftech.consolepackages.model.TruckForm;
 import ru.hofftech.consolepackages.model.enums.Argument;
 import ru.hofftech.consolepackages.repository.BoxRepository;
 import ru.hofftech.consolepackages.service.CommandExecutor;
@@ -43,22 +45,23 @@ public class LoadCommandService implements CommandExecutor {
     @Override
     public String execute(Command command) {
         arguments = command.arguments();
-        List<Box> boxes = getBoxes(command);
+        List<Box> boxes = findBoxesByCommand(command);
         var typeAlgorithm = commandArgConverterService.convertTypeAlgorithmStringToEnum(arguments.get(Argument.TYPE));
         if (typeAlgorithm == null) {
             log.error("Не удалось преобразовать строку алгоритма в enum. Аргумент: {}", arguments.get(Argument.TYPE));
             throw new IllegalArgumentException("Неверный тип алгоритма: " + arguments.get(Argument.TYPE));
         }
 
-        loaderBoxesInTrucksServiceFactory
+        TruckForm trucksForm = new TruckForm(arguments.get(Argument.LIMIT));
+
+        List<Truck> trucks = loaderBoxesInTrucksServiceFactory
                 .createLoaderBoxesInTrucksService(typeAlgorithm)
                 .loadBoxesInTrucks(boxes,
-                        arguments.get(Argument.TRUCKS),
+                        trucksForm,
                         arguments.get(Argument.LIMIT) != null
                                 && !arguments.get(Argument.LIMIT).isBlank()
                                 ? Integer.parseInt(arguments.get(Argument.LIMIT)) : 0);
-        return resultOutSaveService.saveOutResult(formatterService,
-                boxes, arguments.get(Argument.OUT_FILENAME));
+        return resultOutSaveService.saveOutResult(boxes, trucks, arguments.get(Argument.OUT_FILENAME));
     }
 
 
@@ -68,7 +71,7 @@ public class LoadCommandService implements CommandExecutor {
      * @param command команда для выполнения
      * @return список коробок
      */
-    private List<Box> getBoxes(Command command) {
+    private List<Box> findBoxesByCommand(Command command) {
         List<Box> boxes = new ArrayList<>();
         String boxesNames = arguments.get(Argument.PARCELS_TEXT);
         String boxesFile = arguments.get(Argument.PARCELS_FILE);
@@ -84,11 +87,10 @@ public class LoadCommandService implements CommandExecutor {
             }
         } else if (boxesFile != null && !boxesFile.isEmpty()) {
             boxes = parserBoxesServiceFactory
-                    .create(boxRepository,
-                            command.consoleCommand(),
+                    .create(command.consoleCommand(),
                             commandArgConverterService.fileToPath(boxesFile));
         } else {
-            boxes = boxRepository.getBoxes();
+            boxes = boxRepository.findAll();
         }
         return boxes;
     }

@@ -31,7 +31,7 @@ public class ImportCommandService implements CommandExecutor {
     @Override
     public String execute(Command command) {
         List<Box> result = parserBoxesServiceFactory
-                .create(boxRepository, command.consoleCommand(),
+                .create(command.consoleCommand(),
                         commandArgConverterService.fileToPath(
                                 command.arguments().get(Argument.IMPORT_FILENAME)));
         return "Посылки загружены Кол-во " + result.size();

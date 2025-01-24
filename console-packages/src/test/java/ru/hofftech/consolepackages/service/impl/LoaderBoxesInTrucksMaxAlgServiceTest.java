@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Truck;
-import ru.hofftech.consolepackages.repository.TruckRepository;
+import ru.hofftech.consolepackages.model.TruckForm;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,12 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LoaderBoxesInTrucksMaxAlgServiceTest {
 
     private LoaderBoxesInTrucksMaxAlgService loaderBoxesInTrucksMaxAlgService;
-    private TruckRepository truckRepository;
 
     @BeforeEach
     void setUp() {
-        truckRepository = new TruckRepository();
-        loaderBoxesInTrucksMaxAlgService = new LoaderBoxesInTrucksMaxAlgService(truckRepository);
+        loaderBoxesInTrucksMaxAlgService = new LoaderBoxesInTrucksMaxAlgService();
     }
 
     @Test
@@ -32,9 +30,8 @@ class LoaderBoxesInTrucksMaxAlgServiceTest {
                 new Box("Box3", "xx\nxx", "3")
         );
 
-        loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, null, null);
+        List<Truck> trucks = loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, new TruckForm(null), null);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(1, trucks.size());
         assertEquals(3, trucks.get(0).getBoxes().size());
     }
@@ -50,9 +47,8 @@ class LoaderBoxesInTrucksMaxAlgServiceTest {
                 new Box("Box5", "xxxx\nxx", "5")
         );
 
-        loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, null, 2);
+        List<Truck> trucks = loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, new TruckForm(null), 2);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(2, trucks.size());
         assertEquals(4, trucks.get(0).getBoxes().size());
         assertEquals(1, trucks.get(1).getBoxes().size());
@@ -67,11 +63,10 @@ class LoaderBoxesInTrucksMaxAlgServiceTest {
                 new Box("Box3", "xx\nxx", "3")
         );
 
-        String trucksForms = "4x2\n5x5";
+        TruckForm trucksForms = new TruckForm("4x2\n5x5");
 
-        loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, trucksForms, null);
+        List<Truck> trucks = loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, trucksForms, null);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(2, trucks.size());
         assertEquals("Truck 4x2", trucks.get(0).getTruckName());
         assertEquals("Truck 5x5", trucks.get(1).getTruckName());
@@ -90,11 +85,10 @@ class LoaderBoxesInTrucksMaxAlgServiceTest {
                 new Box("Box5", "xx\nxx", "5")
         );
 
-        String trucksForms = "4x4\n3x3";
+        TruckForm trucksForms = new TruckForm("4x4\n3x3");
 
-        loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, trucksForms, 2);
+        List<Truck> trucks = loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, trucksForms, 2);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(2, trucks.size());
         assertEquals("Truck 4x4", trucks.get(0).getTruckName());
         assertEquals("Truck 3x3", trucks.get(1).getTruckName());

@@ -1,10 +1,9 @@
 package ru.hofftech.consolepackages.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Truck;
-import ru.hofftech.consolepackages.repository.TruckRepository;
+import ru.hofftech.consolepackages.model.TruckForm;
 import ru.hofftech.consolepackages.service.LoaderBoxesInTrucksService;
 
 import java.util.ArrayList;
@@ -14,9 +13,7 @@ import java.util.List;
  * Реализация сервиса для загрузки коробок в грузовики по алгоритму максимальной загрузки.
  */
 @Service
-@RequiredArgsConstructor
 public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksService {
-    private final TruckRepository truckRepository;
 
     /**
      * Загружает коробки в грузовики по алгоритму максимальной загрузки, с учетом ограничения на количество грузовиков.
@@ -26,9 +23,9 @@ public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksServ
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
      */
     @Override
-    public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
+    public List<Truck> loadBoxesInTrucks(List<Box> boxes, TruckForm trucksForms, Integer limitTrucks) {
         List<Truck> trucks = new ArrayList<>();
-        if (trucksForms == null || trucksForms.isBlank()) {
+        if (trucksForms.isNotValid()) {
             int truckId = 1;
             Truck truck = new Truck("Truck " + truckId);
 
@@ -44,7 +41,7 @@ public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksServ
             }
             trucks.add(truck);
         } else {
-            trucks = truckRepository.createTrucksByForm(trucksForms);
+            trucks = trucksForms.createTrucks();
             for (Box box : boxes) {
                 for (Truck truck : trucks) {
                     if (truck.canLoadBox(box)) {
@@ -54,6 +51,7 @@ public class LoaderBoxesInTrucksMaxAlgService implements LoaderBoxesInTrucksServ
                 }
             }
         }
-        truckRepository.setTrucks(trucks);
+
+        return trucks;
     }
 }

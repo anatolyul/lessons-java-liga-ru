@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Truck;
-import ru.hofftech.consolepackages.repository.TruckRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,16 +20,15 @@ class ResultOutSaveServiceTest {
     @TempDir
     Path tempDir;
     private ResultOutSaveService resultOutSaveService;
-    private FileWriterService fileWriterService;
     private FormatterService formatterService;
-    private TruckRepository truckRepository;
+    private FileWriterService fileWriterService;
 
     @BeforeEach
     void setUp() {
-        fileWriterService = new FileWriterService();
         formatterService = new FormatterService();
-        truckRepository = new TruckRepository();
-        resultOutSaveService = new ResultOutSaveService(fileWriterService, truckRepository);
+        fileWriterService = new FileWriterService();
+        resultOutSaveService = new ResultOutSaveService(fileWriterService, formatterService);
+
     }
 
     @Test
@@ -49,9 +47,7 @@ class ResultOutSaveServiceTest {
                 new Truck("Truck2", Arrays.asList(boxes.get(2)))
         );
 
-        truckRepository.setTrucks(trucks);
-
-        String result = resultOutSaveService.saveOutResult(formatterService, boxes, fileNameResult);
+        String result = resultOutSaveService.saveOutResult(boxes, trucks, fileNameResult);
 
         assertTrue(result.contains("Результаты распределения груза:"));
         assertTrue(result.contains("Результат сохранен в файл: " + fileNameResult));
@@ -73,9 +69,7 @@ class ResultOutSaveServiceTest {
                 new Truck("Truck1", Arrays.asList(boxes.get(0)))
         );
 
-        truckRepository.setTrucks(trucks);
-
-        String result = resultOutSaveService.saveOutResult(formatterService, boxes, fileNameResult);
+        String result = resultOutSaveService.saveOutResult(boxes, trucks, fileNameResult);
 
         assertTrue(result.contains("Пропущена посылка: Box2"));
         assertTrue(result.contains("Пропущена посылка: Box3"));
@@ -92,9 +86,7 @@ class ResultOutSaveServiceTest {
 
         List<Truck> trucks = Arrays.asList();
 
-        truckRepository.setTrucks(trucks);
-
-        String result = resultOutSaveService.saveOutResult(formatterService, boxes, fileNameResult);
+        String result = resultOutSaveService.saveOutResult(boxes, trucks, fileNameResult);
 
         assertEquals("", result);
     }

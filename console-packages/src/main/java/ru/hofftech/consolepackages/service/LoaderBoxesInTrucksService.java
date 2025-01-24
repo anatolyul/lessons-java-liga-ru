@@ -1,6 +1,8 @@
 package ru.hofftech.consolepackages.service;
 
 import ru.hofftech.consolepackages.model.Box;
+import ru.hofftech.consolepackages.model.Truck;
+import ru.hofftech.consolepackages.model.TruckForm;
 
 import java.util.List;
 
@@ -17,5 +19,5 @@ public interface LoaderBoxesInTrucksService {
      * @param trucksForms формы грузовиков
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
      */
-    void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks);
+    List<Truck> loadBoxesInTrucks(List<Box> boxes, TruckForm trucksForms, Integer limitTrucks);
 }

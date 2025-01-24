@@ -1,10 +1,9 @@
 package ru.hofftech.consolepackages.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Truck;
-import ru.hofftech.consolepackages.repository.TruckRepository;
+import ru.hofftech.consolepackages.model.TruckForm;
 import ru.hofftech.consolepackages.service.LoaderBoxesInTrucksService;
 
 import java.util.ArrayList;
@@ -14,9 +13,7 @@ import java.util.List;
  * Реализация сервиса для загрузки коробок в грузовики по алгоритму "одна посылка - один грузовик".
  */
 @Service
-@RequiredArgsConstructor
 public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTrucksService {
-    private final TruckRepository truckRepository;
 
     /**
      * Загружает коробки в грузовики по алгоритму "одна посылка - один грузовик", с учетом ограничения на количество грузовиков.
@@ -26,9 +23,9 @@ public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTruck
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
      */
     @Override
-    public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
+    public List<Truck> loadBoxesInTrucks(List<Box> boxes, TruckForm trucksForms, Integer limitTrucks) {
         List<Truck> trucks = new ArrayList<>();
-        if (trucksForms == null || trucksForms.isBlank()) {
+        if (trucksForms.isNotValid()) {
             int truckId = 1;
 
             for (Box box : boxes) {
@@ -40,13 +37,14 @@ public class LoaderBoxesInTrucksOneToOneAlgService implements LoaderBoxesInTruck
                 trucks.add(truck);
             }
         } else {
-            trucks = truckRepository.createTrucksByForm(trucksForms);
+            trucks = trucksForms.createTrucks();
             for (int i = 0; i < boxes.size() && i < trucks.size(); i++) {
                 if (trucks.get(i) != null && trucks.get(i).canLoadBox(boxes.get(i))) {
                     trucks.get(i).placeBox(boxes.get(i), 0, 0);
                 }
             }
         }
-        truckRepository.setTrucks(trucks);
+
+        return trucks;
     }
 }

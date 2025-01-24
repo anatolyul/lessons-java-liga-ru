@@ -36,25 +36,12 @@ public class BoxRepository {
     }
 
     /**
-     * Возвращает строку, содержащую информацию о всех коробках.
+     * Возвращает все коробки.
      *
      * @return строка, содержащая информацию о всех коробках
      */
-    public String findAll() {
-        StringBuilder result = new StringBuilder();
-        result.append("Список посылок:\n");
-
-        for (Box box : boxes) {
-            result.append(String.format("""
-                    
-                    Посылка:
-                    name: %s
-                    form:
-                    %s
-                    """, box.getName(), box.getForm()));
-        }
-
-        return result.toString();
+    public List<Box> findAll() {
+        return boxes;
     }
 
     /**

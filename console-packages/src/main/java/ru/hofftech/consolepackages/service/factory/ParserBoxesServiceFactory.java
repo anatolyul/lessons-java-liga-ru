@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.enums.ConsoleCommand;
-import ru.hofftech.consolepackages.repository.BoxRepository;
-import ru.hofftech.consolepackages.service.impl.ParserBoxesServiceCsv;
-import ru.hofftech.consolepackages.service.impl.ParserBoxesServiceJson;
-import ru.hofftech.consolepackages.service.impl.ParserBoxesServiceTxt;
+import ru.hofftech.consolepackages.service.ParserBoxesService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Фабрика для создания сервисов парсинга информации о коробках.
@@ -17,22 +15,22 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ParserBoxesServiceFactory {
+    private final Map<ConsoleCommand, ParserBoxesService> parserBoxesMap;
 
     /**
      * Создает экземпляр сервиса парсинга информации о коробках на основе команды.
      *
-     * @param boxRepository репозиторий коробок
      * @param command       команда, определяющая тип сервиса парсинга
      * @param filePath      путь к файлу для парсинга
      * @return экземпляр сервиса парсинга информации о коробках
      * @throws IllegalStateException если команда не поддерживается
      */
-    public List<Box> create(BoxRepository boxRepository, ConsoleCommand command, String filePath) {
-        return switch (command) {
-            case IMPORT_FILE_JSON -> new ParserBoxesServiceJson(boxRepository).parse(filePath);
-            case IMPORT_FILE_TXT -> new ParserBoxesServiceTxt(boxRepository).parse(filePath);
-            case LOAD -> new ParserBoxesServiceCsv(boxRepository).parse(filePath);
-            default -> throw new IllegalStateException("Unexpected value: " + command);
-        };
+    public List<Box> create(ConsoleCommand command, String filePath) {
+        ParserBoxesService parser = parserBoxesMap.get(command);
+        if (parser == null) {
+            throw new IllegalStateException("Unexpected value: " + command);
+        }
+
+        return parser.parse(filePath);
     }
 }

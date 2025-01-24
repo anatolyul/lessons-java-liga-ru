@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Command;
 import ru.hofftech.consolepackages.repository.BoxRepository;
 import ru.hofftech.consolepackages.service.CommandExecutor;
+import ru.hofftech.consolepackages.service.FormatterService;
 
 /**
  * Сервис для выполнения команды отображения списка всех коробок.
@@ -13,6 +14,7 @@ import ru.hofftech.consolepackages.service.CommandExecutor;
 @RequiredArgsConstructor
 public class BoxListCommandService implements CommandExecutor {
     private final BoxRepository boxRepository;
+    private final FormatterService formatterService;
 
     /**
      * Выполняет команду отображения списка всех коробок.
@@ -22,6 +24,6 @@ public class BoxListCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
-        return boxRepository.findAll();
+        return formatterService.formatBoxesToString(boxRepository.findAll());
     }
 }

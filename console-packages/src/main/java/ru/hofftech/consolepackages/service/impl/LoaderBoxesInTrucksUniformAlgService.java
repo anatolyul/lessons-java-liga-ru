@@ -1,10 +1,9 @@
 package ru.hofftech.consolepackages.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Truck;
-import ru.hofftech.consolepackages.repository.TruckRepository;
+import ru.hofftech.consolepackages.model.TruckForm;
 import ru.hofftech.consolepackages.service.LoaderBoxesInTrucksService;
 
 import java.util.ArrayList;
@@ -14,9 +13,7 @@ import java.util.List;
  * Реализация сервиса для равномерной загрузки коробок в грузовики.
  */
 @Service
-@RequiredArgsConstructor
 public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucksService {
-    private final TruckRepository truckRepository;
 
     /**
      * Загружает коробки в грузовики с учетом ограничения на количество грузовиков, используя равномерный алгоритм.
@@ -26,9 +23,9 @@ public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucks
      * @param limitTrucks максимальное количество грузовиков, которые могут быть использованы
      */
     @Override
-    public void loadBoxesInTrucks(List<Box> boxes, String trucksForms, Integer limitTrucks) {
+    public List<Truck> loadBoxesInTrucks(List<Box> boxes, TruckForm trucksForms, Integer limitTrucks) {
         List<Truck> trucks = new ArrayList<>();
-        if (trucksForms == null || trucksForms.isBlank()) {
+        if (trucksForms.isNotValid()) {
             if (limitTrucks != null && limitTrucks > 0) {
                 for (int i = 1; i <= limitTrucks; i++) {
                     Truck truck = new Truck("Truck " + i);
@@ -36,7 +33,7 @@ public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucks
                 }
             }
         } else {
-            trucks = truckRepository.createTrucksByForm(trucksForms);
+            trucks = trucksForms.createTrucks();
         }
 
         List<Box> sortedBoxes = boxes.stream()
@@ -49,7 +46,8 @@ public class LoaderBoxesInTrucksUniformAlgService implements LoaderBoxesInTrucks
                 currentTruck.loadBox(box);
             }
         }
-        truckRepository.setTrucks(trucks);
+
+        return trucks;
     }
 
     /**

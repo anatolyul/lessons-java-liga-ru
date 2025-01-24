@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Truck;
-import ru.hofftech.consolepackages.repository.TruckRepository;
+import ru.hofftech.consolepackages.model.TruckForm;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,12 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LoaderBoxesInTrucksOneToOneAlgServiceTest {
 
     private LoaderBoxesInTrucksOneToOneAlgService loaderBoxesInTrucksOneToOneAlgService;
-    private TruckRepository truckRepository;
 
     @BeforeEach
     void setUp() {
-        truckRepository = new TruckRepository();
-        loaderBoxesInTrucksOneToOneAlgService = new LoaderBoxesInTrucksOneToOneAlgService(truckRepository);
+        loaderBoxesInTrucksOneToOneAlgService = new LoaderBoxesInTrucksOneToOneAlgService();
     }
 
     @Test
@@ -32,9 +30,8 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
                 new Box("Box3", "xx\nxx", "3")
         );
 
-        loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, null, 0);
+        List<Truck> trucks = loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, new TruckForm(null), 0);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(3, trucks.size());
         assertEquals(1, trucks.get(0).getBoxes().size());
         assertEquals(1, trucks.get(1).getBoxes().size());
@@ -52,9 +49,8 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
                 new Box("Box5", "xx\nxx", "5")
         );
 
-        loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, null, 3);
+        List<Truck> trucks = loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, new TruckForm(null), 3);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(3, trucks.size());
         assertEquals(1, trucks.get(0).getBoxes().size());
         assertEquals(1, trucks.get(1).getBoxes().size());
@@ -70,11 +66,10 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
                 new Box("Box3", "xx\nxx", "3")
         );
 
-        String trucksForms = "3x3\n2x2\n6x6";
+        TruckForm trucksForms = new TruckForm("3x3\n2x2\n6x6");
 
-        loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, trucksForms, null);
+        List<Truck> trucks = loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, trucksForms, null);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(3, trucks.size());
         assertEquals("Truck 3x3", trucks.get(0).getTruckName());
         assertEquals("Truck 2x2", trucks.get(1).getTruckName());
@@ -95,11 +90,10 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
                 new Box("Box5", "xx\nxx", "5")
         );
 
-        String trucksForms = "3x3\n2x2\n6x6";
+        TruckForm trucksForms = new TruckForm("3x3\n2x2\n6x6");
 
-        loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, trucksForms, 3);
+        List<Truck> trucks = loaderBoxesInTrucksOneToOneAlgService.loadBoxesInTrucks(boxes, trucksForms, 3);
 
-        List<Truck> trucks = truckRepository.getTrucks();
         assertEquals(3, trucks.size());
         assertEquals("Truck 3x3", trucks.get(0).getTruckName());
         assertEquals("Truck 2x2", trucks.get(1).getTruckName());

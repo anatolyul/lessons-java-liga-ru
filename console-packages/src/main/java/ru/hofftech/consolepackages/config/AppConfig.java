@@ -3,7 +3,10 @@ package ru.hofftech.consolepackages.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.hofftech.consolepackages.model.enums.ConsoleCommand;
+import ru.hofftech.consolepackages.model.enums.TypeAlgorithm;
 import ru.hofftech.consolepackages.service.CommandExecutor;
+import ru.hofftech.consolepackages.service.LoaderBoxesInTrucksService;
+import ru.hofftech.consolepackages.service.ParserBoxesService;
 import ru.hofftech.consolepackages.service.command.BillingCommandService;
 import ru.hofftech.consolepackages.service.command.BoxCreateCommandService;
 import ru.hofftech.consolepackages.service.command.BoxDeleteCommandService;
@@ -16,6 +19,12 @@ import ru.hofftech.consolepackages.service.command.ImportCommandService;
 import ru.hofftech.consolepackages.service.command.LoadCommandService;
 import ru.hofftech.consolepackages.service.command.UnknownCommandService;
 import ru.hofftech.consolepackages.service.command.UnloadCommandService;
+import ru.hofftech.consolepackages.service.impl.LoaderBoxesInTrucksMaxAlgService;
+import ru.hofftech.consolepackages.service.impl.LoaderBoxesInTrucksOneToOneAlgService;
+import ru.hofftech.consolepackages.service.impl.LoaderBoxesInTrucksUniformAlgService;
+import ru.hofftech.consolepackages.service.impl.ParserBoxesServiceCsv;
+import ru.hofftech.consolepackages.service.impl.ParserBoxesServiceJson;
+import ru.hofftech.consolepackages.service.impl.ParserBoxesServiceTxt;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -52,6 +61,34 @@ public class AppConfig {
         map.put(ConsoleCommand.BOX_LIST, boxListCommandService);
         map.put(ConsoleCommand.BILLING, billingCommandService);
         map.put(ConsoleCommand.UNKNOWN, unknownCommandService);
+
+        return map;
+    }
+
+    @Bean
+    public Map<TypeAlgorithm, LoaderBoxesInTrucksService> createLoaderBoxesInTrucksMap(
+            LoaderBoxesInTrucksOneToOneAlgService loaderBoxesInTrucksOneToOneAlgService,
+            LoaderBoxesInTrucksMaxAlgService loaderBoxesInTrucksMaxAlgService,
+            LoaderBoxesInTrucksUniformAlgService loaderBoxesInTrucksUniformAlgService) {
+
+        Map<TypeAlgorithm, LoaderBoxesInTrucksService> map = new EnumMap<>(TypeAlgorithm.class);
+        map.put(TypeAlgorithm.ONE_TO_ONE, loaderBoxesInTrucksOneToOneAlgService);
+        map.put(TypeAlgorithm.MAXIMUM_LOAD, loaderBoxesInTrucksMaxAlgService);
+        map.put(TypeAlgorithm.UNIFORM_LOAD, loaderBoxesInTrucksUniformAlgService);
+
+        return map;
+    }
+
+    @Bean
+    public Map<ConsoleCommand, ParserBoxesService> createParserBoxesMap(
+            ParserBoxesServiceJson parserBoxesServiceJson,
+            ParserBoxesServiceTxt parserBoxesServiceTxt,
+            ParserBoxesServiceCsv parserBoxesServiceCsv) {
+
+        Map<ConsoleCommand, ParserBoxesService> map = new EnumMap<>(ConsoleCommand.class);
+        map.put(ConsoleCommand.IMPORT_FILE_JSON, parserBoxesServiceJson);
+        map.put(ConsoleCommand.IMPORT_FILE_TXT, parserBoxesServiceTxt);
+        map.put(ConsoleCommand.LOAD, parserBoxesServiceCsv);
 
         return map;
     }
