@@ -14,6 +14,7 @@ import ru.hofftech.consolepackages.service.ResultOutSaveService;
 import ru.hofftech.consolepackages.service.converter.CommandArgConverterService;
 import ru.hofftech.consolepackages.service.factory.LoaderBoxesInTrucksServiceFactory;
 import ru.hofftech.consolepackages.service.factory.ParserBoxesServiceFactory;
+import ru.hofftech.consolepackages.service.factory.TruckFormFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class LoadCommandService implements CommandExecutor {
     private final ResultOutSaveService resultOutSaveService;
     private final ParserBoxesServiceFactory parserBoxesServiceFactory;
     private final BoxRepository boxRepository;
+    private final TruckFormFactory truckFormFactory;
 
     private Map<Argument, String> arguments;
 
@@ -50,7 +52,7 @@ public class LoadCommandService implements CommandExecutor {
             throw new IllegalArgumentException("Неверный тип алгоритма: " + arguments.get(Argument.TYPE));
         }
 
-        TruckForm trucksForm = new TruckForm(arguments.get(Argument.LIMIT));
+        TruckForm trucksForm = truckFormFactory.createTruckForm(arguments.get(Argument.LIMIT));
 
         List<Truck> trucks = loaderBoxesInTrucksServiceFactory
                 .createLoaderBoxesInTrucksService(typeAlgorithm)
