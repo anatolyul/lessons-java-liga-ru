@@ -33,7 +33,7 @@ class LoaderBoxesInTrucksMaxAlgServiceTest {
         List<Truck> trucks = loaderBoxesInTrucksMaxAlgService.loadBoxesInTrucks(boxes, new TruckForm(null), null);
 
         assertEquals(1, trucks.size());
-        assertEquals(3, trucks.get(0).getBoxes().size());
+        assertEquals(3, trucks.getFirst().getBoxes().size());
     }
 
     @Test

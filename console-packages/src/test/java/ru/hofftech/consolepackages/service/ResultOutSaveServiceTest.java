@@ -10,6 +10,7 @@ import ru.hofftech.consolepackages.model.Truck;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,15 +21,10 @@ class ResultOutSaveServiceTest {
     @TempDir
     Path tempDir;
     private ResultOutSaveService resultOutSaveService;
-    private FormatterService formatterService;
-    private FileWriterService fileWriterService;
 
     @BeforeEach
     void setUp() {
-        formatterService = new FormatterService();
-        fileWriterService = new FileWriterService();
-        resultOutSaveService = new ResultOutSaveService(fileWriterService, formatterService);
-
+        resultOutSaveService = new ResultOutSaveService(new FileWriterService(), new FormatterService());
     }
 
     @Test
@@ -65,8 +61,8 @@ class ResultOutSaveServiceTest {
                 new Box("Box3", "xx\nxx", "3")
         );
 
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(boxes.get(0)))
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", Collections.singletonList(boxes.getFirst()))
         );
 
         String result = resultOutSaveService.saveOutResult(boxes, trucks, fileNameResult);
@@ -80,11 +76,11 @@ class ResultOutSaveServiceTest {
     void saveOutResult_givenEmptyBoxesOrTrucks_shouldReturnEmptyString() {
         String fileNameResult = tempDir.resolve("result.json").toString();
 
-        List<Box> boxes = Arrays.asList(
+        List<Box> boxes = List.of(
                 new Box("Box1", "xx\nxx", "1")
         );
 
-        List<Truck> trucks = Arrays.asList();
+        List<Truck> trucks = List.of();
 
         String result = resultOutSaveService.saveOutResult(boxes, trucks, fileNameResult);
 

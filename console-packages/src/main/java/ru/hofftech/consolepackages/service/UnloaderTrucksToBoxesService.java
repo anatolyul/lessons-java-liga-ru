@@ -52,7 +52,7 @@ public class UnloaderTrucksToBoxesService {
                     .flatMap(List::stream)
                     .map(Box::getName)
                     .map(name -> new String[]{name})
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (withCount) {
                 Map<String, Long> boxCounts = boxes.stream()
@@ -61,7 +61,7 @@ public class UnloaderTrucksToBoxesService {
 
                 boxes = boxCounts.entrySet().stream()
                         .map(entry -> new String[]{entry.getKey(), String.valueOf(entry.getValue())})
-                        .collect(Collectors.toList());
+                        .toList();
             }
         } catch (IOException e) {
             throw new FileReadException("Ошибка чтения файла грузовиков: " + fileNameTrucks, e);

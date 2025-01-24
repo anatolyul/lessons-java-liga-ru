@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.hofftech.consolepackages.model.Box;
 import ru.hofftech.consolepackages.model.Command;
 import ru.hofftech.consolepackages.model.enums.Argument;
-import ru.hofftech.consolepackages.repository.BoxRepository;
 import ru.hofftech.consolepackages.service.CommandExecutor;
 import ru.hofftech.consolepackages.service.converter.CommandArgConverterService;
 import ru.hofftech.consolepackages.service.factory.ParserBoxesServiceFactory;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImportCommandService implements CommandExecutor {
     private final ParserBoxesServiceFactory parserBoxesServiceFactory;
-    private final BoxRepository boxRepository;
     private final CommandArgConverterService commandArgConverterService;
 
     /**

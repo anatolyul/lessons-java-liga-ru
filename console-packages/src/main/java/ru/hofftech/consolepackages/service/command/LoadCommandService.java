@@ -10,7 +10,6 @@ import ru.hofftech.consolepackages.model.TruckForm;
 import ru.hofftech.consolepackages.model.enums.Argument;
 import ru.hofftech.consolepackages.repository.BoxRepository;
 import ru.hofftech.consolepackages.service.CommandExecutor;
-import ru.hofftech.consolepackages.service.FormatterService;
 import ru.hofftech.consolepackages.service.ResultOutSaveService;
 import ru.hofftech.consolepackages.service.converter.CommandArgConverterService;
 import ru.hofftech.consolepackages.service.factory.LoaderBoxesInTrucksServiceFactory;
@@ -29,7 +28,6 @@ import java.util.Map;
 public class LoadCommandService implements CommandExecutor {
     private final LoaderBoxesInTrucksServiceFactory loaderBoxesInTrucksServiceFactory;
     private final CommandArgConverterService commandArgConverterService;
-    private final FormatterService formatterService;
     private final ResultOutSaveService resultOutSaveService;
     private final ParserBoxesServiceFactory parserBoxesServiceFactory;
     private final BoxRepository boxRepository;

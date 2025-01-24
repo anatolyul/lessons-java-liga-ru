@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса для парсинга информации о коробках из JSON файла.
@@ -45,7 +44,7 @@ public class ParserBoxesServiceJson implements ParserBoxesService {
                     .map(Truck::getBoxes)
                     .filter(Objects::nonNull)
                     .flatMap(List::stream)
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (IOException e) {
             throw new FileReadException("Ошибка чтения файла: " + filePath, e);
         }

@@ -60,7 +60,7 @@ public class BoxRepository {
         if (findBoxByName(name) == null) {
             Box newBox = new Box(name, form, symbol);
             boxes.add(newBox);
-            return String.format("Посылка:\nname: %s\nform:\n%s", newBox.getName(), newBox.getForm());
+            return resultInfo(newBox);
         } else {
             return String.format("Посылка с именем %s уже есть в системе, добавление новой запрещено!", name);
         }
@@ -87,7 +87,7 @@ public class BoxRepository {
         Box boxResult = findBoxByName(id != null ? id : name);
 
         if (boxResult != null) {
-            return String.format("Посылка:\nname: %s\nform:\n%s", boxResult.getName(), boxResult.getForm());
+            return resultInfo(boxResult);
         } else {
             return String.format("Посылка с именем %s не найдена в системе!", name);
         }
@@ -115,7 +115,7 @@ public class BoxRepository {
             box.setSymbol(symbol);
             box.setForm(form);
             boxes.add(box);
-            return String.format("Посылка:\nname: %s\nform:\n%s", box.getName(), box.getForm());
+            return resultInfo(box);
         } else {
             return String.format("Посылка с именем %s не найдена, редактирование запрещено!", name);
         }
@@ -152,5 +152,9 @@ public class BoxRepository {
                             .mapToObj(collected::get)
                             .collect(Collectors.toList());
                 }));
+    }
+
+    private String resultInfo(Box box) {
+        return "Посылка:\nname: " + box.getName() + "\nform:\n" + box.getForm();
     }
 }
