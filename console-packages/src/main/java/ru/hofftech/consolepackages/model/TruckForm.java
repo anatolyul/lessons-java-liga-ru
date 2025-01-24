@@ -13,6 +13,10 @@ public class TruckForm {
         this.form = form;
     }
 
+    public static TruckForm fromString(String form) {
+        return new TruckForm(form);
+    }
+
     public boolean isNotValid() {
         return form == null || form.isBlank();
     }
