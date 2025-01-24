@@ -32,11 +32,11 @@ public class UnloaderTrucksToBoxesService {
      *
      * @param fileNameTrucks имя файла, содержащего информацию о грузовиках
      * @param fileNameBoxes  имя файла, в который будет сохранена информация о коробках
-     * @param withcount      флаг, указывающий, нужно ли включать количество коробок
+     * @param withCount      флаг, указывающий, нужно ли включать количество коробок
      * @return строка с результатом операции
      */
     @SneakyThrows
-    public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withcount) {
+    public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withCount) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String[]> boxes;
 
@@ -54,7 +54,7 @@ public class UnloaderTrucksToBoxesService {
                     .map(name -> new String[]{name})
                     .collect(Collectors.toList());
 
-            if (withcount) {
+            if (withCount) {
                 Map<String, Long> boxCounts = boxes.stream()
                         .map(arr -> arr[0])
                         .collect(Collectors.groupingBy(boxName -> boxName, Collectors.counting()));

@@ -36,19 +36,17 @@ public class BillingCommandService implements CommandExecutor {
      */
     @Override
     public String execute(Command command) {
+        final int DAY_FOR_INCLUDING_IN_PERIOD = 1;
         Map<Argument, String> arguments = command.arguments();
         String userId = arguments.get(Argument.USER);
 
-        // Преобразование строки в LocalDate и вычитание одного дня для периода "от"
         LocalDate periodFrom = formatterService
                 .stringToLocalDate(arguments.get(Argument.PERIOD_FROM))
-                .minusDays(1); // Вычитаем один день, чтобы включить начальную дату в период
+                .minusDays(DAY_FOR_INCLUDING_IN_PERIOD);
 
-        // Преобразование строки в LocalDate и добавление одного дня для периода "до"
         LocalDate periodTo = formatterService
                 .stringToLocalDate(arguments.get(Argument.PERIOD_TO))
-                .plusDays(1); // Добавляем один день, чтобы включить конечную дату в период
-
+                .plusDays(DAY_FOR_INCLUDING_IN_PERIOD);
 
         return orderRepository.getOrders().stream()
                 .filter(order -> order.getUserId().equals(userId))
