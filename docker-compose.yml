@@ -1,0 +1,42 @@
+services:
+  
+  logistic-service-db:
+    image: postgres:17.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: logistic_service_db
+
+  logistic-service:
+    build:
+      context: ./logistic-service
+    restart: always
+    environment:
+      CLI_SERVICE_URL: "http://logistic-cli:8081"
+      TG_BOT_SERVICE_URL: "http://logistics-telegram-bot:8082"
+    ports:
+      - "8080:8080"
+    networks:
+      - logistic-network
+
+  logistic-cli:
+    build:
+      context: ./logistic-cli
+    ports:
+      - "8081:8081"
+    networks:
+      - logistic-network
+
+  logistics-telegram-bot:
+    build:
+      context: ./logistics-telegram-bot
+    ports:
+      - "8082:8082"
+    networks:
+      - logistic-network
+
+networks:
+  logistic-network:
+    driver: bridge
