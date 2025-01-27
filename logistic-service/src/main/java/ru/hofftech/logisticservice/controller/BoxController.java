@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/box")
 @RequiredArgsConstructor
+@Tag(name = "Box-Parses", description = "CRUD операции с данными посылок")
 public class BoxController {
 
     private final BoxService boxService;
