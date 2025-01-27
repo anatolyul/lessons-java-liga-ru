@@ -77,9 +77,9 @@ public class LoadCommandService implements CommandExecutor {
         if (boxesNames != null && !boxesNames.isEmpty()) {
             for (String boxName : boxesNames.replace("n", "\n")
                     .replace("\\n", "\n").split("\n")) {
-                Optional<BoxDto> box = boxService.findByName(boxName);
-                if (box.isPresent()) {
-                    boxes.add(box.get());
+                BoxDto box = boxService.findByName(boxName);
+                if (box != null) {
+                    boxes.add(box);
                 } else {
                     log.warn("Посылка {} пропущена, т.к. не найдена в системе", boxName);
                 }

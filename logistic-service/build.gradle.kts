@@ -42,7 +42,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter:${Version.SPRING_BOOT}")
     implementation("org.springframework.boot:spring-boot-starter-web:${Version.SPRING_BOOT}")
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc:${Version.SPRING_BOOT}")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:${Version.SPRING_BOOT}")
 
     implementation("com.fasterxml.jackson.core:jackson-databind:${Version.JACKSON_DATABIND}")
     implementation("com.opencsv:opencsv:${Version.OPENCSV}")

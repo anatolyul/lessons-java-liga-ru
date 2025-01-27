@@ -8,7 +8,6 @@ import ru.hofftech.logisticservice.mapper.BoxMapper;
 import ru.hofftech.logisticservice.repository.BoxRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,27 +20,27 @@ public class BoxService {
         return boxMapper.toDtoList(boxRepository.findAll());
     }
 
-    public Optional<BoxDto> findById(Long id) {
-        Optional<BoxEntity> box = boxRepository.findById(id);
-        return box.map(boxMapper::toDto);
-    }
-
-    public Optional<BoxDto> findByName(String name) {
-        Optional<BoxEntity> box = boxRepository.findByName(name);
-        return box.map(boxMapper::toDto);
+    public BoxDto findByName(String name) {
+        BoxEntity box = boxRepository.findByName(name);
+        return boxMapper.toDto(box);
     }
 
     public BoxDto create(BoxDto boxDto) {
         BoxEntity box = boxMapper.toEntity(boxDto);
-        return boxMapper.toDto(boxRepository.create(box));
+        return boxMapper.toDto(boxRepository.save(box));
     }
 
     public BoxDto update(String name, BoxDto boxDto) {
-        BoxEntity box = boxMapper.toEntity(boxDto);
-        return boxMapper.toDto(boxRepository.update(name, box));
+        BoxEntity box = boxRepository.findByName(name);
+        box.setName(boxDto.getName());
+        box.setForm(boxDto.getForm());
+        box.setSymbol(boxDto.getSymbol());
+        return boxMapper.toDto(boxRepository.save(box));
     }
 
     public boolean delete(String name) {
-        return boxRepository.delete(name);
+        BoxEntity box = boxRepository.findByName(name);
+        boxRepository.delete(box);
+        return boxRepository.findByName(name) == null;
     }
 }

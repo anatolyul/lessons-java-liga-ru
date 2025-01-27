@@ -9,7 +9,6 @@ import ru.hofftech.logisticservice.service.BoxService;
 import ru.hofftech.logisticservice.service.CommandExecutor;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Сервис для выполнения команды поиска коробки.
@@ -29,8 +28,8 @@ public class BoxFindCommandService implements CommandExecutor {
     public String execute(Command command) {
         Map<Argument, String> arguments = command.arguments();
 
-        Optional<BoxDto> result = boxService.findByName(arguments.get(Argument.ID));
-        if (result.isEmpty()) {
+        BoxDto result = boxService.findByName(arguments.get(Argument.ID));
+        if (result == null) {
             result = boxService.findByName(arguments.get(Argument.NAME));
         }
 

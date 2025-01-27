@@ -1,29 +1,33 @@
 package ru.hofftech.logisticservice.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-import ru.hofftech.logisticservice.constants.BoxColumn;
+
 
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "customer")
+@Entity
+@Table(name = "box")
 public class BoxEntity {
 
-    @Column(BoxColumn.ID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(BoxColumn.NAME)
     private String name;
 
-    @Column(BoxColumn.FORM)
     private String form;
 
-    @Column(BoxColumn.SYMBOL)
     private String symbol;
 }

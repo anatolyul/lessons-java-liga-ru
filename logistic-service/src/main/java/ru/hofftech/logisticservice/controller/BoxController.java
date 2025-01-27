@@ -75,8 +75,8 @@ public class BoxController {
                     content = @Content)})
     @GetMapping("/{name}")
     public ResponseEntity<BoxDto> findByName(@PathVariable String name) {
-        Optional<BoxDto> boxOptional = boxService.findByName(name);
-        return boxOptional.map(ResponseEntity::ok).orElseGet(() ->
+        Optional<BoxDto> box = Optional.of(boxService.findByName(name));
+        return box.map(ResponseEntity::ok).orElseGet(() ->
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

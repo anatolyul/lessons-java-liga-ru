@@ -19,6 +19,13 @@ springdoc:
 spring:
   application:
     name: logistic-service
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/logistic_service_db
     username: postgres

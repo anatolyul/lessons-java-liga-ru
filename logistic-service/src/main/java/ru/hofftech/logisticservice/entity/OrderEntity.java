@@ -1,41 +1,49 @@
 package ru.hofftech.logisticservice.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-import ru.hofftech.logisticservice.constants.OrderColumn;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import ru.hofftech.logisticservice.model.enums.TypeOrderProcess;
 
 import java.time.LocalDate;
 
 @Setter
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@Table(name = "order")
+@NoArgsConstructor
+@Entity
+@Table(name = "\"order\"")
 public class OrderEntity {
 
-    @Column(OrderColumn.ID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(OrderColumn.TYPE)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TypeOrderProcess type;
 
-    @Column(OrderColumn.CLIENT_NAME)
     private String clientName;
 
-    @Column(OrderColumn.DATE)
+    @JdbcTypeCode(SqlTypes.DATE)
     private LocalDate date;
 
-    @Column(OrderColumn.TRUCK_COUNT)
     private Long truckCount;
 
-    @Column(OrderColumn.BOX_COUNT)
     private Long boxCount;
 
-    @Column(OrderColumn.SEGMENT_COUNT)
     private Long segmentCount;
 }
