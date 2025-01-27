@@ -55,11 +55,4 @@ public class BoxQuery {
                 max(id) id
                 from public.box;
             """;
-
-    public static final String CHECK_DUBLICATE = """
-            select
-                name
-                from public.box
-                where name = ?;
-            """;
 }

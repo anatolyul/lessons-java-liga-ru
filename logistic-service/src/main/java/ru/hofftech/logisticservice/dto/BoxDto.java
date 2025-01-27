@@ -23,11 +23,11 @@ public class BoxDto {
     @Schema(description = "Наименование посылки")
     private String name;
 
-    @Schema(description = "Форма посылки")
-    private String form;
-
     @Schema(description = "Символ для прорисовки формы")
     private String symbol;
+
+    @Schema(description = "Форма посылки")
+    private String form;
 
     @JsonIgnore
     private int width;
@@ -38,24 +38,7 @@ public class BoxDto {
     @JsonProperty("coordinates")
     private boolean[][] formCoordinates;
 
-    public BoxDto(int width, int height, String symbol) {
-        this.width = width;
-        this.height = height;
-        this.symbol = symbol;
-    }
-
-//    public void setForm(String form) {
-//        this.form = form
-//                .replace("x", symbol)
-//                .replace("n", "\n")
-//                .replace("\\n", "\n");
-//    }
-
-    public BoxDto(String name, String form, String symbol) {
-        setName(name);
-        setSymbol(symbol);
-        setForm(form);
-
+    public void setForm(String form) {
         String[] lines = form.split("\n");
         this.width = Arrays.stream(lines).map(String::length).reduce(Integer::max).orElse(0);
         this.height = (int) Arrays.stream(lines).count();
@@ -72,9 +55,19 @@ public class BoxDto {
             }
             posHeight++;
         }
+
+        this.form = form
+                .replace("n", "\n")
+                .replace("\\n", "\n");
+    }
+
+    public BoxDto(String name, String form, String symbol) {
+        setName(name);
+        setSymbol(symbol);
+        setForm(form);
     }
 
     public String toString() {
-        return "Посылка:\nname: " + this.getName() + "\nform:\n" + this.getForm();
+        return "Посылка:\nname: " + this.getName() + "\nform:\n" + this.getForm().replace("x", symbol);
     }
 }

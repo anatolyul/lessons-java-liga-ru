@@ -1,17 +1,13 @@
 package ru.hofftech.logisticservice.service.converter;
 
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticservice.model.Command;
 import ru.hofftech.logisticservice.model.enums.Argument;
 import ru.hofftech.logisticservice.model.enums.ConsoleCommand;
 import ru.hofftech.logisticservice.model.enums.TypeAlgorithm;
 import ru.hofftech.logisticservice.service.FormatterService;
 
 import java.io.File;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -66,42 +62,6 @@ public class CommandArgConverterService {
             }
         }
         return null;
-    }
-
-    /**
-     * Парсит строку команды и аргументов в объект Command.
-     *
-     * @param consoleCommand строка команды и аргументов
-     * @return объект Command, содержащий команду и список аргументов
-     */
-    public Command parseCommandArgs(String consoleCommand) {
-        ConsoleCommand consoleCommandResult = convertCommandStringToEnum(consoleCommand);
-
-        // Регулярное выражение для извлечения команды и аргументов
-        String commandRegex = "(\\w+)(.*)";
-        Pattern commandPattern = Pattern.compile(commandRegex);
-        Matcher commandMatcher = commandPattern.matcher(consoleCommand);
-
-        Map<Argument, String> args = new EnumMap<>(Argument.class);
-        if (commandMatcher.find()) {
-            if (consoleCommandResult == ConsoleCommand.UNKNOWN) {
-                consoleCommandResult = convertCommandStringToEnum(commandMatcher.group(1));
-            }
-
-            String argsString = commandMatcher.group(2).trim().replace("\\n", "\n");
-
-            // Регулярное выражение для извлечения пар "ключ-значение"
-            String argRegex = "(-[\\w-]+|--[\\w-]+)\\s+\"([^\"]+)\"";
-            Pattern argPattern = Pattern.compile(argRegex);
-            Matcher argMatcher = argPattern.matcher(argsString);
-
-            while (argMatcher.find()) {
-                Argument arg = convertArgumentStringToEnum(argMatcher.group(1));
-                args.put(arg, argMatcher.group(2));
-            }
-        }
-
-        return new Command(consoleCommandResult, args);
     }
 
     /**

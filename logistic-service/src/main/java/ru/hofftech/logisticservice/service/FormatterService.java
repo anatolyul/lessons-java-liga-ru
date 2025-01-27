@@ -77,23 +77,6 @@ public class FormatterService {
         return sb.toString();
     }
 
-    public String formatBoxesToString(List<BoxDto> boxes) {
-        StringBuilder result = new StringBuilder();
-        result.append("Список посылок:\n");
-
-        for (BoxDto box : boxes) {
-            result.append(String.format("""
-                    
-                    Посылка:
-                    name: %s
-                    form:
-                    %s
-                    """, box.getName(), box.getForm()));
-        }
-
-        return result.toString();
-    }
-
     public LocalDate stringToLocalDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return LocalDate.parse(date, formatter);

@@ -7,7 +7,6 @@ import ru.hofftech.logisticservice.dto.BoxDto;
 import ru.hofftech.logisticservice.model.Truck;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,9 +24,9 @@ class FormatterServiceTest {
     @Test
     @DisplayName("Тест: trucksToString должен корректно преобразовывать список грузовиков в строку")
     void trucksToString_shouldConvertTrucksToCorrectString() {
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(new BoxDto("Box1", "xx\nxx", "1"), new BoxDto("Box2", "xx\nxx", "2"))),
-                new Truck("Truck2", Arrays.asList(new BoxDto("Box3", "xx\nxx", "3")))
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(new BoxDto("Box1", "xx\nxx", "1"), new BoxDto("Box2", "xx\nxx", "2"))),
+                new Truck("Truck2", List.of(new BoxDto("Box3", "xx\nxx", "3")))
         );
 
         String result = formatterService.trucksToString(trucks);
@@ -39,11 +38,11 @@ class FormatterServiceTest {
     @Test
     @DisplayName("Тест: trucksToJson должен корректно преобразовывать список грузовиков в JSON строку")
     void trucksToJson_shouldConvertTrucksToCorrectJsonString() {
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(
                         new BoxDto("Box1", "xx\nxx", "1"),
                         new BoxDto("Box2", "xx\nxx", "2"))),
-                new Truck("Truck2", Arrays.asList(
+                new Truck("Truck2", List.of(
                         new BoxDto("Box3", "xx\nxx", "3")))
         );
 
@@ -59,7 +58,7 @@ class FormatterServiceTest {
     @Test
     @DisplayName("Тест: boxesToString должен корректно преобразовывать список коробок в строку")
     void boxesToString_shouldConvertBoxesToCorrectString() {
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3")

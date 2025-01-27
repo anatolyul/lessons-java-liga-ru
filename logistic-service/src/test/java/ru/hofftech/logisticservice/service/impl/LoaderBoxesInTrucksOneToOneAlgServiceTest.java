@@ -7,7 +7,6 @@ import ru.hofftech.logisticservice.dto.BoxDto;
 import ru.hofftech.logisticservice.model.Truck;
 import ru.hofftech.logisticservice.model.TruckForm;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +23,7 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
     @Test
     @DisplayName("Тест: loadBoxesInTrucks должен корректно загружать коробки в грузовики без ограничения на количество грузовиков")
     void loadBoxesInTrucks_givenBoxesAndNoLimitTrucks_shouldLoadBoxesCorrectly() {
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3")
@@ -41,7 +40,7 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
     @Test
     @DisplayName("Тест: loadBoxesInTrucks должен корректно загружать коробки в грузовики с ограничением на количество грузовиков")
     void loadBoxesInTrucks_givenBoxesAndLimitTrucks_shouldLoadBoxesCorrectly() {
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3"),
@@ -60,7 +59,7 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
     @Test
     @DisplayName("Тест: loadBoxesInTrucks должен корректно загружать коробки в грузовики с заданной формой грузовиков")
     void loadBoxesInTrucks_givenBoxesAndTrucksForms_shouldLoadBoxesCorrectly() {
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3")
@@ -82,7 +81,7 @@ class LoaderBoxesInTrucksOneToOneAlgServiceTest {
     @Test
     @DisplayName("Тест: loadBoxesInTrucks должен корректно загружать коробки в грузовики с заданной формой грузовиков и ограничением на количество грузовиков")
     void loadBoxesInTrucks_givenBoxesAndTrucksFormsAndLimitTrucks_shouldLoadBoxesCorrectly() {
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3"),

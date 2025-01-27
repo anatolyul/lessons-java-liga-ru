@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,11 +38,11 @@ class UnloaderTrucksToBoxesServiceTest {
         String fileNameTrucks = tempDir.resolve("trucks.json").toString();
         String fileNameBoxes = tempDir.resolve("boxes.csv").toString();
 
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(
                         new BoxDto("Box1", "xx\nxx", "1"),
                         new BoxDto("Box2", "xx\nxx", "2"))),
-                new Truck("Truck2", Arrays.asList(
+                new Truck("Truck2", List.of(
                         new BoxDto("Box3", "xx\nxx", "3")))
         );
 
@@ -61,11 +60,11 @@ class UnloaderTrucksToBoxesServiceTest {
         String fileNameTrucks = tempDir.resolve("trucks.json").toString();
         String fileNameBoxes = "";
 
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(
                         new BoxDto("Box1", "xx\nxx", "1"),
                         new BoxDto("Box2", "xx\nxx", "2"))),
-                new Truck("Truck2", Arrays.asList(
+                new Truck("Truck2", List.of(
                         new BoxDto("Box3", "xx\nxx", "3")))
         );
 
@@ -84,11 +83,11 @@ class UnloaderTrucksToBoxesServiceTest {
         String fileNameTrucks = tempDir.resolve("trucks.json").toString();
         String fileNameBoxes = tempDir.resolve("boxes.csv").toString();
 
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(
                         new BoxDto("Box1", "xx\nxx", "1"),
                         new BoxDto("Box2", "xx\nxx", "2"))),
-                new Truck("Truck2", Arrays.asList(
+                new Truck("Truck2", List.of(
                         new BoxDto("Box3", "xx\nxx", "3")))
         );
 
@@ -117,11 +116,11 @@ class UnloaderTrucksToBoxesServiceTest {
         String fileNameTrucks = tempDir.resolve("trucks.json").toString();
         String fileNameBoxes = tempDir.resolve("boxes.csv").toString();
 
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(
                         new BoxDto("Box1", "xx\nxx", "1"),
                         new BoxDto("Box2", "xx\nxx", "2"))),
-                new Truck("Truck2", Arrays.asList(
+                new Truck("Truck2", List.of(
                         new BoxDto("Box3", "xx\nxx", "3")))
         );
 

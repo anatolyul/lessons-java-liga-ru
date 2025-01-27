@@ -9,7 +9,6 @@ import ru.hofftech.logisticservice.model.Truck;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,15 +31,15 @@ class ResultOutSaveServiceTest {
     void saveOutResult_givenBoxesAndTrucks_shouldSaveToFile() {
         String fileNameResult = tempDir.resolve("result.json").toString();
 
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3")
         );
 
-        List<Truck> trucks = Arrays.asList(
-                new Truck("Truck1", Arrays.asList(boxes.get(0), boxes.get(1))),
-                new Truck("Truck2", Arrays.asList(boxes.get(2)))
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(boxes.get(0), boxes.get(1))),
+                new Truck("Truck2", List.of(boxes.get(2)))
         );
 
         String result = resultOutSaveService.saveOutResult(boxes, trucks, fileNameResult);
@@ -55,7 +54,7 @@ class ResultOutSaveServiceTest {
     void saveOutResult_givenBoxesNotInTrucks_shouldReturnMissedBoxes() {
         String fileNameResult = tempDir.resolve("result.json").toString();
 
-        List<BoxDto> boxes = Arrays.asList(
+        List<BoxDto> boxes = List.of(
                 new BoxDto("Box1", "xx\nxx", "1"),
                 new BoxDto("Box2", "xx\nxx", "2"),
                 new BoxDto("Box3", "xx\nxx", "3")
