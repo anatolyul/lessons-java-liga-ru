@@ -1,0 +1,15 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: logistic-telegram-bot
+
+services:
+  logistic-service-url: "http://localhost:8080"
+
+telegram:
+  bot:
+    enabled: true
+    username: "AppBoxInTruckBot"
+    token: "7759796407:AAEYrYl1NHtCGcx7OMr7KhI5hIXH40Gfsk0"
