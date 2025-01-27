@@ -1,0 +1,33 @@
+[
+  {
+    "truckHeight": 3,
+    "truckWidth": 3,
+    "truck_type": "Truck 3x3",
+    "parcels": [
+      {
+        "id": 1,
+        "name": "Посылка Тип 1",
+        "form": "1",
+        "symbol": "1"
+      }
+    ]
+  },
+  {
+    "truckHeight": 3,
+    "truckWidth": 3,
+    "truck_type": "Truck 3x3",
+    "parcels": [
+      {
+        "id": 4,
+        "name": "Посылка Тип 4",
+        "form": "4444",
+        "symbol": "4"
+      }
+    ]
+  },
+  {
+    "truckHeight": 6,
+    "truckWidth": 2,
+    "truck_type": "Truck 6x2"
+  }
+]
