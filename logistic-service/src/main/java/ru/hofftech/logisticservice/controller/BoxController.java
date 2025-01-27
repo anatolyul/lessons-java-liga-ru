@@ -1,7 +1,6 @@
 package ru.hofftech.logisticservice.controller;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hofftech.logisticservice.dto.BoxDto;
 import ru.hofftech.logisticservice.service.BoxService;
@@ -33,13 +31,6 @@ public class BoxController {
 
     @GetMapping("/{name}")
     public ResponseEntity<BoxDto> findByName(@PathVariable String name) {
-        Optional<BoxDto> boxOptional = boxService.findByName(name);
-        return boxOptional.map(ResponseEntity::ok).orElseGet(() ->
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    @GetMapping("/find")
-    public ResponseEntity<BoxDto> findByFilter(@RequestParam(required = false) String name) {
         Optional<BoxDto> boxOptional = boxService.findByName(name);
         return boxOptional.map(ResponseEntity::ok).orElseGet(() ->
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build());
