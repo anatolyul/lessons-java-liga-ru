@@ -1,6 +1,7 @@
 package ru.hofftech.logisticservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,19 +11,18 @@ import lombok.Setter;
 
 import java.util.Arrays;
 
-@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Менеджер коробок-посылок")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BoxDto {
 
-    @Schema(description = "Id коробки-посылки")
-    private Long id;
-
+    @Setter
     @Schema(description = "Наименование посылки")
     private String name;
 
+    @Setter
     @Schema(description = "Символ для прорисовки формы")
     private String symbol;
 
@@ -70,4 +70,5 @@ public class BoxDto {
     public String toString() {
         return "Посылка:\nname: " + this.getName() + "\nform:\n" + this.getForm().replace("x", symbol);
     }
+
 }

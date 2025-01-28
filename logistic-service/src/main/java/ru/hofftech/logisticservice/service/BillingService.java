@@ -32,7 +32,7 @@ public class BillingService {
                                                LocalDate startDate,
                                                LocalDate endDate) {
         List<OrderDto> orders = orderMapper.toDtoList(
-                orderRepository.findByNameWithPeriod(clientName, startDate, endDate));
+                orderRepository.findAllByClientNameAndDateBetween(clientName, startDate, endDate));
         orders.forEach(order -> order.setAmount(calculatedAmount(order)));
 
         return orders;

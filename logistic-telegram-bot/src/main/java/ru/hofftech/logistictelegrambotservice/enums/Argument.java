@@ -2,6 +2,8 @@ package ru.hofftech.logistictelegrambotservice.enums;
 
 import lombok.Getter;
 
+import java.util.regex.Pattern;
+
 /**
  * Перечисление аргументов команд.
  */
@@ -101,5 +103,21 @@ public enum Argument {
      */
     Argument(String code) {
         this.code = code;
+    }
+
+    /**
+     * Преобразует строковое представление аргумента команды в перечисление Argument.
+     *
+     * @param argumentCode строковое представление аргумента команды
+     * @return перечисление Argument, соответствующее строковому представлению
+     */
+    public static Argument convertStringToEnum(String argumentCode) {
+        for (Argument argument : Argument.values()) {
+            Pattern pattern = Pattern.compile(argument.getCode());
+            if (pattern.matcher(argumentCode).matches()) {
+                return argument;
+            }
+        }
+        return Argument.UNKNOWN;
     }
 }

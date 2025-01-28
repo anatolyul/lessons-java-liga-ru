@@ -1,10 +1,13 @@
 package ru.hofftech.logistictelegrambotservice.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import ru.hofftech.logistictelegrambotservice.enums.TypeAlgorithm;
 
 @Getter
 @Setter
+@Builder
 public class LoadParamDto {
 
     private String parcelsText;
@@ -13,7 +16,7 @@ public class LoadParamDto {
 
     private String trucks;
 
-    private String type;
+    private TypeAlgorithm type;
 
     private String outFilename;
 }

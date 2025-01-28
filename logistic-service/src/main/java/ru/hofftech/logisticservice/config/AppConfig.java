@@ -2,7 +2,7 @@ package ru.hofftech.logisticservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.hofftech.logisticservice.model.enums.ConsoleCommand;
+import ru.hofftech.logisticservice.model.enums.TypeLoadData;
 import ru.hofftech.logisticservice.model.enums.TypeAlgorithm;
 import ru.hofftech.logisticservice.service.LoaderBoxesInTrucksService;
 import ru.hofftech.logisticservice.service.ParserBoxesService;
@@ -34,15 +34,15 @@ public class AppConfig {
     }
 
     @Bean
-    public Map<ConsoleCommand, ParserBoxesService> createParserBoxesMap(
+    public Map<TypeLoadData, ParserBoxesService> createParserBoxesMap(
             ParserBoxesServiceJson parserBoxesServiceJson,
             ParserBoxesServiceTxt parserBoxesServiceTxt,
             ParserBoxesServiceCsv parserBoxesServiceCsv) {
 
-        Map<ConsoleCommand, ParserBoxesService> map = new EnumMap<>(ConsoleCommand.class);
-        map.put(ConsoleCommand.IMPORT_FILE_JSON, parserBoxesServiceJson);
-        map.put(ConsoleCommand.IMPORT_FILE_TXT, parserBoxesServiceTxt);
-        map.put(ConsoleCommand.LOAD, parserBoxesServiceCsv);
+        Map<TypeLoadData, ParserBoxesService> map = new EnumMap<>(TypeLoadData.class);
+        map.put(TypeLoadData.IMPORT_FILE_JSON, parserBoxesServiceJson);
+        map.put(TypeLoadData.IMPORT_FILE_TXT, parserBoxesServiceTxt);
+        map.put(TypeLoadData.LOAD, parserBoxesServiceCsv);
 
         return map;
     }

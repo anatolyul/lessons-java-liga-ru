@@ -10,8 +10,8 @@ import ru.hofftech.logisticservice.exception.FileReadException;
 import ru.hofftech.logisticservice.exception.FileWriteException;
 import ru.hofftech.logisticservice.model.Truck;
 import ru.hofftech.logisticservice.model.TruckForm;
-import ru.hofftech.logisticservice.model.enums.ConsoleCommand;
-import ru.hofftech.logisticservice.service.converter.CommandArgConverterService;
+import ru.hofftech.logisticservice.model.enums.TypeLoadData;
+import ru.hofftech.logisticservice.service.converter.FilePathSearchService;
 import ru.hofftech.logisticservice.service.factory.LoaderBoxesInTrucksServiceFactory;
 import ru.hofftech.logisticservice.service.factory.ParserBoxesServiceFactory;
 
@@ -24,14 +24,13 @@ public class BoxActionService {
 
     private final BoxService boxService;
     private final ParserBoxesServiceFactory parserBoxesServiceFactory;
-    private final CommandArgConverterService commandArgConverterService;
+    private final FilePathSearchService filePathSearchService;
     private final LoaderBoxesInTrucksServiceFactory loaderBoxesInTrucksServiceFactory;
     private final UnloaderTrucksToBoxesService unloaderTrucksToBoxesService;
 
     public List<Truck> load(LoadParamDto loadParamDto) {
         TruckForm trucksForm = TruckForm.fromString(loadParamDto.getTrucks());
         List<BoxDto> boxes = findBoxesToLoad(
-                ConsoleCommand.LOAD,
                 loadParamDto.getParcelsText(),
                 loadParamDto.getParcelsFile());
 
@@ -45,7 +44,7 @@ public class BoxActionService {
     public List<String[]> unload(UnloadParamDto unloadParamDto) {
         try {
             return unloaderTrucksToBoxesService.unloadTrucksToBoxes(
-                    commandArgConverterService.fileToPath(unloadParamDto.getInFilename()),
+                    filePathSearchService.search(unloadParamDto.getInFilename()),
                     unloadParamDto.getOutFilename(),
                     unloadParamDto.isWithCount());
         } catch (FileReadException | FileWriteException e) {
@@ -54,10 +53,10 @@ public class BoxActionService {
     }
 
     public List<BoxDto> importFile(ImportParamDto importParamDto) {
-        ConsoleCommand commandParser = ConsoleCommand.fromExtension(importParamDto.getFilename());
+        TypeLoadData commandParser = TypeLoadData.fromExtension(importParamDto.getFilename());
 
         List<BoxDto> boxes = parserBoxesServiceFactory.create(commandParser,
-                        commandArgConverterService.fileToPath(importParamDto.getFilename()));
+                        filePathSearchService.search(importParamDto.getFilename()));
         if (!boxes.isEmpty()) {
             boxService.deleteAll();
             boxes.forEach(boxService::create);
@@ -66,7 +65,7 @@ public class BoxActionService {
         return boxes;
     }
 
-    private List<BoxDto> findBoxesToLoad(ConsoleCommand commandParser, String boxesNames, String boxesFile) {
+    private List<BoxDto> findBoxesToLoad(String boxesNames, String boxesFile) {
         List<BoxDto> boxes = new ArrayList<>();
         if (boxesNames != null && !boxesNames.isEmpty()) {
             for (String boxName : boxesNames.replace("n", "\n")
@@ -78,8 +77,8 @@ public class BoxActionService {
             }
         } else if (boxesFile != null && !boxesFile.isEmpty()) {
             boxes = parserBoxesServiceFactory
-                    .create(commandParser,
-                            commandArgConverterService.fileToPath(boxesFile));
+                    .create(TypeLoadData.LOAD,
+                            filePathSearchService.search(boxesFile));
         } else {
             boxes = boxService.findAll();
         }

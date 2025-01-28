@@ -3,11 +3,14 @@ package ru.hofftech.logistictelegrambotservice.service.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
+import ru.hofftech.logistictelegrambotservice.dto.UnloadParamDto;
 import ru.hofftech.logistictelegrambotservice.enums.Argument;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для выполнения команды разгрузки грузовиков.
@@ -27,15 +30,24 @@ public class UnloadCommandService implements CommandExecutor {
     @Override
     public String execute(CommandDto command) {
         Map<Argument, String> arguments = command.getArguments();
-//        try {
-//            return unloaderTrucksToBoxesService.unloadTrucksToBoxes(
-//                    commandArgConverterService.fileToPath(arguments.get(Argument.IN_FILENAME)),
-//                    arguments.get(Argument.OUT_FILENAME),
-//                    arguments.get(Argument.WITHCOUNT) != null
-//                            && arguments.get(Argument.WITHCOUNT).equals("true"));
-//        } catch (FileReadException | FileWriteException e) {
-//            return "Ошибка выполнения команды: " + e.getMessage();
-//        }
-        return "";
+
+        boolean withCount = arguments.get(Argument.WITHCOUNT) != null
+                && arguments.get(Argument.WITHCOUNT).equals("true");
+
+        UnloadParamDto unloadParamDto = UnloadParamDto.builder()
+                .inFilename(arguments.get(Argument.IN_FILENAME))
+                .outFilename(arguments.get(Argument.OUT_FILENAME))
+                .withCount(withCount)
+                .build();
+
+        List<String[]> boxes = logisticService.unloadBoxes(unloadParamDto);
+
+        return withCount ?
+                boxes.stream()
+                        .map(box -> box[0] + "," + box[1])
+                        .collect(Collectors.joining("\n")) :
+                boxes.stream()
+                        .map(box -> box[0])
+                        .collect(Collectors.joining("\n"));
     }
 }

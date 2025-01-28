@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hofftech.logisticservice.dto.BoxDto;
+import ru.hofftech.logisticservice.dto.BoxForUpdateDto;
 import ru.hofftech.logisticservice.dto.ImportParamDto;
 import ru.hofftech.logisticservice.dto.LoadParamDto;
 import ru.hofftech.logisticservice.dto.UnloadParamDto;
@@ -104,7 +104,6 @@ public class BoxController {
     /**
      * Обновляет существующую коробку.
      *
-     * @param name имя коробки
      * @param box  новые данные коробки
      * @return обновленная коробка
      */
@@ -113,13 +112,12 @@ public class BoxController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Коробка успешно обновлена",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BoxDto.class))}),
+                            schema = @Schema(implementation = BoxForUpdateDto.class))}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = @Content)})
-    @PutMapping("/{name}")
-    public ResponseEntity<BoxDto> update(@PathVariable @NotNull String name,
-                                         @RequestBody BoxDto box) {
-        return ResponseEntity.ok(boxService.update(name, box));
+    @PutMapping
+    public ResponseEntity<BoxDto> update(@RequestBody BoxForUpdateDto box) {
+        return ResponseEntity.ok(boxService.update(box));
     }
 
     /**
@@ -137,7 +135,7 @@ public class BoxController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = @Content)})
     @DeleteMapping("/{name}")
-    public ResponseEntity<Boolean> delete(@PathVariable @NotNull String name) {
+    public ResponseEntity<Boolean> delete(@PathVariable String name) {
         return ResponseEntity.ok(boxService.delete(name));
     }
 

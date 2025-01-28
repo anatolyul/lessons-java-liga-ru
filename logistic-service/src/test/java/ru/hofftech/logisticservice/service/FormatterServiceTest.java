@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import ru.hofftech.logisticservice.dto.BoxDto;
 import ru.hofftech.logisticservice.model.Truck;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FormatterServiceTest {
@@ -71,14 +69,4 @@ class FormatterServiceTest {
         assertTrue(result.contains("33\n33"));
     }
 
-    @Test
-    @DisplayName("Тест: stringToLocalDate должен корректно преобразовывать строку в LocalDate")
-    void stringToLocalDate_shouldConvertStringToLocalDate() {
-        String dateString = "01.01.2023";
-        LocalDate expectedDate = LocalDate.of(2023, 1, 1);
-
-        LocalDate result = formatterService.stringToLocalDate(dateString);
-
-        assertEquals(expectedDate, result);
-    }
 }

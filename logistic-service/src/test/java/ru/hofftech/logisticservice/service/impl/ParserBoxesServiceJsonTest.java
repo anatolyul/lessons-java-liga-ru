@@ -7,7 +7,7 @@ import ru.hofftech.logisticservice.mapper.BoxMapper;
 import ru.hofftech.logisticservice.repository.BoxRepository;
 import ru.hofftech.logisticservice.service.BoxService;
 import ru.hofftech.logisticservice.service.ParserBoxesService;
-import ru.hofftech.logisticservice.service.converter.CommandArgConverterService;
+import ru.hofftech.logisticservice.service.converter.FilePathSearchService;
 
 import java.util.List;
 
@@ -22,8 +22,8 @@ class ParserBoxesServiceJsonTest {
         BoxMapper boxMapper = Mockito.mock(BoxMapper.class);
         BoxService boxService = new BoxService(boxRepository, boxMapper);
         ParserBoxesService parserBoxesService = new ParserBoxesServiceJson(boxService);
-        CommandArgConverterService commandArgConverterService = new CommandArgConverterService();
-        boxes = parserBoxesService.parse(commandArgConverterService.fileToPath("trucks.json"));
+        FilePathSearchService filePathSearchService = new FilePathSearchService();
+        boxes = parserBoxesService.parse(filePathSearchService.search("trucks.json"));
 
         assertThat(boxes).hasSize(2);
     }

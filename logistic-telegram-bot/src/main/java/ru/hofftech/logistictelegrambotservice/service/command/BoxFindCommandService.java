@@ -9,6 +9,7 @@ import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Сервис для выполнения команды поиска коробки.
@@ -29,11 +30,16 @@ public class BoxFindCommandService implements CommandExecutor {
     public String execute(CommandDto command) {
         Map<Argument, String> arguments = command.getArguments();
 
-        BoxDto result = logisticService.findBoxByName(arguments.get(Argument.ID));
-        if (result == null) {
-            result = logisticService.findBoxByName(arguments.get(Argument.NAME));
+        try {
+            BoxDto result = Optional.ofNullable(arguments.get(Argument.ID))
+                    .map(logisticService::findBoxByName)
+                    .orElseGet(() -> Optional.ofNullable(arguments.get(Argument.NAME))
+                            .map(logisticService::findBoxByName)
+                            .orElse(null));
+            return result != null ? result.toString() : "Посылка не найдена!";
         }
-
-        return result.toString();
+        catch (Exception e) {
+            return "Ошибка обработки запроса, сервис логистики не доступен";
+        }
     }
 }

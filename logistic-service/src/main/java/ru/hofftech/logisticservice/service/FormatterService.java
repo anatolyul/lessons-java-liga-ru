@@ -5,11 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticservice.dto.BoxDto;
-import ru.hofftech.logisticservice.dto.OrderDto;
 import ru.hofftech.logisticservice.model.Truck;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -77,17 +74,4 @@ public class FormatterService {
         return sb.toString();
     }
 
-    public LocalDate stringToLocalDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return LocalDate.parse(date, formatter);
-    }
-
-    public String formatOrderOperationToBillingString(OrderDto orderDto) {
-        return String.format("%s; %s; %d машин; %d посылок; %.2f рублей",
-                orderDto.getDate(),
-                orderDto.getType().getCode(),
-                orderDto.getTruckCount(),
-                orderDto.getBoxCount(),
-                orderDto.getAmount());
-    }
 }

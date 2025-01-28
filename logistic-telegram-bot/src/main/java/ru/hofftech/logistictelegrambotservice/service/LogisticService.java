@@ -1,16 +1,18 @@
 package ru.hofftech.logistictelegrambotservice.service;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 import org.springframework.web.service.annotation.PutExchange;
 import ru.hofftech.logistictelegrambotservice.dto.BoxDto;
+import ru.hofftech.logistictelegrambotservice.dto.BoxForUpdateDto;
 import ru.hofftech.logistictelegrambotservice.dto.ImportParamDto;
 import ru.hofftech.logistictelegrambotservice.dto.LoadParamDto;
 import ru.hofftech.logistictelegrambotservice.dto.OrderDto;
+import ru.hofftech.logistictelegrambotservice.dto.TruckDto;
 import ru.hofftech.logistictelegrambotservice.dto.UnloadParamDto;
 
 import java.time.LocalDate;
@@ -36,7 +38,7 @@ public interface LogisticService {
      * @return коробка с указанным именем
      */
     @GetExchange("/api/v1/box/{name}")
-    BoxDto findBoxByName(@RequestPart String name);
+    BoxDto findBoxByName(@PathVariable String name);
 
     /**
      * Создает новую коробку.
@@ -50,12 +52,11 @@ public interface LogisticService {
     /**
      * Обновляет существующую коробку.
      *
-     * @param name имя коробки
      * @param box  новые данные коробки
      * @return обновленная коробка
      */
-    @PutExchange("/api/v1/box/{name}")
-    BoxDto updateBox(@RequestPart String name, @RequestBody BoxDto box);
+    @PutExchange("/api/v1/box")
+    BoxDto updateBox(@RequestBody BoxForUpdateDto box);
 
     /**
      * Удаляет коробку по имени.
@@ -64,7 +65,7 @@ public interface LogisticService {
      * @return результат удаления
      */
     @DeleteExchange("/api/v1/box/{name}")
-    Boolean deleteBoxByName(@RequestPart String name);
+    Boolean deleteBoxByName(@PathVariable String name);
 
     /**
      * Загружает коробки в грузовики.
@@ -73,7 +74,7 @@ public interface LogisticService {
      * @return список всех коробок
      */
     @PostExchange("/api/v1/box/action/load")
-    List<BoxDto> loadBoxes(@RequestBody LoadParamDto loadParamDto);
+    List<TruckDto> loadBoxes(@RequestBody LoadParamDto loadParamDto);
 
     /**
      * Разгружает грузовики.
@@ -82,7 +83,7 @@ public interface LogisticService {
      * @return список всех коробок
      */
     @PostExchange("/api/v1/box/action/unload")
-    List<BoxDto> unloadBoxes(@RequestBody UnloadParamDto unloadParamDto);
+    List<String[]> unloadBoxes(@RequestBody UnloadParamDto unloadParamDto);
 
     /**
      * Импортирует коробки из файла.

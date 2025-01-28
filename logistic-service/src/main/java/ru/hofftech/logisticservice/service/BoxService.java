@@ -3,7 +3,9 @@ package ru.hofftech.logisticservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticservice.dto.BoxDto;
+import ru.hofftech.logisticservice.dto.BoxForUpdateDto;
 import ru.hofftech.logisticservice.entity.BoxEntity;
+import ru.hofftech.logisticservice.exception.BoxNotFoundException;
 import ru.hofftech.logisticservice.mapper.BoxMapper;
 import ru.hofftech.logisticservice.repository.BoxRepository;
 
@@ -21,7 +23,8 @@ public class BoxService {
     }
 
     public BoxDto findByName(String name) {
-        BoxEntity box = boxRepository.findByName(name);
+        BoxEntity box = boxRepository.findByName(name)
+                .orElseThrow(() -> new BoxNotFoundException(name));
         return boxMapper.toDto(box);
     }
 
@@ -30,8 +33,9 @@ public class BoxService {
         return boxMapper.toDto(boxRepository.save(box));
     }
 
-    public BoxDto update(String name, BoxDto boxDto) {
-        BoxEntity box = boxRepository.findByName(name);
+    public BoxDto update(BoxForUpdateDto boxDto) {
+        BoxEntity box = boxRepository.findByName(boxDto.getOldName())
+                .orElseThrow(() -> new BoxNotFoundException(boxDto.getOldName()));
         box.setName(boxDto.getName());
         box.setForm(boxDto.getForm());
         box.setSymbol(boxDto.getSymbol());
@@ -39,9 +43,10 @@ public class BoxService {
     }
 
     public boolean delete(String name) {
-        BoxEntity box = boxRepository.findByName(name);
+        BoxEntity box = boxRepository.findByName(name)
+                .orElseThrow(() -> new BoxNotFoundException(name));
         boxRepository.delete(box);
-        return boxRepository.findByName(name) == null;
+        return boxRepository.findByName(name).isEmpty();
     }
 
     public void deleteAll() {

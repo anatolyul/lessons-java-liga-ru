@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long>, JpaSp
                         and c.date <= :endDate
             """)
     List<OrderEntity> findByNameWithPeriod(String clientName, LocalDate startDate, LocalDate endDate);
+
+    List<OrderEntity> findAllByClientNameAndDateBetween(String clientName, LocalDate dateAfter, LocalDate dateBefore);
 }

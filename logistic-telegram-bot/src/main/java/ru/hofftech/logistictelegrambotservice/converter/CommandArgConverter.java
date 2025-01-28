@@ -17,45 +17,13 @@ import java.util.regex.Pattern;
 public class CommandArgConverter {
 
     /**
-     * Преобразует строковое представление консольной команды в перечисление ConsoleCommand.
-     *
-     * @param consoleCommand строковое представление консольной команды
-     * @return перечисление ConsoleCommand, соответствующее строковому представлению
-     */
-    public ConsoleCommand convertCommandStringToEnum(String consoleCommand) {
-        for (ConsoleCommand command : ConsoleCommand.values()) {
-            Pattern pattern = Pattern.compile(command.getCode());
-            if (pattern.matcher(consoleCommand).matches()) {
-                return command;
-            }
-        }
-        return ConsoleCommand.UNKNOWN;
-    }
-
-    /**
-     * Преобразует строковое представление аргумента команды в перечисление Argument.
-     *
-     * @param argumentCode строковое представление аргумента команды
-     * @return перечисление Argument, соответствующее строковому представлению
-     */
-    public Argument convertArgumentStringToEnum(String argumentCode) {
-        for (Argument argument : Argument.values()) {
-            Pattern pattern = Pattern.compile(argument.getCode());
-            if (pattern.matcher(argumentCode).matches()) {
-                return argument;
-            }
-        }
-        return Argument.UNKNOWN;
-    }
-
-    /**
      * Парсит строку команды и аргументов в объект Command.
      *
      * @param consoleCommand строка команды и аргументов
      * @return объект Command, содержащий команду и список аргументов
      */
     public CommandDto parseCommandArgs(String consoleCommand) {
-        ConsoleCommand consoleCommandResult = convertCommandStringToEnum(consoleCommand);
+        ConsoleCommand consoleCommandResult = ConsoleCommand.convertStringToEnum(consoleCommand);
 
         // Регулярное выражение для извлечения команды и аргументов
         String commandRegex = "(\\w+)(.*)";
@@ -65,7 +33,7 @@ public class CommandArgConverter {
         Map<Argument, String> args = new EnumMap<>(Argument.class);
         if (commandMatcher.find()) {
             if (consoleCommandResult == ConsoleCommand.UNKNOWN) {
-                consoleCommandResult = convertCommandStringToEnum(commandMatcher.group(1));
+                consoleCommandResult = ConsoleCommand.convertStringToEnum(commandMatcher.group(1));
             }
 
             String argsString = commandMatcher.group(2).trim().replace("\\n", "\n");
@@ -76,7 +44,7 @@ public class CommandArgConverter {
             Matcher argMatcher = argPattern.matcher(argsString);
 
             while (argMatcher.find()) {
-                Argument arg = convertArgumentStringToEnum(argMatcher.group(1));
+                Argument arg = Argument.convertStringToEnum(argMatcher.group(1));
                 args.put(arg, argMatcher.group(2));
             }
         }

@@ -2,7 +2,7 @@ package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logistictelegrambotservice.dto.BoxDto;
+import ru.hofftech.logistictelegrambotservice.dto.BoxForUpdateDto;
 import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
 import ru.hofftech.logistictelegrambotservice.enums.Argument;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
@@ -28,10 +28,11 @@ public class BoxEditCommandService implements CommandExecutor {
     @Override
     public String execute(CommandDto command) {
         Map<Argument, String> arguments = command.getArguments();
-        BoxDto boxUpd = new BoxDto();
+        BoxForUpdateDto boxUpd = new BoxForUpdateDto();
+        boxUpd.setOldName(arguments.get(Argument.ID));
         boxUpd.setName(arguments.get(Argument.NAME));
         boxUpd.setForm(arguments.get(Argument.FORM));
         boxUpd.setSymbol(arguments.get(Argument.SYMBOL));
-        return logisticService.updateBox(arguments.get(Argument.ID), boxUpd).toString();
+        return logisticService.updateBox(boxUpd).toString();
     }
 }

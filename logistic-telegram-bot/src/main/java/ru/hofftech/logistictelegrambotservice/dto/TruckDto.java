@@ -34,7 +34,6 @@ public class TruckDto {
         for (int i = 0; i < truckHeight; i++) {
             sb.append("+");
             for (int j = 0; j < truckWidth; j++) {
-                // переворачиваем матрицу
                 sb.append(cargoContent[truckHeight - 1 - i][j] != null
                         ? cargoContent[truckHeight - 1 - i][j]
                         : " ");
@@ -46,5 +45,10 @@ public class TruckDto {
         sb.append("\n");
 
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return getTruckName() + ":\n" + printCargo() + "\n";
     }
 }
