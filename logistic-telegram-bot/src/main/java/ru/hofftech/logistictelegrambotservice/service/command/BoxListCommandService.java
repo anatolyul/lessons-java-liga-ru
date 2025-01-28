@@ -1,11 +1,11 @@
-package ru.hofftech.logisticservice.service.command;
+package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticservice.dto.BoxDto;
-import ru.hofftech.logisticservice.model.Command;
-import ru.hofftech.logisticservice.service.BoxService;
-import ru.hofftech.logisticservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.dto.BoxDto;
+import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
+import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BoxListCommandService implements CommandExecutor {
-    private final BoxService boxService;
+
+    private final LogisticService logisticService;
 
     /**
      * Выполняет команду отображения списка всех коробок.
@@ -25,8 +26,8 @@ public class BoxListCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(Command command) {
-        List<BoxDto> boxes = boxService.findAll();
+    public String execute(CommandDto command) {
+        List<BoxDto> boxes = logisticService.findAllBoxes();
         return boxes.stream()
                 .map(BoxDto::toString)
                 .collect(Collectors.joining("\n"));

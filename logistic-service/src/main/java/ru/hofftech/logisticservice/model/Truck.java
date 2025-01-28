@@ -27,7 +27,6 @@ public class Truck {
     @JsonProperty("parcels")
     private List<BoxDto> boxes;
 
-    @JsonIgnore
     private String[][] cargoContent;
 
     /**

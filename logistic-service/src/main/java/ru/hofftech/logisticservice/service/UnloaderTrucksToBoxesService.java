@@ -36,7 +36,7 @@ public class UnloaderTrucksToBoxesService {
      * @return строка с результатом операции
      */
     @SneakyThrows
-    public String unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withCount) {
+    public List<String[]> unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withCount) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String[]> boxes;
 
@@ -67,19 +67,19 @@ public class UnloaderTrucksToBoxesService {
             throw new FileReadException("Ошибка чтения файла грузовиков: " + fileNameTrucks, e);
         }
 
-        StringBuilder result = new StringBuilder();
+        //StringBuilder result = new StringBuilder();
 
         if (fileNameBoxes != null && !fileNameBoxes.isEmpty()) {
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(fileNameBoxes))) {
                 csvWriter.writeAll(boxes);
-                result.append("Результаты сохранены в файл: ").append(fileNameBoxes).append("\n");
+                //result.append("Результаты сохранены в файл: ").append(fileNameBoxes).append("\n");
             } catch (IOException e) {
                 throw new FileWriteException("Ошибка сохранения результатов в файл: " + fileNameBoxes, e);
             }
         } else {
-            result.append(boxes.stream().map(arr -> arr[0]).collect(Collectors.joining("\n")));
+            //result.append(boxes.stream().map(arr -> arr[0]).collect(Collectors.joining("\n")));
         }
 
-        return result.toString();
+        return boxes;
     }
 }

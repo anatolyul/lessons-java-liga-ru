@@ -1,9 +1,9 @@
-INSERT INTO public.box (id, name, form, symbol) VALUES (1, 'Посылка Тип 1', '1', '1');
-INSERT INTO public.box (id, name, form, symbol) VALUES (2, 'Посылка Тип 2', '22', '2');
-INSERT INTO public.box (id, name, form, symbol) VALUES (3, 'Посылка Тип 3', '333', '3');
-INSERT INTO public.box (id, name, form, symbol) VALUES (4, 'Посылка Тип 4', '4444', '4');
-INSERT INTO public.box (id, name, form, symbol) VALUES (5, 'Посылка Тип 5', '55555', '5');
-INSERT INTO public.box (id, name, form, symbol) VALUES (6, 'Посылка Тип 6', '666\n666', '6');
-INSERT INTO public.box (id, name, form, symbol) VALUES (7, 'Посылка Тип 7', '777\n7777', '7');
-INSERT INTO public.box (id, name, form, symbol) VALUES (8, 'Посылка Тип 8', '8888\n8888', '8');
-INSERT INTO public.box (id, name, form, symbol) VALUES (9, 'Посылка Тип 9', '999\n999\n999', '9');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 1', '1', '1');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 2', '22', '2');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 3', '333', '3');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 4', '4444', '4');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 5', '55555', '5');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 6', '666\n666', '6');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 7', '777\n7777', '7');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 8', '8888\n8888', '8');
+INSERT INTO box (name, form, symbol) VALUES ('Посылка Тип 9', '999\n999\n999', '9');

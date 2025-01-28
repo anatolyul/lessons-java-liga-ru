@@ -1,7 +1,7 @@
 package ru.hofftech.logistictelegrambotservice.converter;
 
 import org.springframework.stereotype.Component;
-import ru.hofftech.logistictelegrambotservice.dto.RequestCommandDto;
+import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
 import ru.hofftech.logistictelegrambotservice.enums.Argument;
 import ru.hofftech.logistictelegrambotservice.enums.ConsoleCommand;
 
@@ -54,7 +54,7 @@ public class CommandArgConverter {
      * @param consoleCommand строка команды и аргументов
      * @return объект Command, содержащий команду и список аргументов
      */
-    public RequestCommandDto parseCommandArgs(String consoleCommand) {
+    public CommandDto parseCommandArgs(String consoleCommand) {
         ConsoleCommand consoleCommandResult = convertCommandStringToEnum(consoleCommand);
 
         // Регулярное выражение для извлечения команды и аргументов
@@ -81,7 +81,7 @@ public class CommandArgConverter {
             }
         }
 
-        return RequestCommandDto.builder()
+        return CommandDto.builder()
                 .consoleCommand(consoleCommandResult)
                 .arguments(args)
                 .build();

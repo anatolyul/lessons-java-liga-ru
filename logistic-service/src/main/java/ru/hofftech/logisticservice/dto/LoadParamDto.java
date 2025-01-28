@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.hofftech.logisticservice.model.enums.TypeAlgorithm;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class LoadParamDto {
     private String trucks;
 
     @Schema(description = "Тип алгоритма погрузки")
-    private String type;
+    private TypeAlgorithm type;
 
     @Schema(description = "Имя выходного файла")
     private String outFilename;

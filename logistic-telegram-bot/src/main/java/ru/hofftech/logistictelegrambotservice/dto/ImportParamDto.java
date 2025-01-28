@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseCommandDto {
-    private String resultCommandExecuted;
+public class ImportParamDto {
+
+    private String filename;
 }

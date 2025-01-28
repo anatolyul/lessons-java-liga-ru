@@ -1,8 +1,8 @@
-package ru.hofftech.logisticservice.service.command;
+package ru.hofftech.logistictelegrambotservice.service.command;
 
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticservice.model.Command;
-import ru.hofftech.logisticservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
+import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 
 /**
  * Сервис для выполнения неизвестных команд.
@@ -17,7 +17,7 @@ public class UnknownCommandService implements CommandExecutor {
      * @return строка, содержащая сообщение о неподдерживаемой команде
      */
     @Override
-    public String execute(Command command) {
+    public String execute(CommandDto command) {
         return "Приложение не поддерживает данную команду.";
     }
 }

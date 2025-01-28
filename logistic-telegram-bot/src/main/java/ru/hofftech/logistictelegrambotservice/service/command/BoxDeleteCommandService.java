@@ -1,11 +1,11 @@
-package ru.hofftech.logisticservice.service.command;
+package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticservice.model.Command;
-import ru.hofftech.logisticservice.model.enums.Argument;
-import ru.hofftech.logisticservice.service.BoxService;
-import ru.hofftech.logisticservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
+import ru.hofftech.logistictelegrambotservice.enums.Argument;
+import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
 import java.util.Map;
 
@@ -15,7 +15,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class BoxDeleteCommandService implements CommandExecutor {
-    private final BoxService boxService;
+
+    private final LogisticService logisticService;
 
     /**
      * Выполняет команду удаления коробки.
@@ -24,9 +25,9 @@ public class BoxDeleteCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(Command command) {
-        Map<Argument, String> arguments = command.arguments();
-        boolean result = boxService.delete(arguments.get(Argument.NAME));
+    public String execute(CommandDto command) {
+        Map<Argument, String> arguments = command.getArguments();
+        boolean result = logisticService.deleteBoxByName(arguments.get(Argument.NAME));
         if (result) {
             return "Посылка удалена";
         } else {

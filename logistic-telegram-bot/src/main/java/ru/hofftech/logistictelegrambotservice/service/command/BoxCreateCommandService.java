@@ -1,12 +1,12 @@
-package ru.hofftech.logisticservice.service.command;
+package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticservice.dto.BoxDto;
-import ru.hofftech.logisticservice.model.Command;
-import ru.hofftech.logisticservice.model.enums.Argument;
-import ru.hofftech.logisticservice.service.BoxService;
-import ru.hofftech.logisticservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.dto.BoxDto;
+import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
+import ru.hofftech.logistictelegrambotservice.enums.Argument;
+import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
 import java.util.Map;
 
@@ -16,7 +16,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class BoxCreateCommandService implements CommandExecutor {
-    private final BoxService boxService;
+
+    private final LogisticService logisticService;
 
     /**
      * Выполняет команду создания коробки.
@@ -25,13 +26,13 @@ public class BoxCreateCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(Command command) {
-        Map<Argument, String> arguments = command.arguments();
+    public String execute(CommandDto command) {
+        Map<Argument, String> arguments = command.getArguments();
         BoxDto boxNew = new BoxDto();
         boxNew.setName(arguments.get(Argument.NAME));
         boxNew.setForm(arguments.get(Argument.FORM));
         boxNew.setSymbol(arguments.get(Argument.SYMBOL));
 
-        return boxService.create(boxNew).toString();
+        return logisticService.createBox(boxNew).toString();
     }
 }

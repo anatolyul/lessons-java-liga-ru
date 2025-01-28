@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hofftech.logisticservice.dto.BoxDto;
 import ru.hofftech.logisticservice.dto.ImportParamDto;
 import ru.hofftech.logisticservice.dto.LoadParamDto;
-import ru.hofftech.logisticservice.dto.ResponseCommandDto;
 import ru.hofftech.logisticservice.dto.UnloadParamDto;
+import ru.hofftech.logisticservice.model.Truck;
 import ru.hofftech.logisticservice.service.BoxActionService;
 import ru.hofftech.logisticservice.service.BoxService;
 
@@ -152,11 +152,11 @@ public class BoxController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Коробки успешно загружены",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ResponseCommandDto.class))}),
+                            schema = @Schema(implementation = Truck.class))}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = @Content)})
     @PostMapping("/action/load")
-    public ResponseEntity<ResponseCommandDto> load(@RequestBody LoadParamDto loadParamDto) {
+    public ResponseEntity<List<Truck>> load(@RequestBody LoadParamDto loadParamDto) {
         return ResponseEntity.ok(boxActionService.load(loadParamDto));
     }
 
@@ -171,11 +171,11 @@ public class BoxController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Грузовики успешно разгружены",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ResponseCommandDto.class))}),
+                            schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = @Content)})
     @PostMapping("/action/unload")
-    public ResponseEntity<ResponseCommandDto> unload(@RequestBody UnloadParamDto unloadParamDto) {
+    public ResponseEntity<List<String[]>> unload(@RequestBody UnloadParamDto unloadParamDto) {
         return ResponseEntity.ok(boxActionService.unload(unloadParamDto));
     }
 
@@ -190,11 +190,11 @@ public class BoxController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Коробки успешно импортированы",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ResponseCommandDto.class))}),
+                            schema = @Schema(implementation = BoxDto.class))}),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
                     content = @Content)})
     @PostMapping("/action/import")
-    public ResponseEntity<ResponseCommandDto> importFile(@RequestBody ImportParamDto importParamDto) {
+    public ResponseEntity<List<BoxDto>> importFile(@RequestBody ImportParamDto importParamDto) {
         return ResponseEntity.ok(boxActionService.importFile(importParamDto));
     }
 }

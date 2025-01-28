@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Getter
 @Builder
-public class RequestCommandDto {
+public class CommandDto {
     private ConsoleCommand consoleCommand;
     private Map<Argument, String> arguments;
 }

@@ -1,12 +1,12 @@
-package ru.hofftech.logisticservice.service.command;
+package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticservice.dto.BoxDto;
-import ru.hofftech.logisticservice.model.Command;
-import ru.hofftech.logisticservice.model.enums.Argument;
-import ru.hofftech.logisticservice.service.BoxService;
-import ru.hofftech.logisticservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.dto.BoxDto;
+import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
+import ru.hofftech.logistictelegrambotservice.enums.Argument;
+import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
+import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
 import java.util.Map;
 
@@ -16,7 +16,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class BoxEditCommandService implements CommandExecutor {
-    private final BoxService boxService;
+
+    private final LogisticService logisticService;
 
     /**
      * Выполняет команду редактирования коробки.
@@ -25,12 +26,12 @@ public class BoxEditCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(Command command) {
-        Map<Argument, String> arguments = command.arguments();
+    public String execute(CommandDto command) {
+        Map<Argument, String> arguments = command.getArguments();
         BoxDto boxUpd = new BoxDto();
         boxUpd.setName(arguments.get(Argument.NAME));
         boxUpd.setForm(arguments.get(Argument.FORM));
         boxUpd.setSymbol(arguments.get(Argument.SYMBOL));
-        return boxService.update(arguments.get(Argument.ID), boxUpd).toString();
+        return logisticService.updateBox(arguments.get(Argument.ID), boxUpd).toString();
     }
 }

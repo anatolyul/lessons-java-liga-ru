@@ -43,4 +43,8 @@ public class BoxService {
         boxRepository.delete(box);
         return boxRepository.findByName(name) == null;
     }
+
+    public void deleteAll() {
+        boxRepository.deleteAll();
+    }
 }
