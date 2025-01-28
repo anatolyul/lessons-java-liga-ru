@@ -1,6 +1,8 @@
 package ru.hofftech.logisticservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticservice.config.BillingConfig;
 import ru.hofftech.logisticservice.dto.OrderDto;
@@ -20,10 +22,9 @@ public class BillingService {
     private final OrderMapper orderMapper;
     private final BillingConfig billingConfig;
 
-    public List<OrderDto> findAll() {
-        List<OrderDto> orders = orderMapper.toDtoList(orderRepository.findAll());
+    public Page<OrderDto> findAll(Pageable pageable) {
+        Page<OrderDto> orders = orderRepository.findAll(pageable).map(orderMapper::toDto);
         orders.forEach(order -> order.setAmount(calculatedAmount(order)));
-
         return orders;
     }
 
