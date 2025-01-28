@@ -18,6 +18,7 @@ public interface BoxMapper {
 
     List<BoxDto> toDtoList(List<BoxEntity> boxes);
 
+    @Mapping(target = "id", ignore = true)
     BoxEntity toEntity(BoxDto boxDto);
 
 }

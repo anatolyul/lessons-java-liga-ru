@@ -17,7 +17,7 @@ object Version {
     const val ASSERTJ_CORE = "3.26.3"
     const val COMMONS_IO = "2.18.0"
     const val MAPSTRUCT = "1.6.3"
-    const val OPENAPI = "2.6.0"
+    const val OPENAPI = "2.8.3"
 
     object Junit {
         const val BOM = "5.10.0"
@@ -44,7 +44,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:${Version.SPRING_BOOT}")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${Version.SPRING_BOOT}")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:${Version.JACKSON_DATABIND}")
     implementation("com.opencsv:opencsv:${Version.OPENCSV}")
 
     implementation("org.projectlombok:lombok:${Version.LOMBOK_CORE}")
