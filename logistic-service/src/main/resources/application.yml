@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework: INFO
+
+swagger:
+  url:
+    path: /
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    path: ${swagger.url.path}swagger/v3/api-docs
+
+spring:
+  application:
+    name: logistic-service
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/logistic_service_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+billing:
+  cost-load: 50
+  cost-unload: 80
+

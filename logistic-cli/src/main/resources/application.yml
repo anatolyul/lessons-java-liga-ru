@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: logistic-cli
+  shell:
+    interactive:
+      enabled: true
+
+services:
+  logistic-service-url: "http://localhost:8080"

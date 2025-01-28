@@ -1,0 +1,51 @@
+services:
+  
+  logistic-service-db:
+    image: postgres:17.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: logistic_service_db
+    networks:
+      - logistic-network
+
+  logistic-service:
+    build:
+      context: ./logistic-service
+    restart: always
+    depends_on:
+      - logistic-service-db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://logistic-service-db:5432/logistic_service_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    networks:
+      - logistic-network
+
+  logistic-cli:
+    build:
+      context: ./logistic-cli
+    environment:
+      LOGISTIC_SERVICE_URL: "http://logistic-service:8080"
+    depends_on:
+      - logistic-service
+    networks:
+      - logistic-network
+
+  logistic-telegram-bot:
+    build:
+      context: ./logistic-telegram-bot
+    environment:
+      LOGISTIC_SERVICE_URL: "http://logistic-service:8080"
+    depends_on:
+      - logistic-service
+    networks:
+      - logistic-network
+
+networks:
+  logistic-network:
+    driver: bridge
