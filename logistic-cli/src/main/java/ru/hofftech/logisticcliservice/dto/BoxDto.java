@@ -11,12 +11,6 @@ public class BoxDto {
     private String symbol;
     private String form;
 
-    public void setForm(String form) {
-        this.form = form
-                .replace("\\", "")
-                .replace("n", "\n");
-    }
-
     public String toString() {
         return "Посылка:\nname: " + this.getName() + "\nform:\n" + this.getForm().replace("x", symbol);
     }

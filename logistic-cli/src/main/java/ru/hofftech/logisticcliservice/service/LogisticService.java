@@ -96,14 +96,6 @@ public interface LogisticService {
     List<BoxDto> importBoxes(@RequestBody ImportCommandDto importCommandDto);
 
     /**
-     * Получает список всех заказов.
-     *
-     * @return список всех заказов
-     */
-    @GetExchange("/api/v1/billing")
-    List<OrderDto> findAllOrders();
-
-    /**
      * Получает заказы по имени клиента и периоду.
      *
      * @param clientName имя клиента
