@@ -3,15 +3,20 @@ package ru.hofftech.logisticcliservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+
 import org.springframework.shell.standard.ShellOption;
-
-import ru.hofftech.logisticcliservice.service.LogisticService;
-import ru.hofftech.logisticcliservice.enums.Argument;
-import ru.hofftech.logisticcliservice.enums.ConsoleCommand;
-import ru.hofftech.logisticcliservice.dto.RequestCommandDto;
-
-import java.util.EnumMap;
-import java.util.Map;
+import ru.hofftech.logisticcliservice.dto.command.BillingCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.BoxCreateCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.BoxDeleteCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.BoxEditCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.BoxFindCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.BoxListCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.HelpCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.ImportCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.LoadCommandDto;
+import ru.hofftech.logisticcliservice.dto.command.UnloadCommandDto;
+import ru.hofftech.logisticcliservice.enums.TypeAlgorithm;
+import ru.hofftech.logisticcliservice.service.handler.CommandHandler;
 
 /**
  * Контроллер для обработки команд, вводимых через консоль.
@@ -19,7 +24,7 @@ import java.util.Map;
 @ShellComponent
 @RequiredArgsConstructor
 public class ShellController {
-    private final LogisticService logisticService;
+    private final CommandHandler commandHandler;
 
     /**
      * Отображает справочник команд.
@@ -28,8 +33,7 @@ public class ShellController {
      */
     @ShellMethod("Справочник команд")
     public String helpCommand() {
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.HELP, null))
-                .getResultCommandExecuted();
+        return commandHandler.handle(HelpCommandDto.builder().build());
     }
 
     /**
@@ -41,12 +45,11 @@ public class ShellController {
     @ShellMethod(value = "Импорт посылок из файла txt/json", key = "import")
     public String importFile(@ShellOption(value = {"--import-filename", "--file"}, help = "Файл импорта данных")
                              String importFilename) {
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.IMPORT_FILENAME, importFilename);
+        ImportCommandDto importCommandDto = ImportCommandDto.builder()
+                .filename(importFilename)
+                .build();
 
-        ConsoleCommand command = ConsoleCommand.fromExtension(importFilename);
-        return logisticService.executeCommand(new RequestCommandDto(command, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(importCommandDto);
     }
 
     /**
@@ -63,13 +66,13 @@ public class ShellController {
             @ShellOption(value = {"--form"}, help = "Форма посылки") String form,
             @ShellOption(value = {"--symbol"}, help = "Символ посылки") String symbol) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.NAME, name);
-        arguments.put(Argument.FORM, form);
-        arguments.put(Argument.SYMBOL, symbol);
+        BoxCreateCommandDto boxCreateCommandDto = BoxCreateCommandDto.builder()
+                .name(name)
+                .form(form)
+                .symbol(symbol)
+                .build();
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.BOX_CREATE, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(boxCreateCommandDto);
     }
 
     /**
@@ -88,14 +91,13 @@ public class ShellController {
             @ShellOption(value = {"--form"}, help = "Новая форма посылки") String form,
             @ShellOption(value = {"--symbol"}, help = "Новый символ посылки") String symbol) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.ID, id);
-        arguments.put(Argument.NAME, name);
-        arguments.put(Argument.FORM, form);
-        arguments.put(Argument.SYMBOL, symbol);
+        BoxEditCommandDto boxEditCommandDto = BoxEditCommandDto.builder()
+                .oldName(id)
+                .name(name)
+                .form(form)
+                .symbol(symbol).build();
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.BOX_EDIT, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(boxEditCommandDto);
     }
 
     /**
@@ -107,11 +109,9 @@ public class ShellController {
     @ShellMethod("Поиск и получение информации о посылке")
     public String find(@ShellOption(value = {"--name"}, help = "Имя посылки") String name) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.NAME, name);
+        BoxFindCommandDto boxFindCommandDto = BoxFindCommandDto.builder().boxName(name).build();
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.BOX_FIND, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(boxFindCommandDto);
     }
 
     /**
@@ -123,11 +123,9 @@ public class ShellController {
     @ShellMethod("Удаление посылок")
     public String delete(@ShellOption(value = {"--name"}, help = "Имя посылки") String name) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.NAME, name);
+        BoxDeleteCommandDto boxDeleteCommandDto = BoxDeleteCommandDto.builder().boxName(name).build();
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.BOX_DELETE, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(boxDeleteCommandDto);
     }
 
     /**
@@ -137,8 +135,7 @@ public class ShellController {
      */
     @ShellMethod("Список посылок")
     public String list() {
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.BOX_LIST, null))
-                .getResultCommandExecuted();
+        return commandHandler.handle(BoxListCommandDto.builder().build());
     }
 
     /**
@@ -162,15 +159,15 @@ public class ShellController {
             @ShellOption(value = {"--out-filename"}, defaultValue = "",
                     help = "Имя выходного файла") String outFilename) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.PARCELS_TEXT, parcelsText);
-        arguments.put(Argument.PARCELS_FILE, parcelsFile);
-        arguments.put(Argument.TRUCKS, trucks);
-        arguments.put(Argument.TYPE, type);
-        arguments.put(Argument.OUT_FILENAME, outFilename);
+        LoadCommandDto loadCommandDto = LoadCommandDto.builder()
+                .parcelsFile(parcelsFile)
+                .parcelsText(parcelsText)
+                .trucks(trucks)
+                .type(TypeAlgorithm.convertStringToEnum(type))
+                .outFilename(outFilename)
+                .build();
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.LOAD, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(loadCommandDto);
     }
 
     /**
@@ -187,15 +184,15 @@ public class ShellController {
             @ShellOption(value = {"--out-filename"}, defaultValue = "",
                     help = "Имя выходного файла") String outFilename,
             @ShellOption(value = {"--withcount"}, defaultValue = "",
-                    help = "Добавить колонку с количеством") String withCount) {
+                    help = "Добавить колонку с количеством") boolean withCount) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.IN_FILENAME, inFilename);
-        arguments.put(Argument.OUT_FILENAME, outFilename);
-        arguments.put(Argument.WITHCOUNT, withCount);
+        UnloadCommandDto unloadCommandDto = UnloadCommandDto.builder()
+                .inFilename(inFilename)
+                .outFilename(outFilename)
+                .withCount(withCount)
+                .build();
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.UNLOAD, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(unloadCommandDto);
     }
 
     /**
@@ -212,12 +209,12 @@ public class ShellController {
             @ShellOption(value = {"--period-from"}, help = "Период от") String periodFrom,
             @ShellOption(value = {"--period-to"}, help = "Период до") String periodTo) {
 
-        Map<Argument, String> arguments = new EnumMap<>(Argument.class);
-        arguments.put(Argument.USER, user);
-        arguments.put(Argument.PERIOD_FROM, periodFrom);
-        arguments.put(Argument.PERIOD_TO, periodTo);
+        BillingCommandDto billingCommandDto = BillingCommandDto.builder()
+                .userName(user)
+                .build();
+        billingCommandDto.setStringStartDate(periodFrom);
+        billingCommandDto.setStringEndDate(periodTo);
 
-        return logisticService.executeCommand(new RequestCommandDto(ConsoleCommand.BILLING, arguments))
-                .getResultCommandExecuted();
+        return commandHandler.handle(billingCommandDto);
     }
 }

@@ -2,6 +2,8 @@ package ru.hofftech.logisticcliservice.enums;
 
 import lombok.Getter;
 
+import java.util.regex.Pattern;
+
 /**
  * Перечисление консольных команд.
  */
@@ -90,5 +92,21 @@ public enum ConsoleCommand {
             return IMPORT_FILE_TXT;
         }
         throw new IllegalArgumentException("Unsupported file extension: " + filename);
+    }
+
+    /**
+     * Преобразует строковое представление консольной команды в перечисление ConsoleCommand.
+     *
+     * @param consoleCommand строковое представление консольной команды
+     * @return перечисление ConsoleCommand, соответствующее строковому представлению
+     */
+    public static ConsoleCommand convertStringToEnum(String consoleCommand) {
+        for (ConsoleCommand command : ConsoleCommand.values()) {
+            Pattern pattern = Pattern.compile(command.getCode());
+            if (pattern.matcher(consoleCommand).matches()) {
+                return command;
+            }
+        }
+        return ConsoleCommand.UNKNOWN;
     }
 }
