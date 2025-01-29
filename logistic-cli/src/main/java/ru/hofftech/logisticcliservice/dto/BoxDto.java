@@ -1,6 +1,5 @@
 package ru.hofftech.logisticcliservice.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
