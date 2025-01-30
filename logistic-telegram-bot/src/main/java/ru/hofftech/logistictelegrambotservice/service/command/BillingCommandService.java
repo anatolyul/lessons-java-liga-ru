@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BillingCommandService implements CommandExecutor {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     private final LogisticService logisticService;
 
     /**
@@ -43,7 +45,6 @@ public class BillingCommandService implements CommandExecutor {
     }
 
     public LocalDate stringToLocalDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return LocalDate.parse(date, formatter);
+        return LocalDate.parse(date, DATE_FORMATTER);
     }
 }

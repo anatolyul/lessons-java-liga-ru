@@ -12,13 +12,14 @@ import java.time.format.DateTimeFormatter;
 @Builder
 public class BillingCommandDto implements BaseCommandDto {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     private String userName;
     private LocalDate startDate;
     private LocalDate endDate;
 
     public LocalDate stringToLocalDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return LocalDate.parse(date, formatter);
+        return LocalDate.parse(date, DATE_FORMATTER);
     }
 
     public void setStringStartDate(String startDate) {

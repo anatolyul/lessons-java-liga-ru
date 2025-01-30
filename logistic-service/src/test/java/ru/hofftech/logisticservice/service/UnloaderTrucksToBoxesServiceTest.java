@@ -2,7 +2,6 @@ package ru.hofftech.logisticservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -48,35 +47,35 @@ class UnloaderTrucksToBoxesServiceTest {
         );
 
         objectMapper.writeValue(new File(fileNameTrucks), trucks);
+        unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
 
-        var result = unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
-
-        //assertTrue(result.contains("Результаты сохранены в файл: " + fileNameBoxes));
         assertTrue(Files.exists(Path.of(fileNameBoxes)));
     }
 
-//    @Test
-//    @DisplayName("Тест: unloadTrucksToBoxes должен вернуть информацию о коробках в виде строки")
-//    void unloadTrucksToBoxes_givenFileTrucksAndNoFileBoxes_shouldReturnBoxesAsString() throws IOException {
-//        String fileNameTrucks = tempDir.resolve("trucks.json").toString();
-//        String fileNameBoxes = "";
-//
-//        List<Truck> trucks = List.of(
-//                new Truck("Truck1", List.of(
-//                        new BoxDto("Box1", "xx\nxx", "1"),
-//                        new BoxDto("Box2", "xx\nxx", "2"))),
-//                new Truck("Truck2", List.of(
-//                        new BoxDto("Box3", "xx\nxx", "3")))
-//        );
-//
-//        objectMapper.writeValue(new File(fileNameTrucks), trucks);
-//
-//        var result = unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
-//
-//        assertTrue(result.contains("Box1"));
-//        assertTrue(result.contains("Box2"));
-//        assertTrue(result.contains("Box3"));
-//    }
+    @Test
+    @DisplayName("Тест: unloadTrucksToBoxes должен вернуть информацию о коробках в виде строки")
+    void unloadTrucksToBoxes_givenFileTrucksAndNoFileBoxes_shouldReturnBoxesAsString() throws IOException {
+        String fileNameTrucks = tempDir.resolve("trucks.json").toString();
+        String fileNameBoxes = "";
+
+        List<Truck> trucks = List.of(
+                new Truck("Truck1", List.of(
+                        new BoxDto("Box1", "xx\nxx", "1"),
+                        new BoxDto("Box2", "xx\nxx", "2"))),
+                new Truck("Truck2", List.of(
+                        new BoxDto("Box3", "xx\nxx", "3")))
+        );
+
+        objectMapper.writeValue(new File(fileNameTrucks), trucks);
+
+        List<String[]> boxes = unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
+
+        String result = objectMapper.writeValueAsString(boxes);
+
+        assertTrue(result.contains("Box1"));
+        assertTrue(result.contains("Box2"));
+        assertTrue(result.contains("Box3"));
+    }
 
     @Test
     @DisplayName("Тест: unloadTrucksToBoxes должен сохранить информацию о коробках с подсчетом количества в файл")
@@ -93,10 +92,8 @@ class UnloaderTrucksToBoxesServiceTest {
         );
 
         objectMapper.writeValue(new File(fileNameTrucks), trucks);
+        unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, true);
 
-        var result = unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, true);
-
-        //assertTrue(result.contains("Результаты сохранены в файл: " + fileNameBoxes));
         assertTrue(Files.exists(Path.of(fileNameBoxes)));
     }
 

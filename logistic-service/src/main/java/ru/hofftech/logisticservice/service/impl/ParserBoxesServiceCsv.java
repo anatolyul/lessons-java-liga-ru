@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParserBoxesServiceCsv implements ParserBoxesService {
     private final BoxService boxService;
+    private static final int BOX_NAME_INDEX = 0;
 
     /**
      * Парсит информацию о коробках из CSV файла.
@@ -33,7 +34,7 @@ public class ParserBoxesServiceCsv implements ParserBoxesService {
         try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
             List<String> boxNames = csvReader.readAll()
                     .stream()
-                    .map(array -> array[0])
+                    .map(array -> array[BOX_NAME_INDEX])
                     .toList();
             return boxService.findAll()
                     .stream()
