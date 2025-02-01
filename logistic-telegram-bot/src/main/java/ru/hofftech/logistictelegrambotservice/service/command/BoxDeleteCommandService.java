@@ -27,8 +27,8 @@ public class BoxDeleteCommandService implements CommandExecutor {
     @Override
     public String execute(CommandDto command) {
         Map<Argument, String> arguments = command.getArguments();
-        boolean result = logisticService.deleteBoxByName(arguments.get(Argument.NAME));
-        if (result) {
+
+        if (logisticService.deleteBoxByName(arguments.get(Argument.NAME))) {
             return "Посылка удалена";
         } else {
             return "Посылка не найдена, удаление запрещено!";

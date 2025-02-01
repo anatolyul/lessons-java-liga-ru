@@ -2,8 +2,6 @@ package ru.hofftech.logistictelegrambotservice.enums;
 
 import lombok.Getter;
 
-import java.util.regex.Pattern;
-
 /**
  * Перечисление типов алгоритмов загрузки коробок в грузовики.
  */
@@ -43,8 +41,7 @@ public enum TypeAlgorithm {
      */
     public static TypeAlgorithm convertStringToEnum(String typeAlgorithm) {
         for (TypeAlgorithm algorithm : TypeAlgorithm.values()) {
-            Pattern pattern = Pattern.compile(algorithm.getCode());
-            if (pattern.matcher(typeAlgorithm).matches()) {
+            if (algorithm.getCode().equalsIgnoreCase(typeAlgorithm)) {
                 return algorithm;
             }
         }

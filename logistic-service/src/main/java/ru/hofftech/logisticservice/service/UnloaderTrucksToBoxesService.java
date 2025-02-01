@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UnloaderTrucksToBoxesService {
 
+    private static final int BOX_NAME_INDEX = 0;
+
     /**
      * Метод для разгрузки грузовиков и сохранения информации о коробках.
      *
@@ -56,7 +58,7 @@ public class UnloaderTrucksToBoxesService {
 
             if (withCount) {
                 Map<String, Long> boxCounts = boxes.stream()
-                        .map(arr -> arr[0])
+                        .map(arr -> arr[BOX_NAME_INDEX])
                         .collect(Collectors.groupingBy(boxName -> boxName, Collectors.counting()));
 
                 boxes = boxCounts.entrySet().stream()

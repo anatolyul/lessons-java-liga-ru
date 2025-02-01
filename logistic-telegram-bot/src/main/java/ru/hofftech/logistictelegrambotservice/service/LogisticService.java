@@ -28,7 +28,7 @@ public interface LogisticService {
      *
      * @return список всех коробок
      */
-    @GetExchange("/api/v1/box")
+    @GetExchange("/api/v1/boxes")
     List<BoxDto> findAllBoxes();
 
     /**
@@ -37,7 +37,7 @@ public interface LogisticService {
      * @param name имя коробки
      * @return коробка с указанным именем
      */
-    @GetExchange("/api/v1/box/{name}")
+    @GetExchange("/api/v1/boxes/{name}")
     BoxDto findBoxByName(@PathVariable String name);
 
     /**
@@ -46,7 +46,7 @@ public interface LogisticService {
      * @param box данные новой коробки
      * @return созданная коробка
      */
-    @PostExchange("/api/v1/box")
+    @PostExchange("/api/v1/boxes")
     BoxDto createBox(@RequestBody BoxDto box);
 
     /**
@@ -55,7 +55,7 @@ public interface LogisticService {
      * @param box  новые данные коробки
      * @return обновленная коробка
      */
-    @PutExchange("/api/v1/box")
+    @PutExchange("/api/v1/boxes")
     BoxDto updateBox(@RequestBody BoxForUpdateDto box);
 
     /**
@@ -64,7 +64,7 @@ public interface LogisticService {
      * @param name имя коробки
      * @return результат удаления
      */
-    @DeleteExchange("/api/v1/box/{name}")
+    @DeleteExchange("/api/v1/boxes/{name}")
     Boolean deleteBoxByName(@PathVariable String name);
 
     /**
@@ -73,7 +73,7 @@ public interface LogisticService {
      * @param loadParamDto параметры загрузки
      * @return список всех коробок
      */
-    @PostExchange("/api/v1/box/action/load")
+    @PostExchange("/api/v1/boxes/action/load")
     List<TruckDto> loadBoxes(@RequestBody LoadParamDto loadParamDto);
 
     /**
@@ -82,7 +82,7 @@ public interface LogisticService {
      * @param unloadParamDto параметры разгрузки
      * @return список всех коробок
      */
-    @PostExchange("/api/v1/box/action/unload")
+    @PostExchange("/api/v1/boxes/action/unload")
     List<String[]> unloadBoxes(@RequestBody UnloadParamDto unloadParamDto);
 
     /**
@@ -91,7 +91,7 @@ public interface LogisticService {
      * @param importParamDto параметры импорта
      * @return список всех коробок
      */
-    @PostExchange("/api/v1/box/action/import")
+    @PostExchange("/api/v1/boxes/action/import")
     List<BoxDto> importBoxes(@RequestBody ImportParamDto importParamDto);
 
     /**

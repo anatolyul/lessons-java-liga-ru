@@ -7,7 +7,6 @@ import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -27,8 +26,7 @@ public class BoxListCommandService implements CommandExecutor {
      */
     @Override
     public String execute(CommandDto command) {
-        List<BoxDto> boxes = logisticService.findAllBoxes();
-        return boxes.stream()
+        return logisticService.findAllBoxes().stream()
                 .map(BoxDto::toString)
                 .collect(Collectors.joining("\n"));
     }

@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UnloadCommandService implements CommandExecutor {
 
+    private static final int BOX_NAME_INDEX = 0;
+    private static final int BOX_COUNT_INDEX = 1;
+    private static final String COMMA_SEPARATOR = ",";
+
     private final LogisticService logisticService;
 
     /**
@@ -34,10 +38,10 @@ public class UnloadCommandService implements CommandExecutor {
 
         return unloadCommandDto.isWithCount() ?
                 boxes.stream()
-                        .map(box -> box[0] + "," + box[1])
+                        .map(box -> box[BOX_NAME_INDEX] + COMMA_SEPARATOR + box[BOX_COUNT_INDEX])
                         .collect(Collectors.joining("\n")) :
                 boxes.stream()
-                        .map(box -> box[0])
+                        .map(box -> box[BOX_NAME_INDEX])
                         .collect(Collectors.joining("\n"));
     }
 }

@@ -33,7 +33,7 @@ import java.util.Optional;
  * Контроллер для управления коробками.
  */
 @RestController
-@RequestMapping("/api/v1/box")
+@RequestMapping("/api/v1/boxes")
 @RequiredArgsConstructor
 @Tag(name = "Box-Parses", description = "CRUD операции с данными посылок")
 public class BoxController {

@@ -8,7 +8,6 @@ import ru.hofftech.logisticcliservice.dto.command.BillingCommandDto;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
 import ru.hofftech.logisticcliservice.service.LogisticService;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -29,11 +28,10 @@ public class BillingCommandService implements CommandExecutor {
     @Override
     public String execute(BaseCommandDto command) {
         BillingCommandDto billingCommandDto =  (BillingCommandDto) command;
-        List<OrderDto> orders = logisticService.findOrdersByNameWithPeriod(
+        return logisticService.findOrdersByNameWithPeriod(
                 billingCommandDto.getUserName(),
                 billingCommandDto.getStartDate(),
-                billingCommandDto.getEndDate());
-        return orders.stream()
+                        billingCommandDto.getEndDate()).stream()
                 .map(OrderDto::toString)
                 .collect(Collectors.joining("\n"));
     }

@@ -16,6 +16,13 @@ import java.util.regex.Pattern;
 @Component
 public class CommandArgConverter {
 
+    private static final Pattern commandPattern = Pattern.compile("(\\w+)(.*)");
+    private static final Pattern argPattern = Pattern.compile("(-[\\w-]+|--[\\w-]+)\\s+\"([^\"]+)\"");
+    private static final int COMMAND_GROUP = 1;
+    private static final int ARGS_GROUP = 2;
+    private static final int ARG_KEY_GROUP = 1;
+    private static final int ARG_VALUE_GROUP = 2;
+
     /**
      * Парсит строку команды и аргументов в объект Command.
      *
@@ -24,28 +31,22 @@ public class CommandArgConverter {
      */
     public CommandDto parseCommandArgs(String consoleCommand) {
         ConsoleCommand consoleCommandResult = ConsoleCommand.convertStringToEnum(consoleCommand);
-
-        // Регулярное выражение для извлечения команды и аргументов
-        String commandRegex = "(\\w+)(.*)";
-        Pattern commandPattern = Pattern.compile(commandRegex);
         Matcher commandMatcher = commandPattern.matcher(consoleCommand);
 
         Map<Argument, String> args = new EnumMap<>(Argument.class);
         if (commandMatcher.find()) {
             if (consoleCommandResult == ConsoleCommand.UNKNOWN) {
-                consoleCommandResult = ConsoleCommand.convertStringToEnum(commandMatcher.group(1));
+                consoleCommandResult = ConsoleCommand
+                        .convertStringToEnum(commandMatcher.group(COMMAND_GROUP));
             }
 
-            String argsString = commandMatcher.group(2).trim().replace("\\n", "\n");
-
-            // Регулярное выражение для извлечения пар "ключ-значение"
-            String argRegex = "(-[\\w-]+|--[\\w-]+)\\s+\"([^\"]+)\"";
-            Pattern argPattern = Pattern.compile(argRegex);
+            String argsString = commandMatcher.group(ARGS_GROUP)
+                    .trim().replace("\\n", "\n");
             Matcher argMatcher = argPattern.matcher(argsString);
 
             while (argMatcher.find()) {
-                Argument arg = Argument.convertStringToEnum(argMatcher.group(1));
-                args.put(arg, argMatcher.group(2));
+                Argument arg = Argument.convertStringToEnum(argMatcher.group(ARG_KEY_GROUP));
+                args.put(arg, argMatcher.group(ARG_VALUE_GROUP));
             }
         }
 

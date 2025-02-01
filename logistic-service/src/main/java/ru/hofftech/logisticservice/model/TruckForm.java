@@ -7,6 +7,9 @@ import java.util.List;
 
 @Value
 public class TruckForm {
+
+    private static final int WIDTH_INDEX = 0;
+    private static final int HEIGHT_INDEX = 1;
     String form;
 
     public TruckForm(String form) {
@@ -29,8 +32,8 @@ public class TruckForm {
             for (String dimension : truckDimensions) {
                 String[] sizes = dimension.split("x");
                 Truck truck = new Truck("Truck " + dimension,
-                        Integer.parseInt(sizes[0]),
-                        Integer.parseInt(sizes[1]));
+                        Integer.parseInt(sizes[WIDTH_INDEX]),
+                        Integer.parseInt(sizes[HEIGHT_INDEX]));
                 trucks.add(truck);
             }
         }

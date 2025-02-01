@@ -2,8 +2,6 @@ package ru.hofftech.logistictelegrambotservice.enums;
 
 import lombok.Getter;
 
-import java.util.regex.Pattern;
-
 /**
  * Перечисление аргументов команд.
  */
@@ -113,8 +111,7 @@ public enum Argument {
      */
     public static Argument convertStringToEnum(String argumentCode) {
         for (Argument argument : Argument.values()) {
-            Pattern pattern = Pattern.compile(argument.getCode());
-            if (pattern.matcher(argumentCode).matches()) {
+            if (argument.getCode().equals(argumentCode)) {
                 return argument;
             }
         }

@@ -2,8 +2,6 @@ package ru.hofftech.logistictelegrambotservice.enums;
 
 import lombok.Getter;
 
-import java.util.regex.Pattern;
-
 /**
  * Перечисление консольных команд.
  */
@@ -17,12 +15,12 @@ public enum ConsoleCommand {
     /**
      * Команда для импорта файла TXT.
      */
-    IMPORT_FILE_TXT("import (.+\\.txt)\""),
+    IMPORT_FILE_TXT("import"),
 
     /**
      * Команда для импорта файла JSON.
      */
-    IMPORT_FILE_JSON("import (.+\\.json)\""),
+    IMPORT_FILE_JSON("import"),
 
     /**
      * Команда для создания коробки.
@@ -102,8 +100,7 @@ public enum ConsoleCommand {
      */
     public static ConsoleCommand convertStringToEnum(String consoleCommand) {
         for (ConsoleCommand command : ConsoleCommand.values()) {
-            Pattern pattern = Pattern.compile(command.getCode());
-            if (pattern.matcher(consoleCommand).matches()) {
+            if (command.getCode().equals(consoleCommand)) {
                 return command;
             }
         }

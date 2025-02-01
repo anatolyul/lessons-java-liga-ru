@@ -8,12 +8,12 @@ import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 import org.springframework.web.service.annotation.PutExchange;
 import ru.hofftech.logisticcliservice.dto.BoxDto;
+import ru.hofftech.logisticcliservice.dto.OrderDto;
+import ru.hofftech.logisticcliservice.dto.TruckDto;
 import ru.hofftech.logisticcliservice.dto.command.BoxCreateCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.BoxEditCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.ImportCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.LoadCommandDto;
-import ru.hofftech.logisticcliservice.dto.OrderDto;
-import ru.hofftech.logisticcliservice.dto.TruckDto;
 import ru.hofftech.logisticcliservice.dto.command.UnloadCommandDto;
 
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public interface LogisticService {
      *
      * @return список всех коробок
      */
-    @GetExchange("/api/v1/box")
+    @GetExchange("/api/v1/boxes")
     List<BoxDto> findAllBoxes();
 
     /**
@@ -38,7 +38,7 @@ public interface LogisticService {
      * @param name имя коробки
      * @return коробка с указанным именем
      */
-    @GetExchange("/api/v1/box/{name}")
+    @GetExchange("/api/v1/boxes/{name}")
     BoxDto findBoxByName(@PathVariable String name);
 
     /**
@@ -47,7 +47,7 @@ public interface LogisticService {
      * @param box данные новой коробки
      * @return созданная коробка
      */
-    @PostExchange("/api/v1/box")
+    @PostExchange("/api/v1/boxes")
     BoxDto createBox(@RequestBody BoxCreateCommandDto box);
 
     /**
@@ -56,7 +56,7 @@ public interface LogisticService {
      * @param box  новые данные коробки
      * @return обновленная коробка
      */
-    @PutExchange("/api/v1/box")
+    @PutExchange("/api/v1/boxes")
     BoxDto updateBox(@RequestBody BoxEditCommandDto box);
 
     /**
@@ -65,7 +65,7 @@ public interface LogisticService {
      * @param name имя коробки
      * @return результат удаления
      */
-    @DeleteExchange("/api/v1/box/{name}")
+    @DeleteExchange("/api/v1/boxes/{name}")
     Boolean deleteBoxByName(@PathVariable String name);
 
     /**
@@ -74,7 +74,7 @@ public interface LogisticService {
      * @param loadCommandDto параметры загрузки
      * @return список всех коробок
      */
-    @PostExchange("/api/v1/box/action/load")
+    @PostExchange("/api/v1/boxes/action/load")
     List<TruckDto> loadBoxes(@RequestBody LoadCommandDto loadCommandDto);
 
     /**
@@ -83,7 +83,7 @@ public interface LogisticService {
      * @param unloadCommandDto параметры разгрузки
      * @return список всех коробок
      */
-    @PostExchange("/api/v1/box/action/unload")
+    @PostExchange("/api/v1/boxes/action/unload")
     List<String[]> unloadBoxes(@RequestBody UnloadCommandDto unloadCommandDto);
 
     /**
@@ -92,7 +92,7 @@ public interface LogisticService {
      * @param importCommandDto параметры импорта
      * @return список всех коробок
      */
-    @PostExchange("/api/v1/box/action/import")
+    @PostExchange("/api/v1/boxes/action/import")
     List<BoxDto> importBoxes(@RequestBody ImportCommandDto importCommandDto);
 
     /**
