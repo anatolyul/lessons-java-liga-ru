@@ -3,7 +3,6 @@ package ru.hofftech.logisticcliservice.service.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticcliservice.dto.OrderDto;
-import ru.hofftech.logisticcliservice.dto.command.BaseCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.BillingCommandDto;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
 import ru.hofftech.logisticcliservice.service.LogisticService;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class BillingCommandService implements CommandExecutor {
+public class BillingCommandService implements CommandExecutor<BillingCommandDto> {
 
     private final LogisticService logisticService;
 
@@ -26,12 +25,11 @@ public class BillingCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(BaseCommandDto command) {
-        BillingCommandDto billingCommandDto =  (BillingCommandDto) command;
+    public String execute(BillingCommandDto command) {
         return logisticService.findOrdersByNameWithPeriod(
-                billingCommandDto.getUserName(),
-                billingCommandDto.getStartDate(),
-                        billingCommandDto.getEndDate()).stream()
+                        command.getUserName(),
+                        command.getStartDate(),
+                        command.getEndDate()).stream()
                 .map(OrderDto::toString)
                 .collect(Collectors.joining("\n"));
     }

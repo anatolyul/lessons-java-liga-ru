@@ -8,7 +8,7 @@ import ru.hofftech.logisticcliservice.service.CommandExecutor;
  * Сервис для выполнения неизвестных команд.
  */
 @Service
-public class UnknownCommandService implements CommandExecutor {
+public class UnknownCommandService implements CommandExecutor<BaseCommandDto> {
 
     /**
      * Выполняет неизвестную команду.

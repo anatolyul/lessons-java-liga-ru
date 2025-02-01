@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class BoxListCommandService implements CommandExecutor {
+public class BoxListCommandService implements CommandExecutor<BaseCommandDto> {
 
     private final LogisticService logisticService;
 

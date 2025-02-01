@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CommandExecutorFactory {
-    private final Map<Class<? extends BaseCommandDto>, CommandExecutor> commandExecutorMap;
+    private final Map<Class<? extends BaseCommandDto>, CommandExecutor<? extends BaseCommandDto>> commandExecutorMap;
 
     /**
      * Создает экземпляр CommandExecutor на основе переданной консольной команды.
@@ -21,7 +21,8 @@ public class CommandExecutorFactory {
      * @param command консольная команда
      * @return экземпляр CommandExecutor, соответствующий переданной команде
      */
-    public CommandExecutor create(BaseCommandDto command) {
-        return commandExecutorMap.get(command.getClass());
+    @SuppressWarnings("unchecked")
+    public <T extends BaseCommandDto> CommandExecutor<T> create(T command) {
+        return (CommandExecutor<T>) commandExecutorMap.get(command.getClass());
     }
 }

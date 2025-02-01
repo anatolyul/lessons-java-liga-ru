@@ -34,7 +34,7 @@ import java.util.Map;
 public class AppConfig {
 
     @Bean
-    public Map<Class<? extends BaseCommandDto>, CommandExecutor> createCommandsMap(
+    public Map<Class<? extends BaseCommandDto>, CommandExecutor<? extends BaseCommandDto>> createCommandsMap(
             HelpCommandService helpCommandService,
             ImportCommandService importCommandService,
             LoadCommandService loadCommandService,
@@ -47,7 +47,7 @@ public class AppConfig {
             BillingCommandService billingCommandService,
             UnknownCommandService unknownCommandService) {
 
-        Map<Class<? extends BaseCommandDto>, CommandExecutor> map = new HashMap<>();
+        Map<Class<? extends BaseCommandDto>, CommandExecutor<? extends BaseCommandDto>> map = new HashMap<>();
         map.put(HelpCommandDto.class, helpCommandService);
         map.put(ImportCommandDto.class, importCommandService);
         map.put(LoadCommandDto.class, loadCommandService);

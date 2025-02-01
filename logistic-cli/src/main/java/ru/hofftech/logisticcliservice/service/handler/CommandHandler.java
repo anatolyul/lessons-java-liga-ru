@@ -13,8 +13,7 @@ public class CommandHandler {
     private final CommandExecutorFactory commandExecutorFactory;
 
     public String handle(BaseCommandDto baseCommandDto) {
-        CommandExecutor commandExecutor = commandExecutorFactory.create(baseCommandDto);
-
+        CommandExecutor<BaseCommandDto> commandExecutor = commandExecutorFactory.create(baseCommandDto);
         return commandExecutor.execute(baseCommandDto);
     }
 }

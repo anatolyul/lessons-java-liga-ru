@@ -3,7 +3,6 @@ package ru.hofftech.logisticcliservice.service.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticcliservice.dto.TruckDto;
-import ru.hofftech.logisticcliservice.dto.command.BaseCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.LoadCommandDto;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
 import ru.hofftech.logisticcliservice.service.LogisticService;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class LoadCommandService implements CommandExecutor {
+public class LoadCommandService implements CommandExecutor<LoadCommandDto> {
 
     private final LogisticService logisticService;
 
@@ -26,12 +25,12 @@ public class LoadCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(BaseCommandDto command) {
+    public String execute(LoadCommandDto command) {
         return """
                 
                 Результаты распределения груза:
                 """ +
-                logisticService.loadBoxes((LoadCommandDto) command).stream()
+                logisticService.loadBoxes(command).stream()
                         .map(TruckDto::toString)
                         .collect(Collectors.joining("\n"));
     }

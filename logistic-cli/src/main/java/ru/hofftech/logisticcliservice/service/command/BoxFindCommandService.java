@@ -3,7 +3,6 @@ package ru.hofftech.logisticcliservice.service.command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticcliservice.dto.BoxDto;
-import ru.hofftech.logisticcliservice.dto.command.BaseCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.BoxFindCommandDto;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
 import ru.hofftech.logisticcliservice.service.LogisticService;
@@ -13,7 +12,7 @@ import ru.hofftech.logisticcliservice.service.LogisticService;
  */
 @Service
 @RequiredArgsConstructor
-public class BoxFindCommandService implements CommandExecutor {
+public class BoxFindCommandService implements CommandExecutor<BoxFindCommandDto> {
 
     private final LogisticService logisticService;
 
@@ -24,13 +23,10 @@ public class BoxFindCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(BaseCommandDto command) {
+    public String execute(BoxFindCommandDto command) {
 
         try {
-            BoxFindCommandDto commandDto = (BoxFindCommandDto) command;
-
-            BoxDto result = logisticService.findBoxByName(commandDto.getBoxName());
-
+            BoxDto result = logisticService.findBoxByName(command.getBoxName());
             return result != null ? result.toString() : "Посылка не найдена!";
         }
         catch (Exception e) {

@@ -2,7 +2,6 @@ package ru.hofftech.logisticcliservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticcliservice.dto.command.BaseCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.BoxCreateCommandDto;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
 import ru.hofftech.logisticcliservice.service.LogisticService;
@@ -12,7 +11,7 @@ import ru.hofftech.logisticcliservice.service.LogisticService;
  */
 @Service
 @RequiredArgsConstructor
-public class BoxCreateCommandService implements CommandExecutor {
+public class BoxCreateCommandService implements CommandExecutor<BoxCreateCommandDto> {
 
     private final LogisticService logisticService;
 
@@ -23,8 +22,7 @@ public class BoxCreateCommandService implements CommandExecutor {
      * @return строка, содержащая результат выполнения команды
      */
     @Override
-    public String execute(BaseCommandDto command) {
-
-        return logisticService.createBox((BoxCreateCommandDto) command).toString();
+    public String execute(BoxCreateCommandDto command) {
+        return logisticService.createBox(command).toString();
     }
 }

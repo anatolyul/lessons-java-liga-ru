@@ -8,7 +8,7 @@ import ru.hofftech.logisticcliservice.service.CommandExecutor;
  * Сервис для выполнения команды завершения работы приложения.
  */
 @Service
-public class ExitCommandService implements CommandExecutor {
+public class ExitCommandService implements CommandExecutor<BaseCommandDto> {
 
     /**
      * Выполняет команду завершения работы приложения.

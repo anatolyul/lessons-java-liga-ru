@@ -6,7 +6,7 @@ import ru.hofftech.logisticcliservice.dto.command.BaseCommandDto;
  * Интерфейс для выполнения команд.
  */
 
-public interface CommandExecutor {
+public interface CommandExecutor<T extends BaseCommandDto> {
 
     /**
      * Выполняет команду и возвращает результат выполнения.
@@ -14,5 +14,5 @@ public interface CommandExecutor {
      * @param command команда для выполнения
      * @return результат выполнения команды
      */
-    String execute(BaseCommandDto command);
+    String execute(T command);
 }

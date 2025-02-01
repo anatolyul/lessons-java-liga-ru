@@ -8,7 +8,7 @@ import ru.hofftech.logisticcliservice.service.CommandExecutor;
  * Сервис для выполнения команды отображения справочной информации.
  */
 @Service
-public class HelpCommandService implements CommandExecutor {
+public class HelpCommandService implements CommandExecutor<BaseCommandDto> {
 
     /**
      * Выполняет команду отображения справочной информации.
