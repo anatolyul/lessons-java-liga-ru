@@ -2,14 +2,12 @@ package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logistictelegrambotservice.dto.BoxDto;
 import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
 import ru.hofftech.logistictelegrambotservice.dto.ImportParamDto;
 import ru.hofftech.logistictelegrambotservice.enums.Argument;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -35,8 +33,7 @@ public class ImportCommandService implements CommandExecutor {
                 ImportParamDto.builder()
                         .filename(arguments.get(Argument.IMPORT_FILENAME))
                         .build();
-        List<BoxDto> boxes = logisticService.importBoxes(importParamDto);
 
-        return "Посылки загружены в БД кол-во " + boxes.size();
+        return "Посылки загружены в БД кол-во " + logisticService.importBoxes(importParamDto).size();
     }
 }

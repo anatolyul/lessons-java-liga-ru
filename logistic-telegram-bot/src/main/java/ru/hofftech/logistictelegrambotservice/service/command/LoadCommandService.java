@@ -10,7 +10,6 @@ import ru.hofftech.logistictelegrambotservice.enums.TypeAlgorithm;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -40,12 +39,13 @@ public class LoadCommandService implements CommandExecutor {
                         .outFilename(arguments.get(Argument.OUT_FILENAME))
                         .trucks(arguments.get(Argument.TRUCKS))
                         .build();
-        List<TruckDto> trucks = logisticService.loadBoxes(loadParamDto);
 
         return """
                 
                 Результаты распределения груза:
                 """ +
-                trucks.stream().map(TruckDto::toString).collect(Collectors.joining("\n"));
+                logisticService.loadBoxes(loadParamDto).stream()
+                        .map(TruckDto::toString)
+                        .collect(Collectors.joining("\n"));
     }
 }

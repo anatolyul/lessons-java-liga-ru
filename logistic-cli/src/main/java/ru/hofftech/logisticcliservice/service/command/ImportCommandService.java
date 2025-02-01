@@ -2,13 +2,10 @@ package ru.hofftech.logisticcliservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.hofftech.logisticcliservice.dto.BoxDto;
 import ru.hofftech.logisticcliservice.dto.command.BaseCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.ImportCommandDto;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
 import ru.hofftech.logisticcliservice.service.LogisticService;
-
-import java.util.List;
 
 /**
  * Сервис для выполнения команды импорта коробок.
@@ -27,8 +24,6 @@ public class ImportCommandService implements CommandExecutor {
      */
     @Override
     public String execute(BaseCommandDto command) {
-        List<BoxDto> boxes = logisticService.importBoxes((ImportCommandDto) command);
-
-        return "Посылки загружены в БД кол-во " + boxes.size();
+        return "Посылки загружены в БД кол-во " + logisticService.importBoxes((ImportCommandDto) command).size();
     }
 }
