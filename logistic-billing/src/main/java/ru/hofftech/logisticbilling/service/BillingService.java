@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.hofftech.logisticbilling.config.BillingConfig;
 import ru.hofftech.logisticbilling.dto.InboxEventDto;
 import ru.hofftech.logisticbilling.dto.OrderDto;
+import ru.hofftech.logisticbilling.entity.InboxEventEntity;
 import ru.hofftech.logisticbilling.entity.OrderEntity;
 import ru.hofftech.logisticbilling.mapper.InboxEventMapper;
 import ru.hofftech.logisticbilling.mapper.OrderMapper;
@@ -42,27 +43,23 @@ public class BillingService {
         OrderDto orderDto = inboxEventDto.getOrder();
         orderDto.setAmount(calculatedAmount(inboxEventDto.getOrder()));
         OrderEntity order = orderRepository.save(orderMapper.toEntity(orderDto));
+        InboxEventEntity eventEntity = inboxEventMapper.toEntity(inboxEventDto);
+        eventEntity.setOrder(order);
 
-        inboxEventDto.setOrder(orderMapper.toDto(order));
-        inboxEventRepository.save(inboxEventMapper.toEntity(inboxEventDto));
+        inboxEventRepository.save(eventEntity);
     }
 
     @Cacheable("orders")
     public Page<OrderDto> findAll(Pageable pageable) {
-        Page<OrderDto> orders = orderRepository.findAll(pageable).map(orderMapper::toDto);
-        orders.forEach(order -> order.setAmount(calculatedAmount(order)));
-        return orders;
+        return orderRepository.findAll(pageable).map(orderMapper::toDto);
     }
 
     @Cacheable("orders")
     public List<OrderDto> findByNameWithPeriod(String clientName,
                                                LocalDate startDate,
                                                LocalDate endDate) {
-        List<OrderDto> orders = orderMapper.toDtoList(
+        return orderMapper.toDtoList(
                 orderRepository.findAllByClientNameAndDateBetween(clientName, startDate, endDate));
-        orders.forEach(order -> order.setAmount(calculatedAmount(order)));
-
-        return orders;
     }
 
     private BigDecimal calculatedAmount(OrderDto orderDto) {

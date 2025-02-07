@@ -15,8 +15,8 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .addServersItem(new Server().url(swaggerUrlPath))
                 .info(new Info()
-                        .title("Logistic Billing Service")
+                        .title("Billing Service")
                         .version(appVersion)
-                        .description("Logistic Billing Service"));
+                        .description("Billing Service"));
     }
 }
