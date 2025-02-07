@@ -13,6 +13,4 @@ public interface InboxEventMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "order", ignore = true)
     InboxEventEntity toEntity(InboxEventDto inboxEventDto);
-
-    InboxEventDto toDto(InboxEventEntity outboxEventEntity);
 }
