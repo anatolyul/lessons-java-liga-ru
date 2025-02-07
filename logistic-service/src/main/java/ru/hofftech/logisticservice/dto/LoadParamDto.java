@@ -6,11 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hofftech.logisticservice.model.enums.TypeAlgorithm;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Schema(description = "Параметры загрузки посылок по именам в машины")
 public class LoadParamDto {
+
+    @Schema(description = "Идентификатор клиента")
+    private String clientName;
+
+    @Schema(description = "Дата операции")
+    private LocalDate date;
 
     @Schema(description = "Текст с именами посылок")
     private String parcelsText;

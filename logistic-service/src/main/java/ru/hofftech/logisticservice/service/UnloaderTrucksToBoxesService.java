@@ -32,51 +32,85 @@ public class UnloaderTrucksToBoxesService {
     /**
      * Метод для разгрузки грузовиков и сохранения информации о коробках.
      *
-     * @param fileNameTrucks имя файла, содержащего информацию о грузовиках
+     * @param trucks         данные по грузовикам
      * @param fileNameBoxes  имя файла, в который будет сохранена информация о коробках
      * @param withCount      флаг, указывающий, нужно ли включать количество коробок
      * @return строка с результатом операции
      */
     @SneakyThrows
-    public List<String[]> unloadTrucksToBoxes(String fileNameTrucks, String fileNameBoxes, boolean withCount) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<String[]> boxes;
+    public List<String[]> unloadTrucksToBoxes(List<Truck> trucks, String fileNameBoxes, boolean withCount) {
+        List<String[]> boxes = extractBoxesFromTrucks(trucks);
 
-        try {
-            List<Truck> trucks = objectMapper.readValue(
-                    new File(fileNameTrucks),
-                    new TypeReference<>() {
-                    });
-
-            boxes = trucks.stream()
-                    .filter(truck -> truck.getBoxes() != null && !truck.getBoxes().isEmpty())
-                    .map(Truck::getBoxes)
-                    .flatMap(List::stream)
-                    .map(BoxDto::getName)
-                    .map(name -> new String[]{name})
-                    .toList();
-
-            if (withCount) {
-                Map<String, Long> boxCounts = boxes.stream()
-                        .map(arr -> arr[BOX_NAME_INDEX])
-                        .collect(Collectors.groupingBy(boxName -> boxName, Collectors.counting()));
-
-                boxes = boxCounts.entrySet().stream()
-                        .map(entry -> new String[]{entry.getKey(), String.valueOf(entry.getValue())})
-                        .toList();
-            }
-        } catch (IOException e) {
-            throw new FileReadException("Ошибка чтения файла грузовиков: " + fileNameTrucks, e);
+        if (withCount) {
+            boxes = countBoxes(boxes);
         }
 
         if (fileNameBoxes != null && !fileNameBoxes.isEmpty()) {
-            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(fileNameBoxes))) {
-                csvWriter.writeAll(boxes);
-            } catch (IOException e) {
-                throw new FileWriteException("Ошибка сохранения результатов в файл: " + fileNameBoxes, e);
-            }
+            saveBoxesToFile(boxes, fileNameBoxes);
         }
 
         return boxes;
+    }
+
+    /**
+     * Загружает грузовики из файла.
+     *
+     * @param fileNameTrucks имя файла с информацией о грузовиках
+     * @return список грузовиков
+     */
+    public List<Truck> loadTrucksFromFile(String fileNameTrucks) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(new File(fileNameTrucks), new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            throw new FileReadException("Ошибка чтения файла грузовиков: " + fileNameTrucks, e);
+        }
+    }
+
+    /**
+     * Извлекает коробки из грузовиков.
+     *
+     * @param trucks список грузовиков
+     * @return список коробок
+     */
+    private List<String[]> extractBoxesFromTrucks(List<Truck> trucks) {
+        return trucks.stream()
+                .filter(truck -> truck.getBoxes() != null && !truck.getBoxes().isEmpty())
+                .map(Truck::getBoxes)
+                .flatMap(List::stream)
+                .map(BoxDto::getName)
+                .map(name -> new String[]{name})
+                .toList();
+    }
+
+    /**
+     * Подсчитывает количество каждой коробки.
+     *
+     * @param boxes список коробок
+     * @return список коробок с количеством
+     */
+    private List<String[]> countBoxes(List<String[]> boxes) {
+        Map<String, Long> boxCounts = boxes.stream()
+                .map(arr -> arr[BOX_NAME_INDEX])
+                .collect(Collectors.groupingBy(boxName -> boxName, Collectors.counting()));
+
+        return boxCounts.entrySet().stream()
+                .map(entry -> new String[]{entry.getKey(), String.valueOf(entry.getValue())})
+                .toList();
+    }
+
+    /**
+     * Сохраняет информацию о коробках в файл.
+     *
+     * @param boxes         список коробок
+     * @param fileNameBoxes имя файла для сохранения
+     */
+    private void saveBoxesToFile(List<String[]> boxes, String fileNameBoxes) {
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(fileNameBoxes))) {
+            csvWriter.writeAll(boxes);
+        } catch (IOException e) {
+            throw new FileWriteException("Ошибка сохранения результатов в файл: " + fileNameBoxes, e);
+        }
     }
 }
