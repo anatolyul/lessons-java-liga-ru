@@ -71,6 +71,12 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:${Version.Junit.BOM}"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:${Version.ASSERTJ_CORE}")
+
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:testcontainers")
+    testImplementation("org.testcontainers:kafka")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
