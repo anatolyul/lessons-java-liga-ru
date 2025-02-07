@@ -1,6 +1,5 @@
 package ru.hofftech.logisticservice.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final ObjectMapper objectMapper;
     private final OutboxEventRepository outboxEventRepository;
     private final OutboxEventMapper outboxEventMapper;
     private final OrderRepository orderRepository;

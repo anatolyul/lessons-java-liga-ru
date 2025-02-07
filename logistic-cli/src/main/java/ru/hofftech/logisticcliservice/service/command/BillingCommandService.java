@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hofftech.logisticcliservice.dto.OrderDto;
 import ru.hofftech.logisticcliservice.dto.command.BillingCommandDto;
+import ru.hofftech.logisticcliservice.service.BillingService;
 import ru.hofftech.logisticcliservice.service.CommandExecutor;
-import ru.hofftech.logisticcliservice.service.LogisticService;
 
 import java.util.stream.Collectors;
 
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BillingCommandService implements CommandExecutor<BillingCommandDto> {
 
-    private final LogisticService logisticService;
+    private final BillingService billingService;
 
     /**
      * Выполняет команду биллинга.
@@ -26,7 +26,7 @@ public class BillingCommandService implements CommandExecutor<BillingCommandDto>
      */
     @Override
     public String execute(BillingCommandDto command) {
-        return logisticService.findOrdersByNameWithPeriod(
+        return billingService.findOrdersByNameWithPeriod(
                         command.getUserName(),
                         command.getStartDate(),
                         command.getEndDate()).stream()

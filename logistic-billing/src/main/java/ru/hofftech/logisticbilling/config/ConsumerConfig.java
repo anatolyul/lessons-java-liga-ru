@@ -11,10 +11,6 @@ import java.util.function.Consumer;
 @Configuration
 public class ConsumerConfig {
 
-    /**
-     * Имя бина должно совпадать с каналом в пропертях: spring.cloud.stream.bindings.{beanName}-in-0
-     * Имя бина должно быть в spring.cloud.stream.function.definition
-     */
     @Bean
     public Consumer<Message<InboxEventDto>> billing(BillingService billingService) {
         return message ->

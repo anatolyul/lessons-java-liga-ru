@@ -10,8 +10,6 @@ import ru.hofftech.logisticservice.entity.OrderEntity;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface OrderMapper {
 
-    OrderDto toDto(OrderEntity order);
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "outboxEvent", ignore = true)
     OrderEntity toEntity(OrderDto orderDto);

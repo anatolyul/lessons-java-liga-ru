@@ -35,20 +35,20 @@ public class HelpCommandService implements CommandExecutor {
                 
                 Примеры команд для погрузки в машины:
                 Загрузка посылок по имени из параметра -parcels-text в машины с размерами параметра -trucks
-                load --parcels-text "Посылка Тип 1\\nПосылка Тип 4\\nКУБ" --trucks "3x3\\n3x3\\n6x2" --type "one2one"
+                load --user "Petrov" --date "11.01.2025" --parcels-text "Посылка Тип 1\\nПосылка Тип 4\\nКУБ" --trucks "3x3\\n3x3\\n6x2" --type "one2one"
                 Аналогично с сохранением результатов в файл
-                load --parcels-text "Посылка Тип 1\\nПосылка Тип 4\\nКУБ" --trucks "3x3\\n3x3\\n6x2" --type "one2one" --out-filename "trucks.json"
+                load --user "Petrov" --date "11.01.2025" --parcels-text "Посылка Тип 1\\nПосылка Тип 4\\nКУБ" --trucks "3x3\\n3x3\\n6x2" --type "one2one" --out-filename "trucks.json"
                 Аналогично, только имена посылок берем из файла указанного в параметре -parcels-file
-                load --parcels-file "parcels.csv" --trucks "3x3\\n3x3\\n6x2" --type "one2one"
-                load --parcels-file "parcels.csv" --trucks "3x3\\n3x3\\n6x2" --type "one2one" --out-filename "trucks.json"
+                load --user "Petrov" --date "11.01.2025" --parcels-file "parcels.csv" --trucks "3x3\\n3x3\\n6x2" --type "one2one"
+                load --user "Petrov" --date "11.01.2025" --parcels-file "parcels.csv" --trucks "3x3\\n3x3\\n6x2" --type "one2one" --out-filename "trucks.json"
                 
                 Примеры команд для разгрузки машин:
                 Загрузка данных по машинам из файла переданным в параметре -in-filename и выгрузка результатов
-                unload --in-filename "trucks.json"
+                unload --user "Petrov" --date "11.01.2025" --in-filename "trucks.json"
                 Аналогично результат выгружаем в файл указанный в параметре -out-filename
-                unload --in-filename "trucks.json" --out-filename "parcels.csv"
+                unload --user "Petrov" --date "11.01.2025" --in-filename "trucks.json" --out-filename "parcels.csv"
                 Аналогично, но ещё добавляем колонку с кол-вом
-                unload --in-filename "trucks.json" --out-filename "parcels-with-count.csv" --withcount "true"
+                unload --user "Petrov" --date "11.01.2025" --in-filename "trucks.json" --out-filename "parcels-with-count.csv" --withcount "true"
                 
                 Алгоритмы погрузки определяются параметром -type:
                 one2one - простой (одна посылка = одна машина)

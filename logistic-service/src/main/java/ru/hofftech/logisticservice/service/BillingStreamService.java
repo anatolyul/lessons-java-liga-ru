@@ -25,9 +25,6 @@ public class BillingStreamService {
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build();
 
-        /**
-         * topic - Должно совпадать с spring.cloud.stream.bindings.{channelName}
-         */
         final String RESPONSE_QUEUE = "billing-out-0";
         streamBridge.send(RESPONSE_QUEUE, message);
 

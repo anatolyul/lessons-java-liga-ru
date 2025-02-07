@@ -42,5 +42,4 @@ public class OrderDto {
 
     @Schema(description = "Стоимость")
     private BigDecimal amount;
-
 }

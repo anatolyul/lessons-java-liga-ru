@@ -3,8 +3,8 @@ package ru.hofftech.logisticcliservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-
 import org.springframework.shell.standard.ShellOption;
+import ru.hofftech.logisticcliservice.constants.DateFormat;
 import ru.hofftech.logisticcliservice.dto.command.BillingCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.BoxCreateCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.BoxDeleteCommandDto;
@@ -17,6 +17,8 @@ import ru.hofftech.logisticcliservice.dto.command.LoadCommandDto;
 import ru.hofftech.logisticcliservice.dto.command.UnloadCommandDto;
 import ru.hofftech.logisticcliservice.enums.TypeAlgorithm;
 import ru.hofftech.logisticcliservice.service.handler.CommandHandler;
+
+import java.time.LocalDate;
 
 /**
  * Контроллер для обработки команд, вводимых через консоль.
@@ -141,6 +143,8 @@ public class ShellController {
     /**
      * Загружает посылки в грузовики.
      *
+     * @param clientName  имя клиента
+     * @param date        дата операции
      * @param parcelsText текст с именами посылок
      * @param parcelsFile файл с именами посылок
      * @param trucks      размеры грузовиков
@@ -150,6 +154,10 @@ public class ShellController {
      */
     @ShellMethod("Загрузка посылок по именам в машины")
     public String load(
+            @ShellOption(value = {"--user"},
+                    defaultValue = "", help = "Имя клиента") String clientName,
+            @ShellOption(value = {"--date"},
+                    defaultValue = "", help = "Дата операции") String date,
             @ShellOption(value = {"--parcels-text"},
                     defaultValue = "", help = "Текст с именами посылок") String parcelsText,
             @ShellOption(value = {"--parcels-file"},
@@ -160,6 +168,8 @@ public class ShellController {
                     help = "Имя выходного файла") String outFilename) {
 
         LoadCommandDto loadCommandDto = LoadCommandDto.builder()
+                .clientName(clientName)
+                .date(LocalDate.parse(date, DateFormat.FORMATTER))
                 .parcelsFile(parcelsFile)
                 .parcelsText(parcelsText)
                 .trucks(trucks)
@@ -173,6 +183,8 @@ public class ShellController {
     /**
      * Разгружает грузовики и сохраняет результаты в файл.
      *
+     * @param clientName  имя клиента
+     * @param date        дата операции
      * @param inFilename  имя входного файла
      * @param outFilename имя выходного файла
      * @param withCount   добавить колонку с количеством
@@ -180,6 +192,10 @@ public class ShellController {
      */
     @ShellMethod("Загрузка данных по машинам из файла переданным в параметре -in-filename и выгрузка результатов")
     public String unload(
+            @ShellOption(value = {"--user"},
+                    defaultValue = "", help = "Имя клиента") String clientName,
+            @ShellOption(value = {"--date"},
+                    defaultValue = "", help = "Дата операции") String date,
             @ShellOption(value = {"--in-filename"}, help = "Имя входного файла") String inFilename,
             @ShellOption(value = {"--out-filename"}, defaultValue = "",
                     help = "Имя выходного файла") String outFilename,
@@ -187,6 +203,8 @@ public class ShellController {
                     help = "Добавить колонку с количеством") boolean withCount) {
 
         UnloadCommandDto unloadCommandDto = UnloadCommandDto.builder()
+                .clientName(clientName)
+                .date(LocalDate.parse(date, DateFormat.FORMATTER))
                 .inFilename(inFilename)
                 .outFilename(outFilename)
                 .withCount(withCount)
@@ -211,9 +229,9 @@ public class ShellController {
 
         BillingCommandDto billingCommandDto = BillingCommandDto.builder()
                 .userName(user)
+                .startDate(LocalDate.parse(periodFrom, DateFormat.FORMATTER))
+                .endDate(LocalDate.parse(periodTo, DateFormat.FORMATTER))
                 .build();
-        billingCommandDto.setStringStartDate(periodFrom);
-        billingCommandDto.setStringEndDate(periodTo);
 
         return commandHandler.handle(billingCommandDto);
     }

@@ -10,3 +10,4 @@ spring:
 
 services:
   logistic-service-url: "http://localhost:8080"
+  logistic-billing-url: "http://localhost:8081"
