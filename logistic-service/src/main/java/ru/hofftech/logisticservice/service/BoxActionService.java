@@ -52,7 +52,8 @@ public class BoxActionService {
     }
 
     public List<String[]> unload(UnloadParamDto unloadParamDto) {
-        List<Truck> trucks = unloaderTrucksToBoxesService.loadTrucksFromFile(unloadParamDto.getInFilename());
+        List<Truck> trucks = unloaderTrucksToBoxesService
+                .loadTrucksFromFile(filePathSearchService.search(unloadParamDto.getInFilename()));
         OrderDto orderDto = orderService.createOrderDto(
                 unloadParamDto.getClientName(),
                 TypeOrderProcess.UNLOAD,

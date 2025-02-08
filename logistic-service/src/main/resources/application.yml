@@ -37,7 +37,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:9094
+          brokers: ${bootstrap-servers}
           auto-create-topics: true
           auto-add-partitions: true
       bindings:
