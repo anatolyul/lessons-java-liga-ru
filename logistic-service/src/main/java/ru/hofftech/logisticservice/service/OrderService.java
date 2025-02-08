@@ -1,6 +1,7 @@
 package ru.hofftech.logisticservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hofftech.logisticservice.dto.BoxDto;
@@ -17,17 +18,20 @@ import ru.hofftech.logisticservice.repository.OrderRepository;
 import ru.hofftech.logisticservice.repository.OutboxEventRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OutboxEventRepository outboxEventRepository;
     private final OutboxEventMapper outboxEventMapper;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final BillingStreamService billingStreamService;
 
     @Transactional
     public void saveOrder(OrderDto orderDto) {
@@ -59,6 +63,26 @@ public class OrderService {
                 .truckCount(trucks.size())
                 .segmentCount(totalSegmentCount)
                 .build();
+    }
+
+    public void sendOrders() {
+        List<OutboxEventEntity> outboxEvents = outboxEventRepository.findAllByStatus(OrderOutboxStatus.CREATED);
+        List<OutboxEventEntity> outboxEventsResult = new ArrayList<>();
+
+        outboxEvents.forEach(outboxEvent -> {
+                    try {
+                        billingStreamService.publish(outboxEventMapper.toDto(outboxEvent));
+                        outboxEvent.setStatus(OrderOutboxStatus.DONE);
+                    } catch (Exception e) {
+                        outboxEvent.setStatus(OrderOutboxStatus.FAILED);
+                        log.error(e.getMessage(), e);
+                    } finally {
+                        outboxEventsResult.add(outboxEvent);
+                    }
+                }
+        );
+
+        outboxEventRepository.saveAll(outboxEventsResult);
     }
 
     private Integer calculateTotalSegments(List<Truck> trucks) {
