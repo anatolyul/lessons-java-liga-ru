@@ -1,4 +1,4 @@
-package ru.hofftech.logisticservice.config;
+package ru.hofftech.logisticbilling.config;
 
 import lombok.Getter;
 import lombok.Setter;

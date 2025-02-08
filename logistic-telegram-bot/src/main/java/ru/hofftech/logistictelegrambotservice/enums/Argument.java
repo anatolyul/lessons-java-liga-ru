@@ -78,6 +78,11 @@ public enum Argument {
     USER("--user"),
 
     /**
+     * Дата операции.
+     */
+    DATE("--date"),
+
+    /**
      * Аргумент для начала периода.
      */
     PERIOD_FROM("--period-from"),

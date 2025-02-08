@@ -1,13 +1,43 @@
 services:
   
   logistic-service-db:
-    image: postgres:17.1
+    image: postgres:17.1-alpine
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: logistic_service_db
+    networks:
+      - logistic-network
+    volumes:
+      - logistic_service_db:/var/lib/postgresql/data
+
+  logistic-billing-db:
+    image: postgres:17.1-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: logistic_billing_db
+    networks:
+      - logistic-network
+    volumes:
+      - logistic_billing_db:/var/lib/postgresql/data
+
+  logistic-billing:
+    build:
+      context: ./logistic-billing
+    restart: always
+    depends_on:
+      - logistic-billing-db
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://logistic-billing-db:5432/logistic_billing_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     networks:
       - logistic-network
 
@@ -46,6 +76,40 @@ services:
     networks:
       - logistic-network
 
+  kafka:
+    image: apache/kafka-native:3.8.0
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://:9092,EXTERNAL://localhost:9094
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 10
+    networks:
+      - logistic-network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    ports:
+      - "8088:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: Kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    networks:
+      - logistic-network
+
 networks:
   logistic-network:
     driver: bridge
+
+volumes:
+  logistic_service_db:
+  logistic_billing_db:

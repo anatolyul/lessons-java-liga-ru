@@ -2,12 +2,14 @@ package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.hofftech.logistictelegrambotservice.constants.DateFormat;
 import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
 import ru.hofftech.logistictelegrambotservice.dto.UnloadParamDto;
 import ru.hofftech.logistictelegrambotservice.enums.Argument;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
 import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,6 +40,8 @@ public class UnloadCommandService implements CommandExecutor {
                 && arguments.get(Argument.WITHCOUNT).equals("true");
 
         UnloadParamDto unloadParamDto = UnloadParamDto.builder()
+                .clientName(arguments.get(Argument.USER))
+                .date(LocalDate.parse(arguments.get(Argument.DATE), DateFormat.FORMATTER))
                 .inFilename(arguments.get(Argument.IN_FILENAME))
                 .outFilename(arguments.get(Argument.OUT_FILENAME))
                 .withCount(withCount)

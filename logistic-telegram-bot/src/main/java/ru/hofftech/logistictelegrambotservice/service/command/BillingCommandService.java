@@ -2,16 +2,17 @@ package ru.hofftech.logistictelegrambotservice.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.hofftech.logistictelegrambotservice.constants.DateFormat;
 import ru.hofftech.logistictelegrambotservice.dto.CommandDto;
 import ru.hofftech.logistictelegrambotservice.dto.OrderDto;
 import ru.hofftech.logistictelegrambotservice.enums.Argument;
+import ru.hofftech.logistictelegrambotservice.service.BillingService;
 import ru.hofftech.logistictelegrambotservice.service.CommandExecutor;
-import ru.hofftech.logistictelegrambotservice.service.LogisticService;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 /**
  * Сервис для выполнения команд биллинга.
@@ -19,10 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BillingCommandService implements CommandExecutor {
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-    private final LogisticService logisticService;
+    private final BillingService billingService;
 
     /**
      * Выполняет команду биллинга.
@@ -37,13 +35,13 @@ public class BillingCommandService implements CommandExecutor {
         LocalDate periodFrom = stringToLocalDate(arguments.get(Argument.PERIOD_FROM));
         LocalDate periodTo = stringToLocalDate(arguments.get(Argument.PERIOD_TO));
 
-        return logisticService.findOrdersByNameWithPeriod(userId, periodFrom, periodTo)
+        return billingService.findOrdersByNameWithPeriod(userId, periodFrom, periodTo)
                 .stream()
                 .map(OrderDto::toString)
                 .collect(Collectors.joining("\n"));
     }
 
     public LocalDate stringToLocalDate(String date) {
-        return LocalDate.parse(date, DATE_FORMATTER);
+        return LocalDate.parse(date, DateFormat.FORMATTER);
     }
 }

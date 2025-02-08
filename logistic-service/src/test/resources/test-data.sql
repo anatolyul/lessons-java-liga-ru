@@ -1,0 +1,20 @@
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 1', '1', '1');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 2', '22', '2');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 3', '333', '3');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 4', '4444', '4');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 5', '55555', '5');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 6', '666\n666', '6');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 7', '777\n7777', '7');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 8', '8888\n8888', '8');
+INSERT INTO box (name, form, symbol)
+VALUES ('Посылка Тип 9', '999\n999\n999', '9');
+INSERT INTO box (name, form, symbol)
+VALUES ('TestBox', '999\n999\n999', '9');

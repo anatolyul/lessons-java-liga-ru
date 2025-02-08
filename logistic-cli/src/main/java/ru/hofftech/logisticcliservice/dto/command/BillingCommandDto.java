@@ -5,28 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Setter
 @Getter
 @Builder
 public class BillingCommandDto implements BaseCommandDto {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
     private String userName;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public LocalDate stringToLocalDate(String date) {
-        return LocalDate.parse(date, DATE_FORMATTER);
-    }
-
-    public void setStringStartDate(String startDate) {
-        this.startDate = stringToLocalDate(startDate);
-    }
-
-    public void setStringEndDate(String endDate) {
-        this.endDate = stringToLocalDate(endDate);
-    }
 }

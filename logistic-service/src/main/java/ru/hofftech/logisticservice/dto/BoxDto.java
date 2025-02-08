@@ -67,6 +67,18 @@ public class BoxDto {
         setForm(form);
     }
 
+    public Integer calculateSegments() {
+        Integer segments = 0;
+
+        for (char c : form.toCharArray()) {
+            if (c == symbol.charAt(0)) {
+                segments++;
+            }
+        }
+
+        return segments;
+    }
+
     public String toString() {
         return "Посылка:\nname: " + this.getName() + "\nform:\n" + this.getForm().replace("x", symbol);
     }

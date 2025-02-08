@@ -9,6 +9,7 @@ version = "1.0-SNAPSHOT"
 
 object Version {
     const val SPRING_BOOT = "3.4.0"
+    const val SPRING_CLOUD = "4.2.0"
     const val SLF4J_API = "2.0.7"
     const val JACKSON_DATABIND = "2.18.2"
     const val OPENCSV = "5.9"
@@ -44,6 +45,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:${Version.SPRING_BOOT}")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${Version.SPRING_BOOT}")
 
+    implementation("org.springframework.cloud:spring-cloud-stream:${Version.SPRING_CLOUD}")
+    implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka:${Version.SPRING_CLOUD}")
+
     implementation("com.opencsv:opencsv:${Version.OPENCSV}")
 
     implementation("org.projectlombok:lombok:${Version.LOMBOK_CORE}")
@@ -67,6 +71,12 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:${Version.Junit.BOM}"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:${Version.ASSERTJ_CORE}")
+
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:testcontainers")
+    testImplementation("org.testcontainers:kafka")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

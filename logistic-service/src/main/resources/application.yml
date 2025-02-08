@@ -25,14 +25,24 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    show-sql: false
   datasource:
     url: jdbc:postgresql://localhost:5432/logistic_service_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-
-billing:
-  cost-load: 50
-  cost-unload: 80
-
+  kafka:
+    bootstrap-servers: localhost:9094
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9094
+          auto-create-topics: true
+          auto-add-partitions: true
+      bindings:
+        billing-out-0:
+          destination: billing.orders.v0
+          contentType: application/json
+          producer:
+            partition-count: 1

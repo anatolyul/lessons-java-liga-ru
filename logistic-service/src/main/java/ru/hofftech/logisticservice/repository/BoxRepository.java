@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface BoxRepository extends JpaRepository<BoxEntity, Long>, JpaSpecificationExecutor<BoxEntity> {
 
     Optional<BoxEntity> findByName(String name);
-
 }

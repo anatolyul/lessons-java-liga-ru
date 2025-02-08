@@ -2,30 +2,102 @@
   {
     "truckHeight": 3,
     "truckWidth": 3,
+    "cargoContent": [
+      [
+        "1",
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
     "truck_type": "Truck 3x3",
     "parcels": [
       {
         "name": "Посылка Тип 1",
+        "symbol": "1",
         "form": "1",
-        "symbol": "1"
+        "coordinates": [
+          [
+            true
+          ]
+        ]
       }
     ]
   },
   {
     "truckHeight": 3,
     "truckWidth": 3,
+    "cargoContent": [
+      [
+        "3",
+        "3",
+        "3"
+      ],
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
     "truck_type": "Truck 3x3",
     "parcels": [
       {
-        "name": "Посылка Тип 4",
-        "form": "4444",
-        "symbol": "4"
+        "name": "Посылка Тип 3",
+        "symbol": "3",
+        "form": "333",
+        "coordinates": [
+          [
+            true,
+            true,
+            true
+          ]
+        ]
       }
     ]
   },
   {
     "truckHeight": 6,
     "truckWidth": 2,
+    "cargoContent": [
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ]
+    ],
     "truck_type": "Truck 6x2"
   }
 ]

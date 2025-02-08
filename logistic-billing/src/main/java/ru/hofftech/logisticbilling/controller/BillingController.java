@@ -1,4 +1,4 @@
-package ru.hofftech.logisticservice.controller;
+package ru.hofftech.logisticbilling.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hofftech.logisticservice.dto.OrderDto;
-import ru.hofftech.logisticservice.service.BillingService;
+import ru.hofftech.logisticbilling.dto.OrderDto;
+import ru.hofftech.logisticbilling.service.BillingService;
 
 import java.time.LocalDate;
 import java.util.List;

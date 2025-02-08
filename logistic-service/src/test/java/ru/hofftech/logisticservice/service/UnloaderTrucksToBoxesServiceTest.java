@@ -47,7 +47,8 @@ class UnloaderTrucksToBoxesServiceTest {
         );
 
         objectMapper.writeValue(new File(fileNameTrucks), trucks);
-        unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
+        var trucksInFile = unloaderTrucksToBoxesService.loadTrucksFromFile(fileNameTrucks);
+        unloaderTrucksToBoxesService.unloadTrucksToBoxes(trucksInFile, fileNameBoxes, false);
 
         assertTrue(Files.exists(Path.of(fileNameBoxes)));
     }
@@ -67,8 +68,8 @@ class UnloaderTrucksToBoxesServiceTest {
         );
 
         objectMapper.writeValue(new File(fileNameTrucks), trucks);
-
-        List<String[]> boxes = unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
+        var trucksInFile = unloaderTrucksToBoxesService.loadTrucksFromFile(fileNameTrucks);
+        List<String[]> boxes = unloaderTrucksToBoxesService.unloadTrucksToBoxes(trucksInFile, fileNameBoxes, false);
 
         String result = objectMapper.writeValueAsString(boxes);
 
@@ -92,7 +93,8 @@ class UnloaderTrucksToBoxesServiceTest {
         );
 
         objectMapper.writeValue(new File(fileNameTrucks), trucks);
-        unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, true);
+        var trucksInFile = unloaderTrucksToBoxesService.loadTrucksFromFile(fileNameTrucks);
+        unloaderTrucksToBoxesService.unloadTrucksToBoxes(trucksInFile, fileNameBoxes, true);
 
         assertTrue(Files.exists(Path.of(fileNameBoxes)));
     }
@@ -104,7 +106,8 @@ class UnloaderTrucksToBoxesServiceTest {
         String fileNameBoxes = tempDir.resolve("boxes.csv").toString();
 
         assertThrows(FileReadException.class, () -> {
-            unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
+            var trucksInFile = unloaderTrucksToBoxesService.loadTrucksFromFile(fileNameTrucks);
+            unloaderTrucksToBoxesService.unloadTrucksToBoxes(trucksInFile, fileNameBoxes, false);
         });
     }
 
@@ -129,7 +132,8 @@ class UnloaderTrucksToBoxesServiceTest {
         Files.setPosixFilePermissions(Path.of(fileNameBoxes), java.nio.file.attribute.PosixFilePermissions.fromString("r--r--r--"));
 
         assertThrows(FileWriteException.class, () -> {
-            unloaderTrucksToBoxesService.unloadTrucksToBoxes(fileNameTrucks, fileNameBoxes, false);
+            var trucksInFile = unloaderTrucksToBoxesService.loadTrucksFromFile(fileNameTrucks);
+            unloaderTrucksToBoxesService.unloadTrucksToBoxes(trucksInFile, fileNameBoxes, false);
         });
     }
 
