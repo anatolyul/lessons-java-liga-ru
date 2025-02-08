@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.kafka.KafkaContainer;
 
 import java.time.LocalDate;
 
@@ -31,15 +32,20 @@ class BillingControllerTest {
             .withUsername("test")
             .withPassword("test");
 
+    @Container
+    public static KafkaContainer kafkaContainer = new KafkaContainer("apache/kafka-native:3.8.0");
+
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeAll
     static void beforeAll() {
+        kafkaContainer.start();
         postgresqlContainer.start();
         System.setProperty("spring.datasource.url", postgresqlContainer.getJdbcUrl());
         System.setProperty("spring.datasource.username", postgresqlContainer.getUsername());
         System.setProperty("spring.datasource.password", postgresqlContainer.getPassword());
+        System.setProperty("spring.kafka.bootstrap-servers", kafkaContainer.getBootstrapServers());
     }
 
     @Test

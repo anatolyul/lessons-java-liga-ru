@@ -1,1 +1,1 @@
-truncate table box cascade;
+truncate table box restart identity cascade;

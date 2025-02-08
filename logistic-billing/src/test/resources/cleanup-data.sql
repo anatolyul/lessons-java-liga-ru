@@ -1,1 +1,1 @@
-truncate table "order" cascade;
+truncate table "order" restart identity cascade;
