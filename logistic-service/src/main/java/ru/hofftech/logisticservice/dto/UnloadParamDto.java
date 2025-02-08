@@ -2,14 +2,12 @@ package ru.hofftech.logisticservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Schema(description = "Параметры загрузки данных по машинам из файла переданным в параметре -in-filename и выгрузка результатов")
 public class UnloadParamDto {
 

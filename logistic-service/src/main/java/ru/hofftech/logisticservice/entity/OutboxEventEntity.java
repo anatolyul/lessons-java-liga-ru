@@ -3,6 +3,8 @@ package ru.hofftech.logisticservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,5 +47,6 @@ public class OutboxEventEntity {
     @Column(unique = true)
     private UUID idempotentKey;
 
+    @Enumerated(EnumType.STRING)
     private OrderOutboxStatus status;
 }

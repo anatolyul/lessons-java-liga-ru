@@ -25,7 +25,7 @@ CREATE TABLE order_outbox
     created_date   TIMESTAMP WITHOUT TIME ZONE,
     order_id       BIGINT,
     idempotent_key UUID,
-    status         SMALLINT,
+    status VARCHAR(255),
     CONSTRAINT pk_order_outbox PRIMARY KEY (id)
 );
 

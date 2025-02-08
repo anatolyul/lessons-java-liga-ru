@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface OutboxEventRepository extends JpaRepository<OutboxEventEntity, Long>, JpaSpecificationExecutor<OutboxEventEntity> {
 
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"order"})
+    @EntityGraph(attributePaths = {"order"})
     List<OutboxEventEntity> findAllByStatus(OrderOutboxStatus status);
 }
