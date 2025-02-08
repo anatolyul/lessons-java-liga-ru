@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class BillingStreamService {
     private final StreamBridge streamBridge;
+    private static final String RESPONSE_QUEUE = "billing-out-0";
 
     public void publish(OutboxEventDto outboxEventDto) {
         Message<OutboxEventDto> message = MessageBuilder.withPayload(outboxEventDto)
@@ -25,7 +26,6 @@ public class BillingStreamService {
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build();
 
-        final String RESPONSE_QUEUE = "billing-out-0";
         streamBridge.send(RESPONSE_QUEUE, message);
 
         log.debug("Published payload {}", outboxEventDto);

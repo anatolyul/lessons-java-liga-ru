@@ -63,7 +63,13 @@ public class BoxControllerTest {
 
     @Test
     void testCreateBox() throws Exception {
-        String boxJson = "{\"name\":\"TestBox\",\"form\":\"xx\\nxx\",\"symbol\":\"x\"}";
+        String boxJson = """
+                {
+                    "name": "TestBox",
+                    "form": "xx\\nxx",
+                    "symbol": "x"
+                }
+                """;
 
         mockMvc.perform(post("/api/v1/boxes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +80,14 @@ public class BoxControllerTest {
 
     @Test
     void testUpdateBox() throws Exception {
-        String boxJson = "{\"oldName\":\"TestBox\",\"name\":\"TestBox1\",\"form\":\"xx\\nxx\",\"symbol\":\"x\"}";
+        String boxJson = """
+                {
+                    "oldName": "TestBox",
+                    "name": "TestBox1",
+                    "form": "xx\\nxx",
+                    "symbol": "x"
+                }
+                """;
 
         mockMvc.perform(put("/api/v1/boxes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -94,7 +107,15 @@ public class BoxControllerTest {
 
     @Test
     void testLoadBoxes() throws Exception {
-        String loadParamJson = "{\"clientName\":\"TestClient\",\"trucks\":\"6x6\\n6x6\",\"parcelsText\":\"TestBox\",\"date\":\"2025-01-11\",\"type\":\"ONE_TO_ONE\"}";
+        String loadParamJson = """
+                {
+                    "clientName": "TestClient",
+                    "trucks": "6x6\\n6x6",
+                    "parcelsText": "TestBox",
+                    "date": "2025-01-11",
+                    "type": "ONE_TO_ONE"
+                }
+                """;
 
         mockMvc.perform(post("/api/v1/boxes/action/load")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +126,15 @@ public class BoxControllerTest {
 
     @Test
     void testUnloadBoxes() throws Exception {
-        String unloadParamJson = "{\"clientName\": \"Petrov\",\"date\": \"2025-02-06\",\"inFilename\":\"trucks.json\",\"outFilename\":\"output.csv\",\"withCount\":true}";
+        String unloadParamJson = """
+                {
+                    "clientName": "Petrov",
+                    "date": "2025-02-06",
+                    "inFilename": "trucks.json",
+                    "outFilename": "output.csv",
+                    "withCount": true
+                }
+                """;
 
         mockMvc.perform(post("/api/v1/boxes/action/unload")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -116,7 +145,9 @@ public class BoxControllerTest {
 
     @Test
     void testImportBoxes() throws Exception {
-        String importParamJson = "{\"filename\":\"boxes.txt\"}";
+        String importParamJson = """
+                {"filename":"boxes.txt"}
+                """;
 
         mockMvc.perform(post("/api/v1/boxes/action/import")
                         .contentType(MediaType.APPLICATION_JSON)
