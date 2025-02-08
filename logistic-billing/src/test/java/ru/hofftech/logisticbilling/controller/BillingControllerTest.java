@@ -44,15 +44,142 @@ class BillingControllerTest {
 
     @Test
     void testFindAllOrders() throws Exception {
+        String resultForCheck = """
+                {
+                    "content": [
+                        {
+                            "id": 1,
+                            "type": "LOAD",
+                            "clientName": "Petrov",
+                            "date": "2025-01-11",
+                            "truckCount": 5,
+                            "boxCount": 20,
+                            "segmentCount": 101,
+                            "amount": 120
+                        },
+                        {
+                            "id": 2,
+                            "type": "UNLOAD",
+                            "clientName": "Petrov",
+                            "date": "2025-01-11",
+                            "truckCount": 5,
+                            "boxCount": 20,
+                            "segmentCount": 101,
+                            "amount": 120
+                        },
+                        {
+                            "id": 3,
+                            "type": "LOAD",
+                            "clientName": "Petrov",
+                            "date": "2025-01-12",
+                            "truckCount": 6,
+                            "boxCount": 17,
+                            "segmentCount": 133,
+                            "amount": 120
+                        },
+                        {
+                            "id": 4,
+                            "type": "LOAD",
+                            "clientName": "Ivanov",
+                            "date": "2025-01-11",
+                            "truckCount": 4,
+                            "boxCount": 10,
+                            "segmentCount": 95,
+                            "amount": 120
+                        },
+                        {
+                            "id": 5,
+                            "type": "UNLOAD",
+                            "clientName": "Ivanov",
+                            "date": "2025-01-12",
+                            "truckCount": 4,
+                            "boxCount": 10,
+                            "segmentCount": 95,
+                            "amount": 120
+                        },
+                        {
+                            "id": 6,
+                            "type": "LOAD",
+                            "clientName": "Ivanov",
+                            "date": "2025-01-13",
+                            "truckCount": 7,
+                            "boxCount": 15,
+                            "segmentCount": 158,
+                            "amount": 120
+                        }
+                    ],
+                    "pageable": {
+                        "pageNumber": 0,
+                        "pageSize": 20,
+                        "sort": {
+                            "sorted": false,
+                            "empty": true,
+                            "unsorted": true
+                        },
+                        "offset": 0,
+                        "paged": true,
+                        "unpaged": false
+                    },
+                    "last": true,
+                    "totalElements": 6,
+                    "totalPages": 1,
+                    "first": true,
+                    "size": 20,
+                    "number": 0,
+                    "sort": {
+                        "sorted": false,
+                        "empty": true,
+                        "unsorted": true
+                    },
+                    "numberOfElements": 6,
+                    "empty": false
+                }
+                """.replace(" ", "").replace("\n", "");
+
         mockMvc.perform(get("/api/v1/billing")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{\"content\":[{\"id\":13,\"type\":\"LOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-11\",\"truckCount\":5,\"boxCount\":20,\"segmentCount\":101,\"amount\":120},{\"id\":14,\"type\":\"UNLOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-11\",\"truckCount\":5,\"boxCount\":20,\"segmentCount\":101,\"amount\":120},{\"id\":15,\"type\":\"LOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-12\",\"truckCount\":6,\"boxCount\":17,\"segmentCount\":133,\"amount\":120},{\"id\":16,\"type\":\"LOAD\",\"clientName\":\"Ivanov\",\"date\":\"2025-01-11\",\"truckCount\":4,\"boxCount\":10,\"segmentCount\":95,\"amount\":120},{\"id\":17,\"type\":\"UNLOAD\",\"clientName\":\"Ivanov\",\"date\":\"2025-01-12\",\"truckCount\":4,\"boxCount\":10,\"segmentCount\":95,\"amount\":120},{\"id\":18,\"type\":\"LOAD\",\"clientName\":\"Ivanov\",\"date\":\"2025-01-13\",\"truckCount\":7,\"boxCount\":15,\"segmentCount\":158,\"amount\":120}],\"pageable\":{\"pageNumber\":0,\"pageSize\":20,\"sort\":{\"sorted\":false,\"empty\":true,\"unsorted\":true},\"offset\":0,\"paged\":true,\"unpaged\":false},\"last\":true,\"totalElements\":6,\"totalPages\":1,\"first\":true,\"size\":20,\"number\":0,\"sort\":{\"sorted\":false,\"empty\":true,\"unsorted\":true},\"numberOfElements\":6,\"empty\":false}"));
+                .andExpect(content().json(resultForCheck));
     }
 
     @Test
     void testFindByNameWithPeriod() throws Exception {
+        String resultForCheck = """
+                [
+                    {
+                        "id": 1,
+                        "type": "LOAD",
+                        "clientName": "Petrov",
+                        "date": "2025-01-11",
+                        "truckCount": 5,
+                        "boxCount": 20,
+                        "segmentCount": 101,
+                        "amount": 120
+                    },
+                    {
+                        "id": 2,
+                        "type": "UNLOAD",
+                        "clientName": "Petrov",
+                        "date": "2025-01-11",
+                        "truckCount": 5,
+                        "boxCount": 20,
+                        "segmentCount": 101,
+                        "amount": 120
+                    },
+                    {
+                        "id": 3,
+                        "type": "LOAD",
+                        "clientName": "Petrov",
+                        "date": "2025-01-12",
+                        "truckCount": 6,
+                        "boxCount": 17,
+                        "segmentCount": 133,
+                        "amount": 120
+                    }
+                ]
+                """.replace(" ", "").replace("\n", "");
+
         String clientName = "Petrov";
         LocalDate startDate = LocalDate.of(2025, 1, 11);
         LocalDate endDate = LocalDate.of(2025, 1, 12);
@@ -64,6 +191,6 @@ class BillingControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":1,\"type\":\"LOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-11\",\"truckCount\":5,\"boxCount\":20,\"segmentCount\":101,\"amount\":120},{\"id\":2,\"type\":\"UNLOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-11\",\"truckCount\":5,\"boxCount\":20,\"segmentCount\":101,\"amount\":120},{\"id\":3,\"type\":\"LOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-12\",\"truckCount\":6,\"boxCount\":17,\"segmentCount\":133,\"amount\":120},{\"id\":7,\"type\":\"LOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-11\",\"truckCount\":5,\"boxCount\":20,\"segmentCount\":101,\"amount\":120},{\"id\":8,\"type\":\"UNLOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-11\",\"truckCount\":5,\"boxCount\":20,\"segmentCount\":101,\"amount\":120},{\"id\":9,\"type\":\"LOAD\",\"clientName\":\"Petrov\",\"date\":\"2025-01-12\",\"truckCount\":6,\"boxCount\":17,\"segmentCount\":133,\"amount\":120}]"));
+                .andExpect(content().json(resultForCheck));
     }
 }

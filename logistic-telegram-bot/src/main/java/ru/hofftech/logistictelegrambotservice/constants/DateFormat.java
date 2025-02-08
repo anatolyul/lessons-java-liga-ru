@@ -1,11 +1,11 @@
 package ru.hofftech.logistictelegrambotservice.constants;
 
-import lombok.experimental.UtilityClass;
-
 import java.time.format.DateTimeFormatter;
 
-@UtilityClass
 public final class DateFormat {
-    public static final String PATTERN = "dd.MM.yyyy";
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    private DateFormat() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 }

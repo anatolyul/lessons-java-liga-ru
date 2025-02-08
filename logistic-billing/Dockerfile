@@ -10,5 +10,5 @@ ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 COPY --from=BUILD_IMAGE $APP_HOME/build/libs/*.jar $APP_HOME/app.jar
 
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT exec java -jar app.jar
