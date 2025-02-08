@@ -10,6 +10,8 @@ services:
       POSTGRES_DB: logistic_service_db
     networks:
       - logistic-network
+    volumes:
+      - logistic_service_db:/var/lib/postgresql/data
 
   logistic-billing-db:
     image: postgres:17.1-alpine
@@ -21,6 +23,8 @@ services:
       POSTGRES_DB: logistic_billing_db
     networks:
       - logistic-network
+    volumes:
+      - logistic_billing_db:/var/lib/postgresql/data
 
   logistic-billing:
     build:
@@ -105,3 +109,7 @@ services:
 networks:
   logistic-network:
     driver: bridge
+
+volumes:
+  logistic_service_db:
+  logistic_billing_db:
