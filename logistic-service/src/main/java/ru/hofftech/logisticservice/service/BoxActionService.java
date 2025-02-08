@@ -7,11 +7,8 @@ import ru.hofftech.logisticservice.dto.ImportParamDto;
 import ru.hofftech.logisticservice.dto.LoadParamDto;
 import ru.hofftech.logisticservice.dto.OrderDto;
 import ru.hofftech.logisticservice.dto.UnloadParamDto;
-import ru.hofftech.logisticservice.exception.FileReadException;
-import ru.hofftech.logisticservice.exception.FileWriteException;
 import ru.hofftech.logisticservice.model.Truck;
 import ru.hofftech.logisticservice.model.TruckForm;
-import ru.hofftech.logisticservice.model.enums.TypeAlgorithm;
 import ru.hofftech.logisticservice.model.enums.TypeLoadData;
 import ru.hofftech.logisticservice.model.enums.TypeOrderProcess;
 import ru.hofftech.logisticservice.service.converter.FilePathSearchService;
@@ -37,13 +34,17 @@ public class BoxActionService {
         TruckForm trucksForm = TruckForm.fromString(loadParamDto.getTrucks());
         List<BoxDto> boxes = findBoxesToLoad(loadParamDto.getParcelsText(), loadParamDto.getParcelsFile());
 
-        List<Truck> trucks = loadBoxesIntoTrucks(boxes, trucksForm, loadParamDto.getType());
+        List<Truck> trucks = loaderBoxesInTrucksServiceFactory
+                .createLoaderBoxesInTrucksService(loadParamDto.getType())
+                .loadBoxesInTrucks(boxes, trucksForm, 0);
+
         OrderDto orderDto = orderService.createOrderDto(
                 loadParamDto.getClientName(),
                 TypeOrderProcess.LOAD,
                 loadParamDto.getDate(),
                 trucks
         );
+
         orderService.saveOrder(orderDto);
         resultOutSaveService.saveOutResult(boxes, trucks, loadParamDto.getOutFilename());
 
@@ -51,7 +52,7 @@ public class BoxActionService {
     }
 
     public List<String[]> unload(UnloadParamDto unloadParamDto) {
-        List<Truck> trucks = loadTrucksFromFile(unloadParamDto.getInFilename());
+        List<Truck> trucks = unloaderTrucksToBoxesService.loadTrucksFromFile(unloadParamDto.getInFilename());
         OrderDto orderDto = orderService.createOrderDto(
                 unloadParamDto.getClientName(),
                 TypeOrderProcess.UNLOAD,
@@ -60,12 +61,14 @@ public class BoxActionService {
         );
         orderService.saveOrder(orderDto);
 
-        return unloadTrucksToBoxes(trucks, unloadParamDto.getOutFilename(), unloadParamDto.isWithCount());
+        return unloaderTrucksToBoxesService.unloadTrucksToBoxes(
+                trucks, unloadParamDto.getOutFilename(), unloadParamDto.isWithCount());
     }
 
     public List<BoxDto> importFile(ImportParamDto importParamDto) {
         TypeLoadData commandParser = TypeLoadData.fromExtension(importParamDto.getFilename());
-        List<BoxDto> boxes = parserBoxesServiceFactory.create(commandParser, filePathSearchService.search(importParamDto.getFilename()));
+        List<BoxDto> boxes = parserBoxesServiceFactory.create(
+                commandParser, filePathSearchService.search(importParamDto.getFilename()));
 
         if (!boxes.isEmpty()) {
             boxService.deleteAll();
@@ -73,24 +76,6 @@ public class BoxActionService {
         }
 
         return boxes;
-    }
-
-    private List<Truck> loadBoxesIntoTrucks(List<BoxDto> boxes, TruckForm trucksForm, TypeAlgorithm type) {
-        return loaderBoxesInTrucksServiceFactory
-                .createLoaderBoxesInTrucksService(type)
-                .loadBoxesInTrucks(boxes, trucksForm, 0);
-    }
-
-    private List<Truck> loadTrucksFromFile(String fileName) {
-        try {
-            return unloaderTrucksToBoxesService.loadTrucksFromFile(filePathSearchService.search(fileName));
-        } catch (FileReadException | FileWriteException e) {
-            throw new IllegalArgumentException("Ошибка выполнения команды: " + e.getMessage());
-        }
-    }
-
-    private List<String[]> unloadTrucksToBoxes(List<Truck> trucks, String outFilename, boolean withCount) {
-        return unloaderTrucksToBoxesService.unloadTrucksToBoxes(trucks, outFilename, withCount);
     }
 
     private List<BoxDto> findBoxesToLoad(String boxesNames, String boxesFile) {
